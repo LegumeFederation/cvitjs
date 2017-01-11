@@ -58,16 +58,15 @@ Get Node here (or from your package manager): [Get Node](https://nodejs.org/ "No
 + Note you can run any task seperately by using ``` gulp <task> ```
 
 ## Roadmap
-
 Things to do on the way to the 1.0 release.
-+ Uploaded file manager (glyph and name missmatch correction)
++ Uploaded file manager
+	+ Basic data validation
+	+ Customized glyphs
 + Advanced URI control. 
 + Basic Glyphs:
-    + Border
     + Measure
     	+ Heat
         + Histogram
         + Distance
-+ Functional Ruler Replacement
-+ Unit Tests
-+ And More (based on feedback and realizing where design errors lurk) 
++ Release unit tests
++ Upload full documentation
