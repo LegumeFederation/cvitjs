@@ -1,0 +1,923 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://cvit.js",
+  "type": "object",
+  "description": "JSON schema for CViTjs configuration",
+  "properties": {
+    "general": {
+      "id": "http://cvit.js/general",
+      "type": "object",
+      "description": "General configuration, including canvas options, chromosome backbone, and ruler",
+      "properties": {
+        "logfile": {
+          "id": "http://cvit.js/general/logfile",
+          "type": "string",
+          "description": "Legacy setting from perl CViT, not used."
+        },
+        "errorfile": {
+          "id": "http://cvit.js/general/errorfile",
+          "type": "string",
+          "description": "Legacy setting from perl CViT, not used"
+        },
+        "title": {
+          "id": "http://cvit.js/general/title",
+          "type": "string",
+          "description": "Label for image"
+        },
+        "title_height": {
+          "id": "http://cvit.js/general/title_height",
+          "type": "integer",
+          "default": 20,
+          "description": "Space for title, in px. Used with built-in font"
+        },
+        "title_font": {
+          "id": "http://cvit.js/general/title_font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use. Overridden by title_font_face."
+        },
+        "title_font_face": {
+          "id": "http://cvit.js/general/title_font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for the title. If font is not loadable, will revert to title_font selected."
+        },
+        "title_font_size": {
+          "id": "http://cvit.js/general/title_font_size",
+          "type": "integer",
+          "default": 10,
+          "description": "title_font_face font size in points."
+        },
+        "title_font_color": {
+          "id": "http://cvit.js/general/title_font_color",
+          "type": "string",
+          "default": "black",
+          "description": "title_font_face color. All colors take a web color name, or RGB(A) hex code."
+        },
+        "image_padding": {
+          "id": "http://cvit.js/general/image_padding",
+          "type": "integer",
+          "default": 10,
+          "description": "Padding around edges of canvas."
+        },
+        "scale_factor": {
+          "id": "http://cvit.js/general/scale_factor",
+          "type": "number",
+          "description": "Legacy sale for units. Recommended not to use, as the best fit scale is automatically generated."
+        },
+        "border_color": {
+          "id": "http://cvit.js/general/border_color",
+          "type": "string",
+          "default": "black",
+          "description": "Color of 1px border around the image."
+        },
+        "tiny_font_face": {
+          "id": "http://cvit.js/general/tiny_font_face",
+          "type": "string",
+          "description": "Legacy option for alternative font-face for small labels. Not used."
+        },
+        "chrom_width": {
+          "id": "http://cvit.js/general/chrom_width",
+          "type": "integer",
+          "default": 10,
+          "description": "Width of a single chromosome backbone in px. A chromosome, in this code, refers to any contiguous sequence including arm, contig, BAC, &c."
+        },
+        "fixed_chrom_spacing": {
+          "id": "http://cvit.js/general/fixed_chrom_spacing",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Fixed or variable chromosome spacing. Treated as boolean. If variable (0), chrom_spacing is the minimum distance between chromosomes."
+        },
+        "chrom_spacing": {
+          "id": "http://cvit.js/general/chrom_spacing",
+          "type": "integer",
+          "default": 90,
+          "description": "Space between chromosomes in px."
+        },
+        "chrom_padding_left": {
+          "id": "http://cvit.js/general/chrom_padding_left",
+          "type": "integer",
+          "default": 0,
+          "description": "Additional chromosome padding on the left."
+        },
+        "chrom_padding_right": {
+          "id": "http://cvit.js/general/chrom_padding_right",
+          "type": "integer",
+          "default": 0,
+          "description": "Additional chromosome padding on the right."
+        },
+        "chrom_color": {
+          "id": "http://cvit.js/general/chrom_color",
+          "type": "string",
+          "default": "gray50",
+          "description": "Fill color for each chromosome. May be overridden on a per-feature basis through color=attribute in gff."
+        },
+        "chrom_border": {
+          "id": "http://cvit.js/general/chrom_border",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw a 1px border around the chromosome. Treated as boolean."
+        },
+        "chrom_border_color": {
+          "id": "http://cvit.js/general/chrom_border_color",
+          "type": "string",
+          "default": "gray50",
+          "description": "Color of chromosome border. Web color name or RGB(A) hex code"
+        },
+        "chrom_font": {
+          "id": "http://cvit.js/general/chrom_font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Built in font to use for chromosome labels. Overridden by chrom_font_face."
+        },
+        "chrom_font_face": {
+          "id": "http://cvit.js/general/chrom_font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for chromosome labels. If font is not loadable, will revert to chrom_font selected"
+        },
+        "chrom_font_size": {
+          "id": "http://cvit.js/general/chrom_font_size",
+          "type": "integer",
+          "default": 10,
+          "description": "chrom_font_face size in points."
+        },
+        "chrom_label_color": {
+          "id": "http://cvit.js/general/chrom_label_color",
+          "type": "string",
+          "default": "gray50",
+          "description": "Chromosome label color. Web color name, or RGB(A) hex code."
+        },
+        "show_strands": {
+          "id": "http://cvit.js/general/show_strands",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Show one or both strands. 1 for both. Treated as boolean."
+        },
+        "display_ruler": {
+          "id": "http://cvit.js/general/display_ruler",
+          "type": "string",
+          "default": 1,
+          "enum": [
+            0,
+            1,
+            "L",
+            "R"
+          ],
+          "description": "Draw ruler guides down the side of the image. 0 = None, 1 = Both Sides, L = Left Only, R = Right Only."
+        },
+        "reverse_ruler": {
+          "id": "http://cvit.js/general/reverse_ruler",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "1 = Label ruler from greatest to smallest. 0 = Smallest to greatest. Treated as boolean."
+        },
+        "ruler_units": {
+          "id": "http://cvit.js/general/ruler_units",
+          "type": "string",
+          "description": "Units to display on ruler. (e.g: cM, kb)"
+        },
+        "ruler_min": {
+          "id": "http://cvit.js/general/ruler_min",
+          "type": "integer",
+          "default": 0,
+          "description": "Minimum value of ruler. If actual minimum is less than the given integer, the provided value will be replaced by the actual value when drawing."
+        },
+        "ruler_max": {
+          "id": "http://cvit.js/general/ruler_max",
+          "type": "integer",
+          "default": 0,
+          "description": "Maximum value of ruler. If actual maximum is greater than the given integer, the provided value will be replaced by the actual value when drawing."
+        },
+        "ruler_color": {
+          "id": "http://cvit.js/general/ruler_color",
+          "type": "string",
+          "default": "gray60",
+          "description": "Color of ruler. Web color name or RGB(A) hex code."
+        },
+        "ruler_font": {
+          "id": "http://cvit.js/general/ruler_font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Built-in font to use for ruler labels."
+        },
+        "ruler_font_face": {
+          "id": "http://cvit.js/general/ruler_font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for ruler labels. If font is not loadable, will revert to ruler_font selected."
+        },
+        "ruler_font_size": {
+          "id": "http://cvit.js/general/ruler_font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "ruler_font_face size in points."
+        },
+        "tick_line_width": {
+          "id": "http://cvit.js/general/tick_line_width",
+          "type": "integer",
+          "default": 8,
+          "description": "Width of ruler tick marks in pixels. Tick marks are 1 px thick."
+        },
+        "tick_interval": {
+          "id": "http://cvit.js/general/tick_interval",
+          "type": "integer",
+          "default": 10000,
+          "description": "Labeled major tick interval in original chromosome units."
+        },
+        "minor_tick_divisions": {
+          "id": "http://cvit.js/general/minor_tick_divisions",
+          "type": "integer",
+          "default": 2,
+          "description": "Number of minor divisions per major tick, 1 for none."
+        }
+      }
+    },
+    "centromere": {
+      "id": "http://cvit.js/centromere",
+      "type": "object",
+      "description": "A specialized feature displayed over the top of a chromosome bar.",
+      "properties": {
+        "centromere_overhang": {
+          "id": "http://cvit.js/centromere/centromere_overhang",
+          "type": "integer",
+          "default": 2,
+          "description": "Overhang in px on each side of the chromosome bar."
+        },
+        "color": {
+          "id": "http://cvit.js/centromere/color",
+          "type": "string",
+          "default": "gray30",
+          "description": "Color of centromere feature. May be overridden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "transparent": {
+          "id": "http://cvit.js/centromere/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "draw_label": {
+          "id": "http://cvit.js/centromere/draw_label",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw centromere label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/centromere/font",
+          "type": "integer",
+          "default": 2,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for centromere label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/centromere/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for ruler labels. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/centromere/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/centromere/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the centromere bar. A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/centromere/label_color",
+          "type": "string",
+          "default": "gray30",
+          "description": "Centromere label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    },
+    "position": {
+      "id": "http://cvit.js/position",
+      "type": "object",
+      "description": "A feature displayed as a dot or rectangle beside the chromosome bar. Overlapping positions may be piled-up in a line.",
+      "properties": {
+        "color": {
+          "id": "http://cvit.js/position/color",
+          "type": "string",
+          "default": "gray30",
+          "description": "Color of position feature. May be overidden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "transparent": {
+          "id": "http://cvit.js/position/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "shape": {
+          "id": "http://cvit.js/position/shape",
+          "type": "string",
+          "default": "circle",
+          "enum": [
+            null,
+            "rect",
+            "doublecircle",
+            "circle"
+          ],
+          "description": "Shape to use for position marker."
+        },
+        "width": {
+          "id": "http://cvit.js/position/width",
+          "type": "integer",
+          "default": 5,
+          "description": "Width of position marker in px."
+        },
+        "offset": {
+          "id": "http://cvit.js/position/offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset the position marker provided number of pixels to the right of target chromosome bar. A negative value will offset to the left."
+        },
+        "enable_pileup": {
+          "id": "http://cvit.js/position/enable_pileup",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Pile-up glyphs that overlap. Treated as boolean."
+        },
+        "pileup_gap": {
+          "id": "http://cvit.js/position/pileup_gap",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset between overlapping position markers if pile-up is enabled,"
+        },
+        "draw_label": {
+          "id": "http://cvit.js/position/draw_label",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw position label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/position/font",
+          "type": "integer",
+          "default": 2,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for position label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/position/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for position labels. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/position/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/position/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the position marker. A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/position/label_color",
+          "type": "string",
+          "default": "gray30",
+          "description": "Position label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    },
+    "range": {
+      "id": "http://cvit.js/range",
+      "type": "object",
+      "description": "A feature drawn as a bar along the targeted chromosome bar.",
+      "properties": {
+        "color": {
+          "id": "http://cvit.js/range/color",
+          "type": "string",
+          "default": "green",
+          "description": "Color of range feature. May be overridden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "transparent": {
+          "id": "http://cvit.js/range/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "width": {
+          "id": "http://cvit.js/range/width",
+          "type": "integer",
+          "default": 6,
+          "description": "Width of range bar in px."
+        },
+        "offset": {
+          "id": "http://cvit.js/range/offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset the range bar provided number of pixels to the right of target chromosome bar. A negative value will offset to the left."
+        },
+        "enable_pileup": {
+          "id": "http://cvit.js/range/enable_pileup",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Pile-up glyphs that overlap. Treated as boolean."
+        },
+        "pileup_gap": {
+          "id": "http://cvit.js/range/pileup_gap",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset between overlapping range bars if pile-up is enabled."
+        },
+        "draw_label": {
+          "id": "http://cvit.js/range/draw_label",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw range label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/range/font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for range label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/range/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for range labels. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/range/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/range/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the range bar. A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/range/label_color",
+          "type": "string",
+          "default": "black",
+          "description": "Range label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    },
+    "border": {
+      "id": "http://cvit.js/border",
+      "type": "object",
+      "description": "A special type of range drawn on top of the targeted chromosome bar.",
+      "properties": {
+        "color": {
+          "id": "http://cvit.js/border/color",
+          "type": "string",
+          "default": "red",
+          "description": "Color of border feature. May be overridden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "border_color": {
+          "id": "http://cvit.js/border/border_color",
+          "type": "string",
+          "default": "red",
+          "description": "Color of border. May be overridden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "fill": {
+          "id": "http://cvit.js/border/fill",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Fill in area between borders. Treated as boolean."
+        },
+        "transparent": {
+          "id": "http://cvit.js/border/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "draw_label": {
+          "id": "http://cvit.js/border/draw_label",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw border label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/border/font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for border label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/border/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for border labels. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/border/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/border/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the border bar. A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/border/label_color",
+          "type": "string",
+          "default": "black",
+          "description": "Border label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    },
+    "marker": {
+      "id": "http://cvit.js/marker",
+      "type": "object",
+      "description": "A line drawn next to the chromosome.",
+      "properties": {
+        "color": {
+          "id": "http://cvit.js/marker/color",
+          "type": "string",
+          "default": "green",
+          "description": "Color of marker feature. May be overridden on a per-feature basis through color=attribute in gff. Web color or RGB(A) hex code."
+        },
+        "transparent": {
+          "id": "http://cvit.js/marker/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "offset": {
+          "id": "http://cvit.js/marker/offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset the marker bar provided number of pixels to the right of target chromosome bar. A negative value will offset to the left."
+        },
+        "draw_label": {
+          "id": "http://cvit.js/marker/draw_label",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw marker label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/marker/font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for marker label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/marker/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for marker labels. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/marker/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/marker/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the marker bar. A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/marker/label_color",
+          "type": "string",
+          "default": "black",
+          "description": "Marker label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    },
+    "measure": {
+      "id": "http://cvit.js/measure",
+      "type": "object",
+      "description": "A heatmap or histogram value with width in the gff",
+      "properties": {
+        "value_type": {
+          "id": "http://cvit.js/measure/value_type",
+          "type": "string",
+          "default": "value_attr",
+          "enum": [
+            "score_col",
+            "value_attr"
+          ],
+          "description": "Measure value is in the score column (6th) or attributes column (9th) of the gff. If score_col, the value is assumed to be an e-value or a p-value."
+        },
+        "min": {
+          "id": "http://cvit.js/measure/min",
+          "type": "integer",
+          "default": 0,
+          "description": "Minimum value, provided value will be overridden if actual value is less."
+        },
+        "max": {
+          "id": "http://cvit.js/measure/max",
+          "type": "integer",
+          "default": 0,
+          "description": "Maximum value, provided value will be overridden if actual value is greater."
+        },
+        "display": {
+          "id": "http://cvit.js/measure/display",
+          "type": "string",
+          "default": "heat",
+          "enum": [
+            null,
+            "histogram",
+            "heat",
+            "distance"
+          ],
+          "description": "Which sub-glyph style to draw the measure feature as."
+        },
+        "draw_as": {
+          "id": "http://cvit.js/measure/draw_as",
+          "type": "string",
+          "default": "range",
+          "enum": [
+            null,
+            "range",
+            "border",
+            "position",
+            "marker"
+          ],
+          "description": "Heatmap and Distance: How to interpret the given glyph."
+        },
+        "shape": {
+          "id": "http://cvit.js/measure/shape",
+          "type": "string",
+          "enum": [
+            null,
+            "rect",
+            "circle"
+          ],
+          "description": "Heatmap and Distance: Shape to draw the glyph. Use circle only if measure has arbitrary length."
+        },
+        "width": {
+          "id": "http://cvit.js/measure/width",
+          "type": "integer",
+          "default": 2,
+          "description": "Heatmap and Distance: Width to draw chosen shape."
+        },
+        "enable_pileup": {
+          "id": "http://cvit.js/measure/enable_pileup",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Heatmap and Distance: Pile-up shapes that overlap. Treated as boolean."
+        },
+        "pileup_gap": {
+          "id": "http://cvit.js/measure/pileup_gap",
+          "type": "integer",
+          "default": 0,
+          "description": "Heatmap and Distance: Offset between overlapping shapes if pile-up is enabled."
+        },
+        "heat_colors": {
+          "id": "http://cvit.js/measure/heat_colors",
+          "type": "string",
+          "default": "redgreen",
+          "enum": [
+            null,
+            "redgreen",
+            "grayscale"
+          ],
+          "description": "Heatmap: Color scheme used for scale."
+        },
+        "color": {
+          "id": "http://cvit.js/measure/color",
+          "type": "string",
+          "default": "red",
+          "description": "Histogram: Color of measure glyph."
+        },
+        "max_distance": {
+          "id": "http://cvit.js/measure/max_distance",
+          "type": "integer",
+          "default": 25,
+          "description": "Distance: Max distance from chromosome."
+        },
+        "hist_perc": {
+          "id": "http://cvit.js/measure/hist_perc",
+          "type": "number",
+          "default": 0.9,
+          "description": "Histogram: Percentage of gap between chromosomes to fill with max values."
+        },
+        "transparent": {
+          "id": "http://cvit.js/measure/transparent",
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Legacy option to use transparency. If used, will set color alpha to 60%. Treated as boolean."
+        },
+        "offset": {
+          "id": "http://cvit.js/measure/offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Offset the measure glyph provided number of pixles to the right of target chromosome bar. A negative value will offset to the left."
+        },
+        "draw_label": {
+          "id": "http://cvit.js/measure/draw_label",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            0,
+            1
+          ],
+          "description": "Draw measure label. Treated as boolean."
+        },
+        "font": {
+          "id": "http://cvit.js/measure/font",
+          "type": "integer",
+          "default": 1,
+          "enum": [
+            null,
+            0,
+            1,
+            2,
+            3
+          ],
+          "description": "Which built-in font to use for measure label. "
+        },
+        "font_face": {
+          "id": "http://cvit.js/measure/font_face",
+          "type": "string",
+          "description": "CSS font-family or a Google Web Font to use for measure lables. If font is not loadable, will revert to font selected."
+        },
+        "font_size": {
+          "id": "http://cvit.js/measure/font_size",
+          "type": "integer",
+          "default": 6,
+          "description": "font_face size in points."
+        },
+        "label_offset": {
+          "id": "http://cvit.js/measure/label_offset",
+          "type": "integer",
+          "default": 0,
+          "description": "Draw label provided number of pixels to the right of the measure . A negative value will be to the left."
+        },
+        "label_color": {
+          "id": "http://cvit.js/measure/label_color",
+          "type": "string",
+          "default": "black",
+          "description": "Measure label color. Web color name, or RGB(A) hex code."
+        }
+      }
+    }
+  },
+  "additionalProperties":{
+      "type:": "object",
+      "id" : "http://cvit.js/custom",
+      "description": "Any additional custom sequence types. Uses configuration of base glyph, unless overridden in configuration.",
+      "properties": {
+          "feature": {
+              "id": "http://cvit.js/custom/feature",
+              "type": "string",
+              "pattern": ".*:.*",
+              "description": "<source>:<type> of feature to match in gff. (cols 222 and 3)"
+          },
+          "glyph" : {
+              "id" : "http://cvit.js/custom/glyph",
+              "type": "string",
+              "enum" : [
+                  "centromere",
+                  "position",
+                  "range",
+                  "border",
+                  "marker",
+                  "measure"
+              ],
+              "description": "Glyph to use to draw custom sequence."
+          }
+      },
+      "required": [
+          "feature",
+          "glyph"
+      ]
+        
+  },
+  "required": [
+    "general"
+  ]
+}
