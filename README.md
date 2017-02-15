@@ -15,6 +15,9 @@
 
 Testing fork of CViTjs for my cruel and unusual experiments.
 
+[Demonstration CViT viewer](https://awilkey.github.io/cvitjs/?data=test1)
+
+
 Features:
 
 + AMD style modules using RequireJS. Makes it easier to manage libraries, avoids polluting the global object, and allows for nicer later expansion.
