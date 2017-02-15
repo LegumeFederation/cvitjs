@@ -1,11 +1,7 @@
-
-
-
 # CViTjs
 
+![alt text](img/cvitjs.png?raw=true "CViTjs")
 
-  
-![alt text](https://bytebucket.org/Awilkey/cvitjs-testing/raw/3492aaadcfe2de7e71c3d24467a77b5fed56b6e7/img/cvitjs.png?token=6ffaed664b3bfeaaebf1cd1d85b6e25879b3f761 "CViTjs")
 > **Table of Contents** 
 >
 >[CViTjs](#cvitjs) 
