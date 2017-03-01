@@ -31,11 +31,27 @@ body{
  *
  */
 
-#tool-btn {
+#tool-btn{
   position: absolute;
   top: 75px;
   left: 10px;
 }
+
+#tool-btn .btn-default{
+ background-color: rgba(255,255,255,.5);
+}
+
+#zoom-ctrl .btn-default{
+ background-color: rgba(255,255,255,.5);
+}
+
+btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+	background-color: #cacaca;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
 
 #tool-bar {
   position: relative;
