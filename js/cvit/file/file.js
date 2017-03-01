@@ -72,11 +72,12 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
        * @return {string | number} extention or 0 if invalid
        */
       getFormat: function( fileName ) {
-        var match = fileName.match( /.*\.(gff|css|conf)/i );
+        var match = fileName.match( /.*\.(gff|css|conf|ini)/i );
         // Match will be null if extention is not matched
         // in this case, extention is 0 (not supported) otherwise extention
         // is the lowercase version of the extention
         var extention = match === null ? 0 : match[ 1 ].toLowerCase();
+        if (extention === 'ini'){extention === 'conf';}
         return extention;
       },
 
