@@ -46,7 +46,7 @@ require(["jquery","cvit/cvit","cvit/file/file"],function($,cvit,file){
 			console.log(err);
 			document.getElementById('cvit-div').innerHTML = err.message;
 		});
-},function(err){ 
+        },function(err){ 
         console.log(err);
         document.getElementById('cvit-div').innerHTML = err.message;
     });
