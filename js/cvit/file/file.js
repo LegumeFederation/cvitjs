@@ -43,12 +43,14 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
        */
       getFile: function( filePath, useDefault ) {
         var thisC = this;
+        var myErr = 'CViTjs: Unable to open ' + filePath + ": file not found";
         return $.ajax( {
           method: "GET",
           url: filePath,
           dataType: "text",
           error: function( err ) {
-            console.log( 'CViTjs: Unable to open ' + filePath );
+            document.getElementById( 'cvit-div' ).innerHTML = myErr;
+            throw myErr;
           }
         } ).then( function( result ) {
           var extention = thisC.getFormat( filePath );
@@ -58,7 +60,7 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
             throw new Error( "CViTjs: " + filePath + " is not of a supported file type." );
           }
         }, function() {
-          return "failed";
+          throw myErr;
         } );
       },
 
