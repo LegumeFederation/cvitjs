@@ -1,0 +1,9 @@
+#bp -- generated via seqlen.awk
+#chromosome,	source,	type,	start,	stop,	score,	strand,	phase,	attributes
+Lj0	RefGen_v2	chromosome	1	192322135	.	.	.	name=Lj0;ID=Lj0
+Lj1	RefGen_v2	chromosome	1	62285374	.	.	.	name=Lj1;ID=Lj1
+Lj2	RefGen_v2	chromosome	1	43247325	.	.	.	name=Lj2;ID=Lj2
+Lj3	RefGen_v2	chromosome	1	45610869	.	.	.	name=Lj3;ID=Lj3
+Lj4	RefGen_v2	chromosome	1	42341900	.	.	.	name=Lj4;ID=Lj4
+Lj5	RefGen_v2	chromosome	1	34192293	.	.	.	name=Lj5;ID=Lj5
+Lj6	RefGen_v2	chromosome	1	26885540	.	.	.	name=Lj6;ID=Lj6
