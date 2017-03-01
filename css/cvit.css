@@ -38,18 +38,17 @@ body{
 }
 
 #tool-btn .btn-default{
- background-color: rgba(255,255,255,.5);
+    opacity:.65;
+}
+
+#zoom-ctrl btn.disabled, .btn[disabled] {
+	background-color: #bababa;
+    box-shadow: none;
+    cursor: not-allowed;
 }
 
 #zoom-ctrl .btn-default{
- background-color: rgba(255,255,255,.5);
-}
-
-btn.disabled, .btn[disabled], fieldset[disabled] .btn {
-	background-color: #cacaca;
-    box-shadow: none;
-    cursor: not-allowed;
-    opacity: 0.65;
+    opacity:.65;
 }
 
 
