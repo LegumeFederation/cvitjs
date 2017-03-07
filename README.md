@@ -7,6 +7,7 @@
 <ul>
   <li> [About](#about) </li>
   <li> [Setup](#setup) </li>
+  <li> [Embedding](#embedding)</li>
   <li> [PHP](#php) </li>
   <li> [Gulp](#gulp) </li>
   <li> [Roadmap](#roadmap) </li>
@@ -62,13 +63,33 @@ In this example, to display the test1 dataset the URL would be: your-CViTjs-URL/
 
 For each dataset you will need a <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and an image configuration file, typically named cvit.ini. Almost every aspect of the presentation of the image can be controlled in the configuration file. See the sample file in data/test1/ for more information.
 
+## Embedding
+
+Instead of keeping CViTjs in its own special page, it may be embedded to show related data. In the page's head include:
+```
+<link rel="stylesheet" href="[pathToCViTjs]/js/lib/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="[pathToCViTjs]/js/lib/hopscotch/css/hopscotch.min.css" />
+<link rel="stylesheet" href="[pathToCViTjs]/css/cvit.css" />
+
+<script data-main="[pathToCViTjs]/js/lib/require/require-config" src="[pathToCViTjs]/js/lib/require/require.js"></script>
+```
+If you wish to use an alternative main.js entry point, you will have to edit require-config. 
+Replace the value in: `deps: ["../main"]` with the path to your custom main.js entry point, relative to the libs directory.
+
+In the body of the page, all that is required is to place a `<div id="cvit-div">` at the location you want to add CViTjs. By default this will display the default view set in the [general] section of the cvit.conf. If you wish to override this display, CViTjs recognises two `data-` attributes by default:
+```
+<div id="cvit-div" data-backbone="backbone" /div>
+<div id="cvit-div" data-gff = "pathToGff" /div>
+```
+
+The backbone tag overrides the default dataset and uses the cvit.conf data settings for the provided backbone. The gff tag adds the provided gff to CViTjs to be drawn. These tags may be used seperately or combined to control an embedded instance of CViTjs. See `examples/cvittest.html` for an example of how this control works in practice.
+
+`<div id="title-div" /div>` is entierly optional, and may be omitted.
+
 ## PHP
 
-PHP can launch CViTjs with a calculated set of inputs.
+PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and gff using the `data-` tags, or you can export the desired information as a globaly accessible variable and access it directly from `main.js`. See `examples/main.blast_ui.js` for an example of this based on drupal exports.
 
-~~~~
-coming soon!
-~~~~
 ## Gulp
 
 Though not required for CViTjs to work, there is a gulpfile available for those that care. Right now it is just setup to do basic linting and beautification of the generated source. the default behavior also includes watching, so if you decided to edit any files, it will lint and beautify them for you.
