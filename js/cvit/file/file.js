@@ -43,12 +43,14 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
        */
       getFile: function( filePath, useDefault ) {
         var thisC = this;
+        var myErr = 'CViTjs: Unable to open ' + filePath + ": file not found";
         return $.ajax( {
           method: "GET",
           url: filePath,
           dataType: "text",
           error: function( err ) {
-            console.log( 'CViTjs: Unable to open ' + filePath );
+            document.getElementById( 'cvit-div' ).innerHTML = myErr;
+            throw myErr;
           }
         } ).then( function( result ) {
           var extention = thisC.getFormat( filePath );
@@ -58,7 +60,7 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
             throw new Error( "CViTjs: " + filePath + " is not of a supported file type." );
           }
         }, function() {
-          return "failed";
+          throw myErr;
         } );
       },
 
@@ -70,11 +72,12 @@ define( [ 'jquery', 'json!cvitjs/ConfDefault.json' ],
        * @return {string | number} extention or 0 if invalid
        */
       getFormat: function( fileName ) {
-        var match = fileName.match( /.*\.(gff|css|conf)/i );
+        var match = fileName.match( /.*\.(gff|css|conf|ini)/i );
         // Match will be null if extention is not matched
         // in this case, extention is 0 (not supported) otherwise extention
         // is the lowercase version of the extention
         var extention = match === null ? 0 : match[ 1 ].toLowerCase();
+        if (extention === 'ini'){extention === 'conf';}
         return extention;
       },
 

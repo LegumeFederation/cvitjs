@@ -1,0 +1,50 @@
+##gff-version 3
+Lj3	BLASTRESULT	match	2575354	40239032	4e-55	-	.	ID=lotja.Lj3.partial;Name=partial(4e-55)
+Lj3	BLASTRESULT	match_part	2575903	2576094	4e-55	+	.	ID=lotja.Lj3.partial.1;Parent=lotja.Lj3.partial;Target=partial 458 649 +
+Lj3	BLASTRESULT	match_part	2647374	2647565	4e-55	+	.	ID=lotja.Lj3.partial.2;Parent=lotja.Lj3.partial;Target=partial 458 649 +
+Lj3	BLASTRESULT	match_part	32480613	32480809	4e-51	+	.	ID=lotja.Lj3.partial.3;Parent=lotja.Lj3.partial;Target=partial 453 649 +
+Lj3	BLASTRESULT	match_part	2625719	2625914	9e-49	-	.	ID=lotja.Lj3.partial.4;Parent=lotja.Lj3.partial;Target=partial 453 648 +
+Lj3	BLASTRESULT	match_part	2575354	2575605	2e-39	+	.	ID=lotja.Lj3.partial.5;Parent=lotja.Lj3.partial;Target=partial 91 342 +
+Lj3	BLASTRESULT	match_part	2646825	2647076	2e-39	+	.	ID=lotja.Lj3.partial.6;Parent=lotja.Lj3.partial;Target=partial 91 342 +
+Lj3	BLASTRESULT	match_part	32460886	32461132	9e-38	+	.	ID=lotja.Lj3.partial.7;Parent=lotja.Lj3.partial;Target=partial 460 703 +
+Lj3	BLASTRESULT	match_part	32441305	32441455	1e-36	+	.	ID=lotja.Lj3.partial.8;Parent=lotja.Lj3.partial;Target=partial 455 605 +
+Lj3	BLASTRESULT	match_part	2626198	2626391	2e-35	-	.	ID=lotja.Lj3.partial.9;Parent=lotja.Lj3.partial;Target=partial 95 288 +
+Lj3	BLASTRESULT	match_part	32394943	32395180	1e-29	+	.	ID=lotja.Lj3.partial.10;Parent=lotja.Lj3.partial;Target=partial 91 328 +
+Lj3	BLASTRESULT	match_part	32407889	32408045	1e-22	+	.	ID=lotja.Lj3.partial.11;Parent=lotja.Lj3.partial;Target=partial 453 609 +
+Lj3	BLASTRESULT	match_part	2576516	2576801	4e-22	+	.	ID=lotja.Lj3.partial.12;Parent=lotja.Lj3.partial;Target=partial 916 1198 +
+Lj3	BLASTRESULT	match_part	2647987	2648272	4e-22	+	.	ID=lotja.Lj3.partial.13;Parent=lotja.Lj3.partial;Target=partial 916 1198 +
+Lj3	BLASTRESULT	match_part	32395426	32395633	4e-22	+	.	ID=lotja.Lj3.partial.14;Parent=lotja.Lj3.partial;Target=partial 499 703 +
+Lj3	BLASTRESULT	match_part	32480231	32480464	4e-22	+	.	ID=lotja.Lj3.partial.15;Parent=lotja.Lj3.partial;Target=partial 97 330 +
+Lj3	BLASTRESULT	match_part	32367965	32368082	3e-19	-	.	ID=lotja.Lj3.partial.16;Parent=lotja.Lj3.partial;Target=partial 492 609 +
+Lj3	BLASTRESULT	match_part	32368271	32368459	6e-17	-	.	ID=lotja.Lj3.partial.17;Parent=lotja.Lj3.partial;Target=partial 94 282 +
+Lj3	BLASTRESULT	match_part	32407635	32407815	6e-17	+	.	ID=lotja.Lj3.partial.18;Parent=lotja.Lj3.partial;Target=partial 154 331 +
+Lj3	BLASTRESULT	match_part	32408403	32408550	8e-16	+	.	ID=lotja.Lj3.partial.19;Parent=lotja.Lj3.partial;Target=partial 1046 1193 +
+Lj3	BLASTRESULT	match_part	32441702	32441787	7e-13	+	.	ID=lotja.Lj3.partial.20;Parent=lotja.Lj3.partial;Target=partial 882 967 +
+Lj3	BLASTRESULT	match_part	32460598	32460782	7e-13	+	.	ID=lotja.Lj3.partial.21;Parent=lotja.Lj3.partial;Target=partial 145 329 +
+Lj3	BLASTRESULT	match_part	2624626	2624696	4e-11	-	.	ID=lotja.Lj3.partial.22;Parent=lotja.Lj3.partial;Target=partial 915 985 +
+Lj3	BLASTRESULT	match_part	32395871	32395929	4e-11	+	.	ID=lotja.Lj3.partial.23;Parent=lotja.Lj3.partial;Target=partial 927 985 +
+Lj3	BLASTRESULT	match_part	32440716	32440815	1e-10	+	.	ID=lotja.Lj3.partial.24;Parent=lotja.Lj3.partial;Target=partial 229 328 +
+Lj3	BLASTRESULT	match_part	32441866	32442030	5e-10	+	.	ID=lotja.Lj3.partial.25;Parent=lotja.Lj3.partial;Target=partial 1046 1210 +
+Lj3	BLASTRESULT	match_part	32408281	32408339	2e-09	+	.	ID=lotja.Lj3.partial.26;Parent=lotja.Lj3.partial;Target=partial 927 985 +
+Lj3	BLASTRESULT	match_part	32366678	32366801	4e-07	-	.	ID=lotja.Lj3.partial.27;Parent=lotja.Lj3.partial;Target=partial 1046 1169 +
+Lj3	BLASTRESULT	match_part	32481370	32481429	2e-06	+	.	ID=lotja.Lj3.partial.28;Parent=lotja.Lj3.partial;Target=partial 918 977 +
+Lj3	BLASTRESULT	match_part	40238988	40239032	8e-05	+	.	ID=lotja.Lj3.partial.29;Parent=lotja.Lj3.partial;Target=partial 565 609 +
+Lj3	BLASTRESULT	match_part	32366886	32366923	3e-04	-	.	ID=lotja.Lj3.partial.30;Parent=lotja.Lj3.partial;Target=partial 927 964 +
+Lj1	BLASTRESULT	match	56080365	59987824	6e-28	-	.	ID=lotja.Lj1.partial;Name=partial(6e-28)
+Lj1	BLASTRESULT	match_part	56080179	56080365	6e-28	-	.	ID=lotja.Lj1.partial.1;Parent=lotja.Lj1.partial;Target=partial 458 644 +
+Lj1	BLASTRESULT	match_part	59987824	59988053	7e-24	-	.	ID=lotja.Lj1.partial.2;Parent=lotja.Lj1.partial;Target=partial 458 684 +
+Lj0	BLASTRESULT	match	18779884	179695757	1e-25	+	.	ID=lotja.Lj0.partial;Name=partial(1e-25)
+Lj0	BLASTRESULT	match_part	18779884	18780113	1e-25	+	.	ID=lotja.Lj0.partial.1;Parent=lotja.Lj0.partial;Target=partial 458 684 +
+Lj0	BLASTRESULT	match_part	86083869	86084098	7e-24	-	.	ID=lotja.Lj0.partial.2;Parent=lotja.Lj0.partial;Target=partial 458 684 +
+Lj0	BLASTRESULT	match_part	56913872	56914020	1e-21	+	.	ID=lotja.Lj0.partial.3;Parent=lotja.Lj0.partial;Target=partial 461 609 +
+Lj0	BLASTRESULT	match_part	179695757	179695899	1e-21	-	.	ID=lotja.Lj0.partial.4;Parent=lotja.Lj0.partial;Target=partial 460 602 +
+Lj0	BLASTRESULT	match_part	132792892	132793048	5e-21	+	.	ID=lotja.Lj0.partial.5;Parent=lotja.Lj0.partial;Target=partial 452 608 +
+Lj0	BLASTRESULT	match_part	132791796	132791971	4e-18	+	.	ID=lotja.Lj0.partial.6;Parent=lotja.Lj0.partial;Target=partial 154 329 +
+Lj0	BLASTRESULT	match_part	132793420	132793543	3e-12	+	.	ID=lotja.Lj0.partial.7;Parent=lotja.Lj0.partial;Target=partial 1046 1169 +
+Lj0	BLASTRESULT	match_part	86328375	86328474	1e-10	-	.	ID=lotja.Lj0.partial.8;Parent=lotja.Lj0.partial;Target=partial 232 331 +
+Lj0	BLASTRESULT	match_part	56914601	56914748	7e-09	+	.	ID=lotja.Lj0.partial.9;Parent=lotja.Lj0.partial;Target=partial 1046 1193 +
+Lj0	BLASTRESULT	match_part	132793287	132793377	4e-07	+	.	ID=lotja.Lj0.partial.10;Parent=lotja.Lj0.partial;Target=partial 916 1006 +
+Lj4	BLASTRESULT	match	6700952	6701014	3e-08	+	.	ID=lotja.Lj4.partial;Name=partial(3e-08)
+Lj4	BLASTRESULT	match_part	6700952	6701014	3e-08	+	.	ID=lotja.Lj4.partial.1;Parent=lotja.Lj4.partial;Target=partial 565 627 +
+Lj5	BLASTRESULT	match	29552485	29552397	3e-04	-	.	ID=lotja.Lj5.partial;Name=partial(3e-04)
+Lj5	BLASTRESULT	match_part	29552397	29552485	3e-04	-	.	ID=lotja.Lj5.partial.1;Parent=lotja.Lj5.partial;Target=partial 556 644 +

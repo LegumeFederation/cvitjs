@@ -10,7 +10,11 @@ require.config({
 	// Set baseURL to library path, as recomended by requirejs
 	
 	baseUrl: 'js/lib',
-	
+    
+    // Set error handling if failed to load a module
+
+    catchError: true,
+
 	// Set basic paths to commonly used modules here, makes life easier
 	// when defining them later in other parts of the program
 	// text: require plugin that allows loading of text files as dependencies

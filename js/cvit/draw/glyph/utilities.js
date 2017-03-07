@@ -136,9 +136,9 @@ define( [ 'jquery', 'bootstrap' ],
         var side = chrGroup.children[ 0 ].position.x < feature.position.x ? true : false;
         var index = baseGroup.children.indexOf( chrGroup );
         var moveBackbone = function( pileupOffset ) {
-		  var groupBounds;
-		  var i;
-		  var group;
+          var groupBounds;
+          var i;
+          var group;
           if ( side ) {
             groupBounds = feature.strokeBounds.right - baseGroup.children[ index + 1 ].strokeBounds.left;
             for ( i = index + 1; i < length; i++ ) {
@@ -147,7 +147,7 @@ define( [ 'jquery', 'bootstrap' ],
               layer.children[ group.name + "Label" ].position.x += pileupOffset + groupBounds;
             }
           } else {
-             groupBounds = baseGroup.children[ index - 1 ].strokeBounds.right - feature.strokeBounds.left;
+            groupBounds = baseGroup.children[ index - 1 ].strokeBounds.right - feature.strokeBounds.left;
             for ( i = index - 1; i > -1; i-- ) {
               group = baseGroup.children[ i ];
               group.position.x -= pileupOffset + groupBounds;

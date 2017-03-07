@@ -31,11 +31,26 @@ body{
  *
  */
 
-#tool-btn {
+#tool-btn{
   position: absolute;
   top: 75px;
   left: 10px;
 }
+
+#tool-btn .btn-default{
+    opacity:.65;
+}
+
+#zoom-ctrl btn.disabled, .btn[disabled] {
+	background-color: #bababa;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+#zoom-ctrl .btn-default{
+    opacity:.65;
+}
+
 
 #tool-bar {
   position: relative;

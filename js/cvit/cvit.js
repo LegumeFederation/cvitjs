@@ -28,7 +28,7 @@ define( [ 'jquery', 'paper', 'cvit/file/file', 'cvit/menu/menus', 'draw/general'
   function( $, paper, file, menu, general, glyph, cvitConf, zoom ) {
 
     return {
-      init: function( dataset ) {
+      init: function( dataset, addData ) {
         // Good Practice to store this context in a variable, to use later.
         var thisC = this;
         // Change this if you want to set your main configuration file somewhere else.
@@ -38,9 +38,14 @@ define( [ 'jquery', 'paper', 'cvit/file/file', 'cvit/menu/menus', 'draw/general'
         this.data = {};
         this.viewInfo = {};
         // try to load main configuration information.
+
         var gConf = file.parse.conf( cvitConf );
-        var locations = thisC.getSettings( gConf, dataset );
-        console.log( locations );
+        var locations;
+        try {
+          locations = thisC.getSettings( gConf, dataset );
+        } catch ( err ) {
+          console.log( err );
+        }
         thisC.dataset = locations[ 1 ];
         locations = locations[ 0 ];
         viewConf = locations.conf;
@@ -86,25 +91,38 @@ define( [ 'jquery', 'paper', 'cvit/file/file', 'cvit/menu/menus', 'draw/general'
         defaultData = cvitBase + defaultData;
         // read view configuration and baseGff (ASYNC)
         // .then(success,failure)
-
         var readConfig = file.getFile( viewConf, true ).then(
           function( result ) {
             console.log( "CViTjs: Successfully loaded configuration." );
             thisC.conf = result;
           },
           function( errorMessage ) {
-            console.log( errorMessage );
+            console.log( "Error: Unable to load configuration" );
           } );
-
         var readChromosome = file.getFile( defaultData ).then(
           function( result ) {
             console.log( "CViTjs: Successfully loaded backbone data." );
+            // integrate additional data in with the base data if supplied
+            if ( addData !== undefined ) {
+              console.log( addData );
+              console.log( result );
+              for ( var key in addData ) {
+                console.log( "Test additional: " + key );
+                if ( result[ key ] ) {
+                  addData[ key ].features.forEach( function( data ) {
+                    result[ key ].features.push( data );
+                  } );
+                } else {
+                  result[ key ] = addData[ key ];
+                  console.log( result[ key ] );
+                }
+              }
+            }
             thisC.data = result;
           },
           function( errorMessage ) {
             console.log( errorMessage );
           } );
-
 
         var backbone = $.when( readChromosome, readConfig ).then(
           function( result ) {
