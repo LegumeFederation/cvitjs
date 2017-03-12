@@ -7,7 +7,7 @@ require( [ "jquery", "cvit/cvit", "cvit/file/file" ], function( $, cvit, file ) 
     // cvit.init(dataset) to have the provided dataset
     //override defaults or URI string
     var passedData = document.getElementById( 'cvit-div' );
-    var dataset = passedData.dataset.backbone ? passedData.dataset.dataset : undefined;
+    var dataset = passedData.dataset.backbone ? passedData.dataset.backbone : undefined;
 
     var gff = passedData.dataset.gff ? file.getFile( passedData.dataset.gff ) : undefined;
 
