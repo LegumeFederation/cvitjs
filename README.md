@@ -34,8 +34,6 @@ Features:
 
 [See CViTjs in action](https://awilkey.github.io/cvitjs/?data=test1)
 
-![alt text](img/CViTjs_sample.png?raw=true "CViTjs")
-
 ## Setup
 
 CViTjs should work right out of the box. One or more data views are defined in cvit.conf,
