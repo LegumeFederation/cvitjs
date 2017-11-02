@@ -1,24 +1,15 @@
 # CViTjs - Chromosome Visualization Tool, the JavaScript edition
+![CViTjs](img/cvitjs.png?raw=true)
 
-<table>
-  <tr>
-    <td width="100%">
-**Table of Contents** 
-<ul>
-  <li> [About](#about) </li>
-  <li> [Setup](#setup) </li>
-  <li> [Embedding](#embedding)</li>
-  <li> [PHP](#php) </li>
-  <li> [Gulp](#gulp) </li>
-  <li> [Roadmap](#roadmap) </li>
-</ul> 
-    </td>
-    <td>
-![alt text](img/cvitjs.png?raw=true "CViTjs")
-    </td>
-  <tr>
-</table>
-  
+## Table of Contents
++ [About](#about) 
++ [Setup](#setup) 
++ [Embedding](#embedding)
++ [PHP](#php) 
++ [Gulp](#gulp) 
++ [Roadmap](#roadmap) 
++ [Examples](#examples)
+
 ## About
 
 CViTjs is an interactive JavaScript implementation of the original Chromosome 
@@ -42,8 +33,6 @@ Features:
 + Software stack: Paper.js, RequireJS and jQuery.
 
 [See CViTjs in action](https://awilkey.github.io/cvitjs/?data=test1)
-
-![alt text](img/CViTjs_sample.png?raw=true "CViTjs")
 
 ## Setup
 
@@ -125,4 +114,13 @@ Things to do on the way to the 1.0 release:
         + Distance
 + Release unit tests
 
+## Examples
+
+![CViTjs](img/examples/cvit.png?raw=true)
+
+CViTjs exports views as png or svg files.
+
+![CViTjs as an embedded tool](img/examples/embedded.png?raw=true)
+
+Embedded tool to display BLAST results.
 <br><br>
