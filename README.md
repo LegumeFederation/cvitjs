@@ -10,7 +10,7 @@
 + [Roadmap](#roadmap) 
 + [Using CViTjs](#using-cvitjs) 
   + [Definitions and glyph types](#definitions-and-glyph-types)
-  + [How to...](#how-to-) 
+  + [How to...](#how-to) 
 + [Examples](#examples)
 
 ## About
