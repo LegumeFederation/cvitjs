@@ -78,6 +78,8 @@ The backbone tag overrides the default dataset and uses the cvit.conf data setti
 
 `<div id="title-div" /div>` is entierly optional, and may be omitted.
 
+You may wish to also set `#viewButton` and `#title-div` to `display:none` in the CSS (`css/cvit.css`)as well to ensure that the components don't render in the embedded context.
+
 ## PHP
 
 PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and gff using the `data-` tags, or you can export the desired information as a globaly accessible variable and access it directly from `main.js`. See `examples/main.blast_ui.js` for an example of this based on drupal exports.
