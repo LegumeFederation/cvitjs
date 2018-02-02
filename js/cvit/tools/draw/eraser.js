@@ -1,20 +1,21 @@
-/*
- * file: eraser.js
- *
- *
- * purpose: paper mouse tool to erase clicked on user added drawing.
- * 
- * main methods:
- *  addEraser:  initializes eraser and adds to paper.tools array
+/**
+ * @file paper mouse tool to erase clicked on user added drawing.
+ * @author awilkey
+ * @module tools/draw/eraser
  *
  */
 
 
-define( [ 'jquery', 'bootstrap' ],
-  function( $ ) {
-    return {
-      //** builds menu stack */
-      addEraser: function() {
+define(["bootstrap"],
+  function () {
+    return /** @alias module:tools/draw/eraser */{
+
+      /**
+       * @description Builds paper tool to erase path created by other drawing tools.
+       *
+       */
+
+      addEraser: function () {
         var eraser = new paper.Tool();
         var hitOptions = {
           segments: true,
@@ -22,14 +23,14 @@ define( [ 'jquery', 'bootstrap' ],
           fill: true,
           tolerance: 5
         };
-        eraser.onMouseDown = function( event ) {
-          var hitTest = paper.project.hitTest( event.point, hitOptions );
-          if ( hitTest.item.isErasable ) {
+        eraser.onMouseDown = function (event) {
+          var hitTest = paper.project.hitTest(event.point, hitOptions);
+          if (hitTest.item.isErasable) {
             hitTest.item.remove();
           }
         };
 
-
       }
     };
-  } );
+  }
+);
