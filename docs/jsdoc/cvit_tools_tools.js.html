@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cvit/tools/tools.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cvit/tools/tools.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Create a drop down menu to allow for tooltip selection.
+ * @author awilkey
+ * @module tools
+ *
+ */
+
+define(["jquery", "tools/zoom/zoom", "tools/draw/drawControls", "bootstrap"],
+  function ($, zoom, draw) {
+    return /** @alias: module:tools */{
+
+      /**
+       * @description Builds tooltip item stack and appends to canvas. This includes view zoom and
+       * reset buttons, as well as provides a place for interactive behavior.
+       *
+       */
+
+      addToolsControl: function () {
+        // Setup tool control button
+        try {
+          var menuButton = $("&lt;div title=\"Pointer Tools\" id=\"tool-btn\" class=\"btn-group\">" +
+            "&lt;button type=\"button\" class=\"btn btn-xs btn-default\">" +
+            "&lt;span class=\"glyphicon glyphicon-wrench\">&lt;/span>" +
+            "&lt;/button>");
+          var toolSelect = $("&lt;div id=\"tool-bar\" class=\"btn-group btn-group-xs\"" +
+            " role=\"group\" aria-label=\"tools\">&lt;/div>");
+          toolSelect.hide();
+
+        } catch (err) {
+          console.error("CViTjs: Unable to attach tool control button", err);
+        }
+
+        // Setup zoom controls
+        try {
+          var panTool = $("&lt;button title=\"Pan\" type=\"button\" class=\"btn  btn-default\">" +
+            "&lt;span class=\"glyphicon glyphicon-move\">&lt;/span>" +
+            "&lt;/button>");
+          var boxTool = $("&lt;button title=\"Box Zoom\" type=\"button\" class=\"btn btn-default\">" +
+            "&lt;span class=\"glyphicon glyphicon-zoom-in\">&lt;/span>" +
+            "&lt;/button>");
+          $(menuButton).on("click", function () {
+            $(toolSelect).toggle();
+            if (toolSelect.activeTool) {
+              toolSelect.activeTool.focus();
+            }
+
+          });
+
+          $(panTool).on("click", function () {
+            this.focus();
+            toolSelect.activeTool = panTool;
+            paper.tools[0].activate();
+          });
+
+          $(boxTool).on("click", function () {
+            this.focus();
+            toolSelect.activeTool = boxTool;
+            paper.tools[1].activate();
+          });
+
+          //Add zoom and draw tools to menu
+          $(toolSelect).append(panTool);
+          toolSelect.activeTool = panTool;
+          $(toolSelect).append(boxTool);
+          draw.addDrawButtons(toolSelect);
+          //Add the menu to the zoom controls
+          $("#zoom-ctrl").after(menuButton);
+          $(menuButton).after(toolSelect);
+          $("#color1").css("background", paper.project.color1.toCSS());
+          $("#color2").css("background", paper.project.color2.toCSS());
+        } catch (err) {
+          console.error("CViTjs: Unable to attach one or more controls.", err);
+        }
+      }
+    };
+  }
+);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cvit.html">cvit</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-draw_glyph.html">draw/glyph</a></li><li><a href="module-draw_glyph_border.html">draw/glyph/border</a></li><li><a href="module-draw_glyph_centromere.html">draw/glyph/centromere</a></li><li><a href="module-draw_glyph_chromosome.html">draw/glyph/chromosome</a></li><li><a href="module-draw_glyph_marker.html">draw/glyph/marker</a></li><li><a href="module-draw_glyph_measure_distance.html">draw/glyph/measure/distance</a></li><li><a href="module-draw_glyph_measure_heat.html">draw/glyph/measure/heat</a></li><li><a href="module-draw_glyph_measure_histogram.html">draw/glyph/measure/histogram</a></li><li><a href="module-draw_glyph_measure_measure.html">draw/glyph/measure/measure</a></li><li><a href="module-draw_glyph_position_circle.html">draw/glyph/position/circle</a></li><li><a href="module-draw_glyph_position_doublecircle.html">draw/glyph/position/doublecircle</a></li><li><a href="module-draw_glyph_position_rect.html">draw/glyph/position/rect</a></li><li><a href="module-draw_glyph_range.html">draw/glyph/range</a></li><li><a href="module-draw_glyph_utilities.html">draw/glyph/utilities</a></li><li><a href="module-draw_rulers.html">draw/rulers</a></li><li><a href="module-file.html">file</a></li><li><a href="module-menu.html">menu</a></li><li><a href="module-menu_modals_exportModal.html">menu/modals/exportModal</a></li><li><a href="module-menu_modals_helpModal.html">menu/modals/helpModal</a></li><li><a href="module-menu_modals_uploadModal.html">menu/modals/uploadModal</a></li><li><a href="module-tools.html">tools</a></li><li><a href="module-tools_draw_color.html">tools/draw/color</a></li><li><a href="module-tools_draw_drawControls.html">tools/draw/drawControls</a></li><li><a href="module-tools_draw_eraser.html">tools/draw/eraser</a></li><li><a href="module-tools_draw_free.html">tools/draw/free</a></li><li><a href="module-tools_draw_rect.html">tools/draw/rect</a></li><li><a href="module-tools_zoom.html">tools/zoom</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-cvit-view.html">view</a></li><li><a href="module-file-parse.html">parse</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 17:35:28 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

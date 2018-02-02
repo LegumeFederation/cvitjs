@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cvit/draw/glyph/utilities.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cvit/draw/glyph/utilities.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Helper functions for drawing glyphs.
+ * @author awilkey
+ * @module draw/glyph/utilities
+ *
+ */
+
+
+define(["jquery", "bootstrap"],
+  function ($) {
+
+    return /** @alias module:draw/glyph/utilities */ {
+
+      /**
+       * @description Simple log test to test if file loaded
+       *
+       */
+
+      test: function () {
+        window.alert("Utility Test");
+      },
+
+      /**
+       * @description Format color string to color
+       *
+       * @param {string|number} color - color as a string, gray% or hex triplet
+       *
+       * @return {paper.color} color formatted for paperjs
+       *
+       */
+
+      formatColor: function (color) { //TODO: Think about supporting transparency.
+        var grey = color.match(/gr[ea]y(.*)/);
+        if (grey) {
+          color = "grey";
+          if (grey[1].length !== 0) {
+            color = parseFloat("." + grey[1]);
+          }
+        }
+        if (color[0] === "#") {
+          return color;
+        } else {
+          return new paper.Color(color);
+        }
+      },
+      /**
+       * @description Attach popover to feature
+       *
+       * @param {object} r - bounding rectangle of popover
+       * @param {object} feature - canvas feature to attach popover to.
+       *
+       */
+
+      attachPopover: function (r, feature) {
+        var popdiv = $("#popdiv");
+        $("popover").remove();
+        popdiv.remove();
+        var clickDiv = $("&lt;div id=\"popdiv\" style=\"position:absolute;\">&amp;nbsp;&lt;/div>");
+        $(clickDiv).data("pos", r.bounds);
+        $(clickDiv).data("item", r);
+        $(clickDiv).css("top", (r.bounds.y - paper.view.center._owner.y) * paper.view.zoom);
+        $(clickDiv).css("left", (r.bounds.x - paper.view.center._owner.x) * paper.view.zoom);
+        $(clickDiv).css("height", r.bounds.height * paper.view.zoom);
+        $(clickDiv).css("width", r.bounds.width * paper.view.zoom);
+        $(clickDiv).css("color", "blue");
+        $("#overlay").append(clickDiv);
+        // This is so large because anything *not* included in initial creation of popover tends to get left
+        // behind when moving the view around otherwise. A well documented quirk of bootstrap
+
+        $(clickDiv).popover({
+          "html": "true",
+          "container": "#cvit-div",
+          "title": "About this feature: &lt;button type=\"button\" class=\"close\" >&lt;span class=\"close-span\">&amp;times;&lt;/span>&lt;/button>",
+          "id": "pop",
+          "placement": "auto right",
+          "content": "&lt;div class=\"container\">&lt;h4>Feature Information&lt;/h4>&lt;table class=\"table table-bordered\" style=\"width:auto;\">" +
+          "&lt;thead>&lt;tr>&lt;th>Name&lt;/th>&lt;th>" + feature.attribute.id + "&lt;/th>&lt;/tr>&lt;/thead>" +
+          "&lt;tbody>&lt;tr>&lt;td>Start&lt;/td>&lt;td>" + feature.start + "&lt;/td>&lt;/tr>" +
+          "&lt;tr>&lt;td>End&lt;/td>&lt;td>" + feature.end + "&lt;/td>&lt;/tr>" +
+          "&lt;tr>&lt;td>Strand&lt;/td>&lt;td>" + feature.strand + "&lt;/td>&lt;/tr>" +
+          "&lt;tr>&lt;td>Score&lt;/td>&lt;td>" + feature.score + "&lt;/td>&lt;/tr>" +
+          "&lt;tr>&lt;td>Type&lt;/td>&lt;td>" + feature.type + "&lt;/td>&lt;/tr>" +
+          "&lt;/tbody>&lt;/table>&lt;/div>",
+          "toggle": "manual"
+        }).popover("show").on("show.bs.popover", function () {
+          var close = $("&lt;button type=\"button\" class=\"close\">&lt;span class=\"close-span\">&amp;times;&lt;/span>&lt;/button>");
+          $(".popover-title").append(close);
+          $(close).click(function () {
+            $(".popover").remove();
+          });
+        });
+
+        $(".popover").on("click", function () {
+          $(this).popover("hide");
+        });
+        popdiv.hide();
+        $(".close").click(function () {
+          $(".popover").remove();
+        });
+      },
+
+      /**
+       * @description Collision detection. pGap can be negative to move left, positive to move right
+       *
+       * @param {object} feature - glyph object to test for collision with other objects on the canvas.
+       * @param {paper.group} featureGroup - group containing feature
+       * @param {object} view - view feature is being placed in
+       *
+       * */
+
+      testCollision: function (feature, featureGroup, view) {
+        var pGap = view.pileup;
+        // Set the expected number of hits for the given feature to avoid infinte loop
+        var minGroup = typeof(feature.children) !== "undefined" ? feature.children.length : 1;
+        var getItem = function () {
+          return paper.project.getItems({
+            overlapping: feature.strokeBounds,
+            class: paper.Path
+          });
+        };
+        var testItem = getItem();
+        var fPName = featureGroup.parent.name;
+        var baseGroup = featureGroup.parent.parent;
+        var layer = paper.project.layers[0];
+        var length = baseGroup.children.length;
+        var offset = feature.strokeBounds.width + pGap;
+        var groupTest = function (i) {
+          var group = baseGroup.children[i];
+          group.position.x += 2 * offset;
+          layer.children[group.name + "Label"].position.x += 2 * offset;
+          view.xloc[group.name] += 2 * offset;
+        };
+        while (testItem.length > minGroup &amp;&amp; testItem[0].parent.parent) {
+          var testPName = testItem[0].parent.parent.name;
+          if (fPName !== testPName) {
+
+            var index = baseGroup.children.indexOf(featureGroup.parent);
+            if (pGap > -1) {
+              for (var i = index + 1; i &lt; length; i++) {
+                groupTest(i);
+              }
+            } else {
+              for (var j = index - 1; j > -1; j--) {
+                groupTest(j);
+              }
+
+            }
+          } else {
+            feature.translate(new paper.Point(feature.strokeBounds.width + pGap, 0));
+          }
+          testItem = getItem();
+        }
+
+      },
+
+      /**
+       * @description Adds labels to current glyph
+       *
+       * @param {object} feature - glyph object that you are adding label to
+       * @param {object} view - view settings for current canvas
+       * @param {object} backBone - backbone object that is the target for the current glyph
+       *
+       */
+      // TODO: Make better, currently is a mess with overlapping labels
+
+      generateLabel: function (feature, view, backBone) {
+        var labelOffset = parseInt(view.config.label_offset);
+        var label = new paper.PointText(feature.position);
+        label.content = feature.info.name !== undefined ? feature.info.name.trim() : "";
+        var fill = typeof(view.config.label_color) !== undefined ? view.config.label_color : "black";
+        label.fillColor = this.formatColor(fill);
+        label.fontSize = parseInt(view.config.font_size);
+        label.position.y = feature.position.y;
+        if (1 / labelOffset > 0) {
+          label.position.x = backBone.strokeBounds.right + labelOffset + (label.strokeBounds.width / 2);
+        } else {
+          label.position.x = backBone.strokeBounds.left + labelOffset - (label.strokeBounds.width / 2);
+        }
+        return label;
+      },
+
+      /**
+       * @description Generate a toggle button to hide/show a given group in the view.
+       *
+       */
+      // TODO: TEST and Fix
+
+      generateViewControl: function (groupName, group) {
+        var gName = groupName.replace(/\s+/g, "-").toLowerCase();
+        var viewTitle = $("&lt;span>" + groupName + "&lt;/span>\"");
+        var openButton = $("&lt;button type=\"button\" class=\"btn btn-success view-toggle\" style=\"float:right; margin-right:10px;\">Show&lt;/button>").on("click", function () {
+          $("#" + gName + "-options .btn-success").toggleClass("btn-danger");
+          group.visible = !group.visible;
+          paper.view.draw();
+        });
+
+        var viewLi = $("&lt;li>&lt;/li>");
+        var viewDiv = $("&lt;div id=\"" + gName + "-options\">&lt;/div>");
+        viewDiv.append(viewTitle);
+        viewDiv.append(openButton);
+        viewLi.append(viewDiv);
+        viewLi.append("&lt;hr />");
+        $("#view-list").append(viewLi);
+      }
+    };
+  }
+);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cvit.html">cvit</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-draw_glyph.html">draw/glyph</a></li><li><a href="module-draw_glyph_border.html">draw/glyph/border</a></li><li><a href="module-draw_glyph_centromere.html">draw/glyph/centromere</a></li><li><a href="module-draw_glyph_chromosome.html">draw/glyph/chromosome</a></li><li><a href="module-draw_glyph_marker.html">draw/glyph/marker</a></li><li><a href="module-draw_glyph_measure_distance.html">draw/glyph/measure/distance</a></li><li><a href="module-draw_glyph_measure_heat.html">draw/glyph/measure/heat</a></li><li><a href="module-draw_glyph_measure_histogram.html">draw/glyph/measure/histogram</a></li><li><a href="module-draw_glyph_measure_measure.html">draw/glyph/measure/measure</a></li><li><a href="module-draw_glyph_position_circle.html">draw/glyph/position/circle</a></li><li><a href="module-draw_glyph_position_doublecircle.html">draw/glyph/position/doublecircle</a></li><li><a href="module-draw_glyph_position_rect.html">draw/glyph/position/rect</a></li><li><a href="module-draw_glyph_range.html">draw/glyph/range</a></li><li><a href="module-draw_glyph_utilities.html">draw/glyph/utilities</a></li><li><a href="module-draw_rulers.html">draw/rulers</a></li><li><a href="module-file.html">file</a></li><li><a href="module-menu.html">menu</a></li><li><a href="module-menu_modals_exportModal.html">menu/modals/exportModal</a></li><li><a href="module-menu_modals_helpModal.html">menu/modals/helpModal</a></li><li><a href="module-menu_modals_uploadModal.html">menu/modals/uploadModal</a></li><li><a href="module-tools.html">tools</a></li><li><a href="module-tools_draw_color.html">tools/draw/color</a></li><li><a href="module-tools_draw_drawControls.html">tools/draw/drawControls</a></li><li><a href="module-tools_draw_eraser.html">tools/draw/eraser</a></li><li><a href="module-tools_draw_free.html">tools/draw/free</a></li><li><a href="module-tools_draw_rect.html">tools/draw/rect</a></li><li><a href="module-tools_zoom.html">tools/zoom</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-cvit-view.html">view</a></li><li><a href="module-file-parse.html">parse</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 17:35:28 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
