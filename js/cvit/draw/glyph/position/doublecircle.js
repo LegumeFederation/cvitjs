@@ -64,9 +64,6 @@ define(["jquery", "glyph/utilities"],
             ]
           });
 
-          if (parseInt(view.config.enable_pileup) === 1) {
-            utility.testCollision(r, featureGroup, view);
-          }
           position.name = position.attribute.name ? position.attribute.name : "";
           r.info = position.attribute;
           var fillColor = position.attribute.color ? position.attribute.color : view.config.color;
@@ -74,6 +71,9 @@ define(["jquery", "glyph/utilities"],
           r.onMouseDown = function () {
             utility.attachPopover(r, position);
           };
+          if (parseInt(view.config.enable_pileup) === 1) {
+            utility.testCollision(r, featureGroup, view);
+          }
           if (parseInt(view.config.draw_label) === 1) {
             point.y = r.position.y;
             var label = utility.generateLabel(r, view, targetGroup.children[target]);

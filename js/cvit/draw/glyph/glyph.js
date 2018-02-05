@@ -67,6 +67,7 @@ define(["require", "jquery", "glyph/utilities"],
         view.groupName = viewSettings.groupName;
         console.log("CViTjs: Drawing " + view.groupName);
         glyphGroup.name = view.groupName;
+        console.log(glyphGroup);
         view.config = view.key === view.groupName ? config[view.key] : thisC.mergeConfig(config[view.key], config[view.groupName]);
         view.zoom = view.yScale;
         view.pileup = typeof(view.config.pileup_gap) !== "undefined" ? parseInt(view.config.pileup_gap) : 0;

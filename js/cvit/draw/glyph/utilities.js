@@ -102,7 +102,7 @@ define(["jquery", "bootstrap"],
       /**
        * @description Collision detection. pGap can be negative to move left, positive to move right
        *
-       * @param {object} feature - glyph object to test for collision with other objects on the canvas.
+       * @param {object} feature - glyph object to test for collision with other o
        * @param {paper.group} featureGroup - group containing feature
        * @param {object} view - view feature is being placed in
        *
@@ -111,46 +111,77 @@ define(["jquery", "bootstrap"],
       testCollision: function (feature, featureGroup, view) {
         var pGap = view.pileup;
         // Set the expected number of hits for the given feature to avoid infinte loop
-        var minGroup = typeof(feature.children) !== "undefined" ? feature.children.length : 1;
+        var minGroup = typeof(feature.children) != "undefined" ? feature.children.length : 1;
         var getItem = function () {
           return paper.project.getItems({
             overlapping: feature.strokeBounds,
             class: paper.Path
           });
         };
+
         var testItem = getItem();
-        var fPName = featureGroup.parent.name;
-        var baseGroup = featureGroup.parent.parent;
+        var chrGroup = featureGroup.parent;
+        var fPName = chrGroup.name;
+        var baseGroup = chrGroup.parent;
         var layer = paper.project.layers[0];
         var length = baseGroup.children.length;
         var offset = feature.strokeBounds.width + pGap;
-        var groupTest = function (i) {
-          var group = baseGroup.children[i];
-          group.position.x += 2 * offset;
-          layer.children[group.name + "Label"].position.x += 2 * offset;
-          view.xloc[group.name] += 2 * offset;
-        };
-        while (testItem.length > minGroup && testItem[0].parent.parent) {
-          var testPName = testItem[0].parent.parent.name;
-          if (fPName !== testPName) {
-
-            var index = baseGroup.children.indexOf(featureGroup.parent);
-            if (pGap > -1) {
-              for (var i = index + 1; i < length; i++) {
-                groupTest(i);
-              }
-            } else {
-              for (var j = index - 1; j > -1; j--) {
-                groupTest(j);
-              }
-
+        var side = chrGroup.children[0].position.x < feature.position.x ? true : false;
+        var index = baseGroup.children.indexOf(chrGroup);
+        var moveBackbone = function (pileupOffset) {
+          var groupBounds;
+          var i;
+          var group;
+          if (side) {
+            groupBounds = feature.strokeBounds.right - baseGroup.children[index + 1].strokeBounds.left;
+            for (i = index + 1; i < length; i++) {
+              group = baseGroup.children[i];
+              group.position.x += pileupOffset + groupBounds;
+              layer.children[group.name + "Label"].position.x += pileupOffset + groupBounds;
             }
           } else {
-            feature.translate(new paper.Point(feature.strokeBounds.width + pGap, 0));
+            groupBounds = baseGroup.children[index - 1].strokeBounds.right - feature.strokeBounds.left;
+            for (i = index - 1; i > -1; i--) {
+              group = baseGroup.children[i];
+              group.position.x -= pileupOffset + groupBounds;
+              layer.children[group.name + "Label"].position.x -= pileupOffset + groupBounds;
+            }
+          }
+        };
+        while (testItem.length > minGroup) {
+          //need one more layerup in case of compound paths like position/doublecircle
+          if (testItem[0].parent.className === "CompoundPath") {
+            testPName = testItem[0].parent.parent.parent.name;
+          } else {
+            testPName = testItem[0].parent.parent.name;
+          }
+
+          if (fPName != testPName) {
+            moveBackbone(offset);
+          } else {
+            if (side) {
+              feature.translate(new paper.Point(offset, 0));
+            } else {
+              feature.translate(new paper.Point(-offset, 0));
+            }
+
           }
           testItem = getItem();
         }
 
+        var groupOverlap = paper.project.getItems({
+          overlapping: feature.strokeBounds,
+          class: paper.Group,
+          name: function (value) {
+            return value !== fPName;
+          },
+          _parent: function (value) {
+            return value.name === "view";
+          }
+        });
+        if (groupOverlap.length > 0) {
+          moveBackbone(0);
+        }
       },
 
       /**
@@ -186,12 +217,18 @@ define(["jquery", "bootstrap"],
       // TODO: TEST and Fix
 
       generateViewControl: function (groupName, group) {
+        console.log("vc", group);
         var gName = groupName.replace(/\s+/g, "-").toLowerCase();
         var viewTitle = $("<span>" + groupName + "</span>\"");
         var openButton = $("<button type=\"button\" class=\"btn btn-success view-toggle\" style=\"float:right; margin-right:10px;\">Show</button>").on("click", function () {
           $("#" + gName + "-options .btn-success").toggleClass("btn-danger");
-          group.visible = !group.visible;
-          paper.view.draw();
+          for (var i = 0; i < group.children.length; i++) {
+            var toggleGroup = group.children[i].children[groupName];
+            if (toggleGroup !== undefined) {
+              toggleGroup.visible = toggleGroup.visible ? false : true;
+            }
+            paper.view.draw();
+          }
         });
 
         var viewLi = $("<li></li>");

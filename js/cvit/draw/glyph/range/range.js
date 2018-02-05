@@ -52,9 +52,7 @@ define(["jquery", "glyph/utilities"],
           var size = new paper.Size(featureWidth, (range.end - range.start) * view.zoom);
           var rectangle = new paper.Rectangle(point, size);
           var r = new paper.Path.Rectangle(rectangle);
-          if (parseInt(view.config.enable_pileup) === 1) {
-            utility.testCollision(r, featureGroup, view);
-          }
+
           range.name = range.attribute.name ? range.attribute.name : "";
           r.info = range.attribute;
           r.thisColor = "black";
@@ -63,6 +61,10 @@ define(["jquery", "glyph/utilities"],
           r.onMouseDown = function () {
             utility.attachPopover(r, range);
           };
+          console.log("rangeTest",view,r,featureGroup);
+          if (parseInt(view.config.enable_pileup) === 1) {
+            utility.testCollision(r, featureGroup, view);
+          }
           if (parseInt(view.config.draw_label) === 1) {
             point.y = r.position.y;
             var label = utility.generateLabel(r, view, targetGroup.children[target]);

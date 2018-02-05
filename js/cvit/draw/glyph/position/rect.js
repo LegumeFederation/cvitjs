@@ -51,9 +51,7 @@ define(["jquery", "glyph/utilities"],
           var size = new paper.Size(featureWidth, featureWidth);
           var rectangle = new paper.Rectangle(point, size);
           var r = new paper.Path.Rectangle(rectangle);
-          if (parseInt(view.config.enable_pileup) === 1) {
-            utility.testCollision(r, featureGroup, view);
-          }
+
           position.name = position.attribute.name ? position.attribute.name : "";
           r.info = position.attribute;
           r.thisColor = "black";
@@ -62,6 +60,9 @@ define(["jquery", "glyph/utilities"],
           r.onMouseDown = function () {
             utility.attachPopover(r, position);
           };
+          if (parseInt(view.config.enable_pileup) === 1) {
+            utility.testCollision(r, featureGroup, view);
+          }
           if (parseInt(view.config.draw_label) === 1) {
             point.y = r.position.y;
             var label = utility.generateLabel(r, view, targetGroup.children[target]);

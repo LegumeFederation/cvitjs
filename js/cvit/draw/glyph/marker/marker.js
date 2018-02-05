@@ -47,16 +47,17 @@ define(["jquery", "glyph/utilities"],
           var xLoc = (chrEdge + xOffset);
           var point = new paper.Point(xLoc, yLoc);
           var r = new paper.Path.Line(point, new paper.Point(point.x + featureWidth, point.y));
+
           r.strokeWidth = 2;
           marker.name = marker.attribute.name ? marker.attribute.name : "";
           r.info = marker.attribute;
           r.thisColor = "black";
           var strokeColor = r.info.color ? r.info.color : view.config.color;
           r.strokeColor = utility.formatColor(strokeColor);
-          // As per original CViT, marker does not have any pileup control
           r.onMouseDown = function () {
             utility.attachPopover(r, marker);
           };
+          // As per perl CViT marker doesn't accept pileup control
           if (parseInt(view.config.draw_label) === 1) {
             point.y = r.position.y;
             var label = utility.generateLabel(r, view, targetGroup.children[target]);
