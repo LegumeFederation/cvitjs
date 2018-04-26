@@ -9,7 +9,7 @@ require.config({
 	
 	// Set baseURL to library path, as recomended by requirejs
 	
-	baseUrl: '../../sites/all/modules/blast_ui/js/cvitjs/js/lib',
+	baseUrl: '../../sites/all/libraries/cvitjs/js/lib',
 	
 	// Set basic paths to commonly used modules here, makes life easier
 	// when defining them later in other parts of the program
