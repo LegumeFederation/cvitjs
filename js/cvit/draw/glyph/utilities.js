@@ -79,7 +79,7 @@ define(["jquery", "bootstrap"],
           "<tr><td>End</td><td>" + feature.end + "</td></tr>" +
           "<tr><td>Strand</td><td>" + feature.strand + "</td></tr>" +
           "<tr><td>Score</td><td>" + feature.score + "</td></tr>" +
-          "<tr><td>Type</td><td>" + feature.type + "</td></tr>" +
+          "<tr><td>Type</td><td>" + feature.attribute.type + "</td></tr>" +
           "</tbody></table></div>",
           "toggle": "manual"
         }).popover("show").on("show.bs.popover", function () {
