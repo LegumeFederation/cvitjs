@@ -39,42 +39,42 @@ Features:
 
 ## Setup
 
-CViTjs should work right out of the box. One or more data views are defined in cvit.conf,
+CViTjs should work right out of the box. One or more _viewData views are defined in cvit.conf,
 which is located in the root folder. Sample views are included in the starting cvit.conf.
 ~~~~
 [general]
 data_default = test1
 
-[data.test1]
-conf = data/test1/cvit.conf
-defaultData = data/test1/data.gff
+[_viewData.test1]
+conf = _viewData/test1/cvit.conf
+defaultData = _viewData/test1/_viewData.gff
 ~~~~
 The [general] section and at least one dataset definition is required in cvit.conf.
 
-In this example, to display the test1 dataset the URL would be: your-CViTjs-URL/cvitjs/?data=test1
+In this example, to display the test1 dataset the URL would be: your-CViTjs-URL/cvitjs/?_viewData=test1
 
-For each dataset you will need a <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and an image configuration file, typically named cvit.ini. Almost every aspect of the presentation of the image can be controlled in the configuration file. See the sample file in data/test1/ for more information.
+For each dataset you will need a <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and an image configuration file, typically named cvit.ini. Almost every aspect of the presentation of the image can be controlled in the configuration file. See the sample file in _viewData/test1/ for more information.
 
 ## Embedding
 
-Instead of keeping CViTjs in its own special page, it may be embedded to show related data. In the page's head include:
+Instead of keeping CViTjs in its own special page, it may be embedded to show related _viewData. In the page's head include:
 ```
 <link rel="stylesheet" href="[pathToCViTjs]/js/lib/bootstrap_embed/css/bootstrap.min.css" />
 <link rel="stylesheet" href="[pathToCViTjs]/js/lib/hopscotch/css/hopscotch.min.css" />
 <link rel="stylesheet" href="[pathToCViTjs]/css/cvit.css" />
 
-<script data-main="[pathToCViTjs]/js/lib/require/require-embed-config" src="[pathToCViTjs]/js/lib/require/require.js"></script>
+<script _viewData-main="[pathToCViTjs]/js/lib/require/require-embed-config" src="[pathToCViTjs]/js/lib/require/require.js"></script>
 ```
 If you wish to use an alternative main.js entry point, you will have to edit require-config. 
 Replace the value in: `deps: ["../main"]` with the path to your custom main.js entry point, relative to the libs directory.
 
-In the body of the page, all that is required is to place a `<div id="cvit-div">` at the location you want to add CViTjs. By default this will display the default view set in the [general] section of the cvit.conf. If you wish to override this display, CViTjs recognises two `data-` attributes by default:
+In the body of the page, all that is required is to place a `<div id="cvit-div">` at the location you want to add CViTjs. By default this will display the default view set in the [general] section of the cvit.conf. If you wish to override this display, CViTjs recognises two `_viewData-` attributes by default:
 ```
-<div id="cvit-div" data-backbone="backbone" /div>
-<div id="cvit-div" data-gff = "pathToGff" /div>
+<div id="cvit-div" _viewData-backbone="backbone" /div>
+<div id="cvit-div" _viewData-gff = "pathToGff" /div>
 ```
 
-The backbone tag overrides the default dataset and uses the cvit.conf data settings for the provided backbone. The gff tag adds the provided gff to CViTjs to be drawn. These tags may be used seperately or combined to control an embedded instance of CViTjs. See `examples/cvittest.html` for an example of how this control works in practice.
+The backbone tag overrides the default dataset and uses the cvit.conf _viewData settings for the provided backbone. The gff tag adds the provided gff to CViTjs to be drawn. These tags may be used seperately or combined to control an embedded instance of CViTjs. See `examples/cvittest.html` for an example of how this control works in practice.
 
 `<div id="title-div" /div>` is entierly optional, and may be omitted.
 
@@ -82,7 +82,7 @@ You may wish to also set `#viewButton` and `#title-div` to `display:none` in the
 
 ## PHP
 
-PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and gff using the `data-` tags, or you can export the desired information as a globaly accessible variable and access it directly from `main.js`. See `examples/main.blast_ui.js` for an example of this based on drupal exports.
+PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and gff using the `_viewData-` tags, or you can export the desired information as a globaly accessible variable and access it directly from `main.js`. See `examples/main.blast_ui.js` for an example of this based on drupal exports.
 
 ## Gulp
 
@@ -109,7 +109,7 @@ Get Node here (or from your package manager): [Get Node](https://nodejs.org/ "No
 ## Roadmap
 Things to do on the way to the 1.0 release:
 + Upload file manager
-	+ Basic data validation
+	+ Basic _viewData validation
 	+ Customized glyphs
 + Advanced URI control 
 + Missing Glyphs:
@@ -137,10 +137,10 @@ Things to do on the way to the 1.0 release:
                 position or range.  
 
 ### How to...
-#### 1. prepare data
+#### 1. prepare _viewData
 
 
-Input data to CViT is in GFF3 (http://www.sequenceontology.org/gff3.shtml).
+Input _viewData to CViT is in GFF3 (http://www.sequenceontology.org/gff3.shtml).
 CViT interpretes files as follows:  
 
     column 1 (seqid)      chromosome name. If column 3 is 'chromosome' the 
@@ -175,14 +175,14 @@ These attributes are defined:
 **value**   = used for type=measure glyphs if 'value_type'
           parameter in options is set to 'value_attr'  
 
-**Important:** The GFF data must contain at least one chromosome. Features must contain the 
+**Important:** The GFF _viewData must contain at least one chromosome. Features must contain the 
 name of the chromosome it belongs to in the seqid (1) column of the GFF file
 and that name must match the name in the seqid column for the chromosome. Also,
 its coordinates must lie within the start and end coordinates of the chromosome.
 
 #### 2. customize drawing options
 Almost all aspects of the output images can be controlled via the .conf file. An example
-can be found inside data/test1. Note that the drawing configuration file is different
+can be found inside _viewData/test1. Note that the drawing configuration file is different
 from the main configuration file, cvit.conf. 
 **Important note:** as CViTjs is still in beta, some of these options may not yet be
 implemented. If an option you need appears to have not been implemented, let us know and
@@ -227,9 +227,9 @@ we will make it a priority to implement it.
 **reverse_ruler**        1=ruler units run greatest to smallest, 0=normal order.  
 **ruler_units**          Ruler units (e.g. "cM, "kb"), used to label the ruler.  
 **ruler_min**            Minimum value on ruler, if > actual minimum value in the
-                         data this will be adjusted accordingly in the code.  
+                         _viewData this will be adjusted accordingly in the code.  
 **ruler_max**            Maximum value on ruler, if < actual maximum value in the 
-                         data, this will be adjusted accordingly in the code.
+                         _viewData, this will be adjusted accordingly in the code.
 **ruler_font**           Which built-in font to use (ruler_font_face overrides this
                          setting).  
 **ruler_font_face**      Font face to use for ruler, ignored if empty.  
@@ -276,10 +276,10 @@ we will make it a priority to implement it.
 **heat_colors**          Colors to use for scale (heat map only): redgreen or 
                          grayscale.  
 **min**                  Minimum value for a set of measure glyphs. If > actual 
-                         minimum value in the data this will be adjusted 
+                         minimum value in the _viewData this will be adjusted 
                          accordingly in the code. Only applies to measures.  
 **max**                  Maximum value for a set of measure glyphs. If < actual 
-                         maximum value in the data this will be adjusted 
+                         maximum value in the _viewData this will be adjusted 
                          accordingly in the code. Only applies to measures.  
 **max_distance**         Maximim distance to draw a distance measure.  
 **hist_perc**            Percentage of distance between chromosomes to fill with

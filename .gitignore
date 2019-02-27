@@ -5,7 +5,7 @@ node_modules/
 js/**/.*
 css/**/.*
 img/**/.*
-data/**/.*
+_viewData/**/.*
 #ignore .DS_Store
 /**/.DS_Store
 /**/*.swp

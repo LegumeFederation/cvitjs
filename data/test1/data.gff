@@ -46,3 +46,4 @@ chr10	IBM2_2008_Neighbors	genes	14000000	14000000	.	.	.	Name=pos1;ID=pos11;
 chr11	Pchr	genes	14000000	14000000	.	.	.	Name=pos2;ID=pos12;
 chr10	Pchr	genes	44000000	44000000	.	.	.	Name=pos3;ID=pos13;
 chr10	Pchr	butts	184000000	184000000	.	.	.	Name=pos4;ID=pos14;
+chr10	IBM2_2009	genes	14000000	14000000	.	.	.	Name=pos1;ID=pos11;
