@@ -16,7 +16,7 @@ export function formatColor(color) {
   }
 }
 
-export function collisionOffset(feature,view,offset,pileupGap){
+export function collisionOffset(feature,view,offset,pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
   let searchMinX = offset >= +0 ? fBounds.left : view.pileupBounds.left;
@@ -28,17 +28,25 @@ export function collisionOffset(feature,view,offset,pileupGap){
     maxY: fBounds.bottom
   };
   //test if there is a pileup
-  if(view.pileupTree.collides(searchSpace)){
+  if (view.pileupTree.collides(searchSpace)) {
     let pileupBound = fBounds.left;
-    view.pileupTree.search(searchSpace).forEach(collision =>{
-      if(offset >= +0){
-        if(collision.maxX > pileupBound) pileupBound = collision.maxX;
+    let lastSearchedMax = offset >= +0 ? fBounds.left : fBounds.right;
+    view.pileupTree.search(searchSpace).some(collision => {
+      if (offset >= +0) {
+        if (lastSearchedMax + pileupGap < collision.minX) return false;
+        if (collision.maxX > pileupBound) pileupBound = collision.maxX;
+        lastSearchedMax = collision.maxX;
       } else {
-        if(collision.minX < pileupBound) pileupBound = collision.minX;
+        if (lastSearchedMax + pileupGap < collision.maxX) return false;
+        if (collision.minX < pileupBound) pileupBound = collision.minX;
+        lastSearchedMax = collision.minX;
       }
+      return true;
     });
+
     let offsetValue = pileupBound + pileupGap - fBounds.left;
     return offset >= +0 ? offsetValue : offsetValue - fBounds.width;
-  };
-
+  }
+  return 0;
 }
+

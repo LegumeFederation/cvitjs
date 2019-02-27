@@ -36,7 +36,7 @@ export default class Range {
     let featureWidth = parseInt(config.width);
     let yLoc = ((data.start - view.min) * view.yScale) + view.yOffset.offsetTop + view.yAdjust;
     let xOffset = parseInt(config.offset);
-    let chrEdge = xOffset > -0 ? view.chrBounds.right : view.chrBounds.left - featureWidth;
+    let chrEdge = xOffset >= +0 ? view.chrBounds.right : view.chrBounds.left - featureWidth;
     let xLoc = (chrEdge + xOffset);
     let point = new paper.Point(xLoc, yLoc);
     let size = new paper.Size(featureWidth, (data.end - data.start) * view.yScale);
