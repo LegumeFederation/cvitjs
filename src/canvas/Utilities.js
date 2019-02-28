@@ -19,8 +19,9 @@ export function formatColor(color) {
 export function collisionOffset(feature,view,offset,pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
-  let searchMinX = offset >= +0 ? fBounds.left : view.pileupBounds.left;
-  let searchMaxX = offset >= +0 ? view.pileupBounds.right : fBounds.right;
+  let offDir = offset >=+0;
+  let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
+  let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;
   let searchSpace = {
     minX: searchMinX,
     minY: fBounds.top,
@@ -30,16 +31,16 @@ export function collisionOffset(feature,view,offset,pileupGap) {
   //test if there is a pileup
   if (view.pileupTree.collides(searchSpace)) {
     let pileupBound = fBounds.left;
-    let lastSearchedMax = offset >= +0 ? Math.floor(fBounds.left) : Math.floor(fBounds.right);
+    let lastSearchedMax = offDir ? Math.floor(fBounds.left) : Math.floor(fBounds.right);
     view.pileupTree.search(searchSpace) //search for collisions
-      .sort((a,b)=>{return offset >= +0 ? a.minX - b.minX : a.maxX -b.maxX}) //sort results fo lastSearchedMax works
+      .sort((a,b)=>{return offDir ? a.minX - b.minX : a.maxX -b.maxX}) //sort results fo lastSearchedMax works
       .some(collision => { //if last+gap !== the edge of next you are in an overhang and can safely place
-      if (offset >= +0) {
+      if (offDir) {
         if (lastSearchedMax + pileupGap < Math.floor(collision.minX)) return true;
         if (collision.maxX > pileupBound) pileupBound = collision.maxX;
         lastSearchedMax = Math.floor(collision.maxX);
       } else {
-        if (lastSearchedMax + pileupGap < Math.floor(collision.maxX)) return true;
+        if (Math.floor(collision.maxX)-pileupGap > lastSearchedMax) return true;
         if (collision.minX < pileupBound) pileupBound = collision.minX;
         lastSearchedMax = Math.floor(collision.minX);
       }
@@ -47,7 +48,7 @@ export function collisionOffset(feature,view,offset,pileupGap) {
     });
 
     let offsetValue = pileupBound + pileupGap - fBounds.left;
-    return offset >= +0 ? offsetValue : offsetValue - fBounds.width;
+    return offDir ? offsetValue : offsetValue - fBounds.width;
   }
   return 0;
 }
