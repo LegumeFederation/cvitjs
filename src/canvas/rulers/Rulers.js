@@ -24,7 +24,6 @@ export default function layoutRulers(backbone, config, view) {
   rulerGroup.maxSeq = view.maxSeq;
 
   let rulerConfig = {};
-  console.log('yOff', view);
   rulerConfig.min = view.min;
   rulerConfig.max = view.max;
   rulerConfig.fontSize = parseInt(config.general.ruler_font_size);
@@ -49,7 +48,6 @@ export default function layoutRulers(backbone, config, view) {
   } catch (e) {
     console.log(e);
   }
-  console.log('ruler bl', baseLayer, paper.project);
 
   baseLayer.activate();
 }

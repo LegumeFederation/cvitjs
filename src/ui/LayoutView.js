@@ -12,29 +12,30 @@ import Chromosome from '../canvas/glyph/chromosome/Chromosome';
 export default function layoutView(data,config,view){
   let components = [];
 
+  /** setup paper base layer's main group */
   let active = paper.project.getActiveLayer();
   active.removeChildren();
   active.cvitComponents = [];
   let baseGroup = new paper.Group();
   baseGroup.name = 'cvitView';
 
-  //setup rulers
+  /** setup rulers **/
   layoutRulers(data,config,view);
   let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
 
-  //setup view area
+  /** setup view area **/
   view.leftEdge = rulers.children['leftRuler'].getStrokeBounds().right;
   view.rightEdge = rulers.children['rightRuler'].getStrokeBounds().left;
   view.yAdjust = rulers.children['leftRuler'].rulerStart - view.yOffset.offsetTop;
 
-  console.log('dcv',data,config,view);
-  //setup default spacing between backbones
+  /** setup default spacing between backbones **/
   let offsetPadding = parseInt(config.general.chrom_spacing);
   if(!parseInt(config.general.fixed_chrom_spacing)){
     offsetPadding = ((view.rightEdge-view.leftEdge) - (view.chrOrder.length*config.general.chrom_width))/(view.chrOrder.length+1);
   }
   view.xOffset = view.leftEdge + offsetPadding;
 
+  /** draw backbones **/
   if(data.hasOwnProperty('chromosome')) {
     data.chromosome.features.forEach(chromosome => {
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
@@ -47,7 +48,6 @@ export default function layoutView(data,config,view){
   for(let key in config){
     //Iterate through data and add to their target chromosomes
     if(key !== 'general' && config.hasOwnProperty(key)) {
-      //TODO: add support for custom config options
       //set glyph/subglyph and the data.<group> that the features can be found in.
       let cGlyph = config[key].glyph ? config[key].glyph : key;
       let cSubglyph = config[key].draw_as ? config[key].draw_as : config[key].shape ? config[key].shape : key;

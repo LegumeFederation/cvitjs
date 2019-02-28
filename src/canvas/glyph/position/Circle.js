@@ -57,10 +57,8 @@ export default class Circle {
     //};
     //console.log("rangeTest",view,r,featureGroup);
     if (view.pileup ) {
-      console.log('prePos', r.position.x);
       let pGap = xOffset >= +0 ? parseInt(config.pileup_gap) : -parseInt(config.pileup_gap);
       r.translate( new paper.Point(collisionOffset(r, view, xOffset, pGap) ,0));
-      console.log('postPos', r.position.x);
     }
     //if (parseInt(view.config.draw_label) === 1) {
     //  point.y = r.position.y;
