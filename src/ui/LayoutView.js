@@ -108,7 +108,6 @@ export default function layoutView(data,config,view){
       });
 
       /** Move backbone groups to prevent overlap */
-      let padding = parseInt(config.general.image_padding);
       view.chrOrder.forEach((chr,i) => {
         let chrGroup = baseGroup.children[chr];
         let bndsRight = i === 0 ?
