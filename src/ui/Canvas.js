@@ -1,38 +1,43 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
 
-import paperTest from '../canvas/Test';
 import layoutView from './LayoutView';
 
 export default class CvitCanvas extends Component{
   constructor(){
     super();
-    this.state = {paperState:null};
   }
 
   componentDidMount() {
     paper.setup(document.getElementById('cvit-canvas'));
     let layer = new paper.Layer();
     layer.name = 'cvitLayer';
+    layoutView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
   }
 
   componentDidUpdate(){
     if(this.props.cvitData.hasOwnProperty('chromosome') && this.props.cvitConfig.general) {
       layoutView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
     }
-
     paper.view.draw();
   }
 
   render(props,state){
+    let canvas = props.cvitView.canvas;
+    let computedStyle = {
+      backgroundColor: '#fffdd0',
+      height: canvas.height
+    };
+    if(canvas.width){
+      computedStyle.width = canvas.width;
+      computedStyle.maxWidth = canvas.width;
+    }
+
     return (
       <canvas
         class={'twelve columns'}
         id={'cvit-canvas'}
-        style={{
-          backgroundColor: '#fffdd0',
-          height:600
-        }}
+        style={computedStyle}
       />
     );
   }

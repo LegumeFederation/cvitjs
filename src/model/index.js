@@ -16,21 +16,22 @@ export default class Index {
     this._viewData = {};
     this.defaultViewConf = defaultConfig();
     this._viewConfig = {};
+    this._tag = '';
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
       .then(()=>{
-        let tag = 'data.';
+        this._tag = 'data.';
         if(qs.view ==='general') {
           if(this.baseConfig.general.data_default){
-            tag += this.baseConfig.general.data_default;
+            this._tag += this.baseConfig.general.data_default;
           } else {
             throw new Error('Default dataset has not been configured.');
           }
         } else {
-          tag += qs.view;
+          this._tag += qs.view;
         }
-        console.log('tag',tag,this.baseConfig);
+        let tag = this._tag;
         let viewConfig = passedConfig.viewConf ? passedConfig.viewConf : this.baseConfig[tag].conf;
         let dataSources = passedConfig.gff
           ? passedConfig.gff
@@ -189,7 +190,19 @@ export default class Index {
         offsetBottom: parseInt(viewConfig.general.chrom_padding_bottom) || 0
       },
       xOffset: parseInt(viewConfig.general.image_padding),
-      chrWidth: parseInt(viewConfig.general.chrom_width)
+      chrWidth: parseInt(viewConfig.general.chrom_width),
+      canvas:{
+        width: this.baseConfig[this._tag].hasOwnProperty('width') ?
+          parseInt(this.baseConfig[this._tag].width) :
+          this.baseConfig['general'].hasOwnProperty('width') ?
+            parseInt(this.baseConfig['general'].width) :
+            0,
+        height: this.baseConfig[this._tag].hasOwnProperty('height') ?
+          parseInt(this.baseConfig[this._tag].height):
+          this.baseConfig['general'].hasOwnProperty('height') ?
+            parseInt(this.baseConfig['general'].height) :
+            600
+      }
     };
 
     chr.features.forEach(data => {
@@ -205,7 +218,7 @@ export default class Index {
       viewSetup.chrOrder.push(name);
     });
 
-    viewSetup.yScale = this._setYScale(viewSetup.max,viewSetup.min,viewSetup.yOffset);
+    viewSetup.yScale = this._setYScale(viewSetup.canvas.height, viewSetup.max,viewSetup.min,viewSetup.yOffset);
 
     return viewSetup;
   }
@@ -214,6 +227,7 @@ export default class Index {
    * @description
    * Set the y-scale factor for drawing on the canvas based on the actual
    * canvas dimensions and the vertical padding.
+   * @param height
    * @param {number} chrMax - Minimum position of target chromosome
    * @param {number} chrMin - Maximum position of target chromosome
    * @param {number} offsetTop
@@ -222,7 +236,7 @@ export default class Index {
    * @private
    */
 
-  _setYScale(chrMax,chrMin,{offsetTop,offsetBottom=0}){
-    return (document.querySelector('#cvit-canvas').height-(offsetTop+offsetBottom))/(chrMax-chrMin);
+  _setYScale(height,chrMax,chrMin,{offsetTop,offsetBottom=0}){
+    return (height-(offsetTop+offsetBottom))/(chrMax-chrMin);
   }
 }

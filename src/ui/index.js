@@ -10,16 +10,20 @@ export default class CvitUI extends Component {
   };
 
   render(props,state){
+    console.log('canvas', props.cvitModel);
     return (
       <div class="row cvit app-main">
-        {
-        //  <CvitControls />
+        { props.cvitModel.view.hasOwnProperty('canvas')
+          ?
           <CvitCanvas
             cvitData={props.cvitModel.data}
             cvitConfig={props.cvitModel.config}
             cvitView={props.cvitModel.view}
           />
+          :
+          <div class={'twelve columns'} id={'loading-div'}> "Loading Cvit Canvas" </div>
         }
+
       </div>
     );
   }
