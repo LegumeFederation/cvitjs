@@ -30,17 +30,17 @@ export function collisionOffset(feature,view,offset,pileupGap) {
   };
   //test if there is a pileup
   if (view.pileupTree.collides(searchSpace)) {
-    let pileupBound = fBounds.left;
+    let pileupBound = offDir ? fBounds.left : fBounds.right;
     let lastSearchedMax = offDir ? Math.floor(fBounds.left) : Math.floor(fBounds.right);
     view.pileupTree.search(searchSpace) //search for collisions
-      .sort((a,b)=>{return offDir ? a.minX - b.minX : a.maxX -b.maxX}) //sort results fo lastSearchedMax works
+      .sort((a,b)=>{return offDir ? a.minX - b.minX : b.maxX - a.maxX}) //sort results fo lastSearchedMax works
       .some(collision => { //if last+gap !== the edge of next you are in an overhang and can safely place
       if (offDir) {
         if (lastSearchedMax + pileupGap < Math.floor(collision.minX)) return true;
         if (collision.maxX > pileupBound) pileupBound = collision.maxX;
         lastSearchedMax = Math.floor(collision.maxX);
       } else {
-        if (Math.floor(collision.maxX)-pileupGap > lastSearchedMax) return true;
+        if (Math.floor(collision.maxX)-pileupGap < lastSearchedMax) return true;
         if (collision.minX < pileupBound) pileupBound = collision.minX;
         lastSearchedMax = Math.floor(collision.minX);
       }
