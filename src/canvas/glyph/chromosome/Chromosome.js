@@ -34,6 +34,11 @@ export default class Chromosome {
     let group = new paper.Group();
     group.name = data.seqName;
 
+    let labelGroup = new paper.Group();
+    labelGroup.name = data.name + "-label";
+    group.addChild(labelGroup);
+
+
     let xPos = view.xOffset;
     let yPos = view.yOffset.offsetTop + view.yAdjust;
     let startOffset = (data.start - view.min) * view.yScale;
@@ -64,6 +69,8 @@ export default class Chromosome {
     label.fontSize = parseInt(config.chrom_font_size);
     label.fillColor = formatColor(config.chrom_label_color);
     label.name = group.name + "Label";
+    labelGroup.addChild(label);
+
     return group;
   }
 

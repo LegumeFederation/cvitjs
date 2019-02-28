@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from '../canvas/glyph';
 import layoutRulers from '../canvas/rulers/Rulers';
-import Chromosome from '../canvas/glyph/chromosome/Chromosome';
+import {formatColor} from '../canvas/Utilities';
 
 /**
  * Add view to canvas.
@@ -18,6 +18,9 @@ export default function layoutView(data,config,view){
   active.cvitComponents = [];
   let baseGroup = new paper.Group();
   baseGroup.name = 'cvitView';
+
+  /** draw Title */
+  _setTitle(config);
 
   /** setup rulers **/
   layoutRulers(data,config,view);
@@ -68,11 +71,11 @@ export default function layoutView(data,config,view){
           view.chrBounds = targetChr.getStrokeBounds();
           let keyGroup = new paper.Group();
           keyGroup.name = key;
-          targetChr.addChild(keyGroup);
+          baseGroup.children[chr].addChild(keyGroup);
 
           //setup pileup
           view.pileup = false;
-          if(config[key].enable_pileup && config[key].enable_pileup > 0) {
+          if(config[key].hasOwnProperty('enable_pileup') && config[key].enable_pileup > 0) {
             keyGroup.rTree = rbush();
             view.pileup = true;
             view.pileupTree = keyGroup.rTree;
@@ -103,6 +106,19 @@ export default function layoutView(data,config,view){
           });
         }
       });
+
+      /** Move backbone groups to prevent overlap */
+      let padding = parseInt(config.general.image_padding);
+      view.chrOrder.forEach((chr,i) => {
+        let chrGroup = baseGroup.children[chr];
+        let bndsRight = i === 0 ?
+          rulers.children['leftRuler'].getStrokeBounds().right :
+          baseGroup.children[view.chrOrder[i-1]].getStrokeBounds().right;
+        let chrLeft = chrGroup.getStrokeBounds().left;
+        let padding = parseInt(config.general.image_padding);
+        if(bndsRight + padding > chrLeft)
+        chrGroup.translate(new paper.Point(bndsRight - chrLeft + padding , 0));
+      });
     }
   }
   //cvitModel.setDrawn();
@@ -122,6 +138,34 @@ function _initialLayout(cvitModel) {
 }
 
 
-
+function _setTitle(config){
+  let cvitTitle = config.general.title.split(/<[\/i]+>/);
+  let titleLoc;
+  let titleSize = parseInt(config.general.title_font_size);
+  let titleX;
+  let titleY;
+  if (config.general.title_location) {
+    let titlePos = config.general.title_location.match(/\((.*),(.*)\)/);
+    titleX = parseInt(titlePos[1]);
+    titleY = parseInt(titlePos[2]) + titleSize;
+  } else {
+    titleX = parseInt(config.general.image_padding) + parseInt(config.general.border_width);
+    titleY = titleX + titleSize;
+    let heightAllow = parseInt(config.general.title_height);
+    if (heightAllow > titleY) {
+      titleY = heightAllow;
+    }
+  }
+  titleLoc = new paper.Point(titleX, titleY);
+  for (let i = 0; i < cvitTitle.length; i++) {
+    let title = new paper.PointText(titleLoc);
+    title.content = cvitTitle[i];
+    title.fontSize = titleSize;
+    title.fontWeight = (i % 2) === 1 ? "Italic" : "normal";
+    //console.log( 'tc: ' + config.general.title_color );
+    title.fillColor = formatColor(config.general.title_color);
+    titleLoc.x += title.strokeBounds.width;
+  }
+}
 
 
