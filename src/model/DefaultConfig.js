@@ -18,6 +18,7 @@ export function defaultConfig(){
       "chrom_color": "gray50",
       "chrom_border": 1,
       "chrom_border_color": "gray50",
+      "chrom_border_width" : 2,
       "chrom_font": 1,
       "chrom_font_size": 10,
       "chrom_label_color": "gray50",
@@ -38,6 +39,8 @@ export function defaultConfig(){
       "centromere_overhang": 2,
       "color": "gray30",
       "transparent": 0,
+      "border" : 0,
+      "border_width" : 2,
       "draw_label": 0,
       "font_size": 6,
       "label_offset": 0,
@@ -50,6 +53,8 @@ export function defaultConfig(){
       "shape": "circle",
       "width": 5,
       "offset": 0,
+      "border" : 0,
+      "border_width" : 2,
       "enable_pileup": 1,
       "pileup_gap": 0,
       "font_size": 6,
@@ -62,6 +67,8 @@ export function defaultConfig(){
       "transparent": 0,
       "width":  6,
       "offset":  0,
+      "border" : 0,
+      "border_width" : 2,
       "enable_pileup": 1,
       "pileup_gap": 0,
       "draw_label": 1,
@@ -72,7 +79,9 @@ export function defaultConfig(){
 
     "border": {
       "color": "red",
+      "border" : 1,
       "border_color": "red",
+      "border_width" : 2,
       "fill": 0,
       "transparent": 0,
       "draw_label": 1,
@@ -88,7 +97,8 @@ export function defaultConfig(){
       "draw_label": 1,
       "font_size": 6,
       "label_offset": 0,
-      "label_color": "black"
+      "label_color": "black",
+      "stroke_width" : 2
     },
 
     "measure": {

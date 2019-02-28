@@ -48,7 +48,7 @@ export default class Chromosome {
     r.fillColor = formatColor(config.chrom_color);
 
     if (parseInt(config.chrom_border) === 1) {
-      r.strokeWidth = 2;
+      r.strokeWidth = config.chrom_border_width ? config.chrom_border_width : 2;
       r.strokeColor = formatColor(config.chrom_border_color);
     }
 

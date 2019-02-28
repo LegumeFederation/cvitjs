@@ -1,3 +1,4 @@
+import Border from './border/Border';
 import Centromere from './centromere/Centromere';
 import Chromosome from './chromosome/Chromosome';
 import Marker from './marker/Marker';
@@ -6,6 +7,8 @@ import Position from './position';
 
 export default function glyph({data,config,view},glyph,subglyph=glyph){
   switch (glyph) {
+    case 'border':
+      return new Border(data,config,view);
     case 'centromere' :
       return new Centromere(data,config,view);
 
