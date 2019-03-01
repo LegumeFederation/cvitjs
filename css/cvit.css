@@ -43,6 +43,12 @@
     overflow-x: auto;
 }
 
+/**
+ * cvit-modal is the class for all menu modal windows
+ */
+.cvit-modal {
+    overflow : hidden;
+}
 .cvit-modal input{
     width: auto;
 }
@@ -53,4 +59,8 @@
 
 .cvit-modal .modal-confirm{
     margin:auto;
+}
+
+.cvit-modal p{
+    width: 50%
 }
