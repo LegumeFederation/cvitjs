@@ -1,11 +1,11 @@
 import {h, Component} from 'preact';
 
-export default class CvitFooter extends Component {
+export default class CvitFooter extends Component{
   render(props,state){
     return (
-      <footer class="row cvit app-footer">
-        <div class="twelve columns" > Toggle Visible Controls</div>
+      <footer className={'row cvit'} id={'cvit-footer'}>
+        <div class={'twelve columns'} >cvit-js </div>
       </footer>
     );
   }
-};
+}

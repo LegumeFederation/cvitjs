@@ -1,5 +1,4 @@
 /**
- *
  * General CViTjs config
  * #cvit-app is the wrapper div for the entire
  * cvit application
@@ -9,23 +8,22 @@
     max-width: 85%;
 }
 
-
 /**
  * cvit-header is the import/export/help menu
  * display : none to hide
  */
 
-#cvit-header{
+#cvit-header {
     background: #666;
 }
 
-#cvit-header .head-item{
+#cvit-header .head-item {
     padding: 1rem 0 1rem 0;
     text-align: center;
     color: white;
 }
 
-#cvit-header .head-item:hover{
+#cvit-header .head-item:hover {
     background-color: #111111;
 }
 
@@ -38,29 +36,48 @@
  * the core of cvit-js
  */
 
-#cvit-main{
-    margin-bottom:10px;
+#cvit-main {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     overflow-x: auto;
+}
+
+/**
+ * cvit-canvas is the keystone feature of cvit-js.
+ * in addition to being configured here, height,width, and background
+ * color may be configured in cvit.conf
+ * as height, width and canvasColor.
+ * is is suggested width is only changed as a last resort.
+ */
+
+#cvit-canvas {
+    background: #fff;
 }
 
 /**
  * cvit-modal is the class for all menu modal windows
  */
 .cvit-modal {
-    overflow : hidden;
+    overflow: hidden;
 }
-.cvit-modal input{
+
+.cvit-modal input {
     width: auto;
 }
 
-.cvit-modal td{
-    border:none;
+.cvit-modal td {
+    border: none;
 }
 
-.cvit-modal .modal-confirm{
-    margin:auto;
+.cvit-modal .modal-confirm {
+    margin: auto;
 }
 
-.cvit-modal p{
+.cvit-modal p {
     width: 50%
+}
+
+#cvit-footer {
+    background: #666;
+    text-align: center;
 }
