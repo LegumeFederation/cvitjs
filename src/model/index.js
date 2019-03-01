@@ -201,7 +201,12 @@ export default class Index {
           parseInt(this.baseConfig[this._tag].height):
           this.baseConfig['general'].hasOwnProperty('height') ?
             parseInt(this.baseConfig['general'].height) :
-            600
+            600,
+        color: this.baseConfig[this._tag].hasOwnProperty('canvasColor') ?
+          parseInt(this.baseConfig[this._tag].canvasColor):
+          this.baseConfig['general'].hasOwnProperty('canvasColor') ?
+            this.baseConfig['general'].canvasColor :
+            'white',
       }
     };
 

@@ -25,7 +25,7 @@ export default class CvitCanvas extends Component{
   render(props,state){
     let canvas = props.cvitView.canvas;
     let computedStyle = {
-      backgroundColor: '#fffdd0',
+      backgroundColor: props.cvitView.color,
       height: canvas.height
     };
     if(canvas.width){
