@@ -1,9 +1,9 @@
 import paper from 'paper';
 import rbush from 'rbush';
 
-import glyph from '../canvas/glyph';
-import layoutRulers from '../canvas/rulers/Rulers';
-import {formatColor} from '../canvas/Utilities';
+import glyph from '../../../canvas/glyph';
+import layoutRulers from '../../../canvas/rulers/Rulers';
+import {formatColor} from '../../../canvas/Utilities';
 
 /**
  * Add view to canvas.
@@ -120,6 +120,17 @@ export default function layoutView(data,config,view){
       });
     }
   }
+
+  /** Set background */
+  let act = paper.project.getActiveLayer();
+  let bg = new paper.Layer();
+  bg.name = 'background';
+  let vb = paper.project.view.getViewSize();
+  let r = paper.Path.Rectangle(0,0,vb.width,vb.height);
+  r.fillColor = view.canvas.color;
+  bg.sendToBack();
+  act.activate();
+
   //cvitModel.setDrawn();
   paper.view.draw();
   //return components;

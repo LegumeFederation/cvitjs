@@ -17,10 +17,12 @@ export default class Index {
     this.defaultViewConf = defaultConfig();
     this._viewConfig = {};
     this._tag = '';
+    this._active = 'status';
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
       .then(()=>{
+        this._dirty = true;
         this._tag = 'data.';
         if(qs.view ==='general') {
           if(this.baseConfig.general.data_default){
@@ -53,22 +55,41 @@ export default class Index {
   /**
    * Getters/Setters
    */
+  get active(){
+    return this._active;
+  }
 
-  get data(){
-    return this._viewData;
+  set active(view){
+    this._active = view;
+    this._inform();
   }
 
   get config(){
     return this._viewConfig;
   }
 
-  get view(){
-    return this._viewLayout;
+  get data(){
+    return this._viewData;
   }
 
   get dirty(){
     return this._dirty;
   }
+
+  set dirty(state){
+    console.log('settingDirty',state);
+    this._dirty = state;
+    this._inform();
+  }
+
+  get view(){
+    return this._viewLayout;
+  }
+
+  setDirty(state){
+    this.dirty = state;
+  }
+
 
   /**
    * Public Methods
@@ -82,7 +103,10 @@ export default class Index {
     this._viewData={};
     files.forEach( file => {
       this.appendData(file)
-        .then(()=> this._inform())
+        .then(()=> {
+          this._dirty = true;
+          this._inform();
+        })
         .catch(e => console.error(e));
     });
   }
@@ -108,7 +132,10 @@ export default class Index {
           }
         }
       })
-      .then(() => this._inform())
+      .then(() => {
+        this._dirty = true;
+        this._inform()
+      })
       .catch(e => console.error(e));
   }
 
@@ -120,6 +147,7 @@ export default class Index {
   appendData(file){
     return parseFile(file, 'gff')
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
+      .then(()=> this._dirty = true )
       .catch(e => console.error(e));
   }
 
@@ -133,9 +161,11 @@ export default class Index {
    */
 
   _inform(){
-    if(this._viewConfig.general && this._viewData.chromosome){
+    if(this._viewConfig.general && this._viewData.hasOwnProperty('chromosome') && this._dirty){
       this._viewLayout = this._setupView(this._viewData,this._viewConfig);
+      this._active = 'canvas';
     }
+
     this.onChanges.forEach(callBack => callBack());
   }
 
