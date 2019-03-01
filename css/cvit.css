@@ -1,85 +1,56 @@
-/*
+/**
  *
  * General CViTjs config
- *
+ * #cvit-app is the wrapper div for the entire
+ * cvit application
  */
 
-html{
-	font-size: 16px;
-}
-/*
-body{
-	margin: 0 5%;
-}
-*/
-#title-div{
-/*
- * display:none; 
- */
-}	
 #cvit-app {
     max-width: 85%;
 }
-.cvit{
-  clear:both;
-}
 
 
-/*
- *
- * Button configuration
- *
+/**
+ * cvit-header is the import/export/help menu
+ * display : none to hide
  */
 
-#tool-btn{
-  position: absolute;
-  top: 75px;
-  left: 10px;
+#cvit-header{
+    background: #666;
 }
 
-#tool-btn .btn-default{
-    opacity:.65;
+#cvit-header .head-item{
+    padding: 1rem 0 1rem 0;
+    text-align: center;
+    color: white;
 }
 
-#zoom-ctrl btn.disabled, .btn[disabled] {
-	background-color: #bababa;
-    box-shadow: none;
-    cursor: not-allowed;
+#cvit-header .head-item:hover{
+    background-color: #111111;
 }
 
-#zoom-ctrl .btn-default{
-    opacity:.65;
+#cvit-header .active {
+    background-color: darkseagreen;
 }
 
-
-#tool-bar {
-  position: relative;
-  top: 54px;
-  left: 10px;
-
-}
-.color-sel {
-  height:22px;
-  width: 22px;
-  }
-
-#viewButton{
- /*
-  * display:none;
-  */
-}
-
-
-/*
- *
- * Menu modal configuration
- *
+/**
+ * cvit-main shows the canvas or modal menus
+ * the core of cvit-js
  */
 
-.menu-modal{
-width:50em;
+#cvit-main{
+    margin-bottom:10px;
+    overflow-x: auto;
 }
 
-.modal-container {
-width:inherit;
+.cvit-modal input{
+    width: auto;
+}
+
+.cvit-modal td{
+    border:none;
+}
+
+.cvit-modal .modal-confirm{
+    margin:auto;
 }
