@@ -15,11 +15,16 @@ export default class CvitCanvas extends Component{
   }
 
   componentDidMount() {
+    console.log('component did mount dirty redraw',this.props.dirty, this.props.redraw);
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
       paper.setup(document.getElementById('cvit-canvas'));
       let layer = new paper.Layer();
       layer.name = 'cvitLayer';
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+    } else if(this.props.redraw){
+      console.log('redraw?');
+      paper.view.draw();
+      this.props.setRedraw(false);
     }
   }
 

@@ -11,6 +11,7 @@ export default class Index {
   constructor(passedConfig,sub){
     this.onChanges = [sub];
     this._dirty = false;
+    this._redraw = true;
     let qs = Query;
     this._viewLayout = {};
     this._viewData = {};
@@ -77,8 +78,16 @@ export default class Index {
   }
 
   set dirty(state){
-    console.log('settingDirty',state);
     this._dirty = state;
+    this._inform();
+  }
+
+  get redraw(){
+    return this._redraw;
+  }
+
+  set redraw(state){
+    this._redraw = state;
     this._inform();
   }
 
@@ -90,6 +99,10 @@ export default class Index {
     this.dirty = state;
   }
 
+  setRedraw(state){
+    console.log('redrawing', state);
+    this.redraw = state;
+  }
 
   /**
    * Public Methods

@@ -18,7 +18,9 @@ export default class CvitHeader extends Component {
             cvitConfig={props.cvitModel.config}
             cvitView={props.cvitModel.view}
             dirty={props.cvitModel.dirty}
+            redraw={props.cvitModel.redraw}
             setDirty={(newState)=>props.cvitModel.setDirty(newState)}
+            setRedraw={(newState=>props.cvitModel.setRedraw(newState))}
           />
           :
           active === 'status' ?

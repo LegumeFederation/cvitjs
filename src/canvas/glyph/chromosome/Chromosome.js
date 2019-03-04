@@ -35,7 +35,7 @@ export default class Chromosome {
     group.name = data.seqName;
 
     let labelGroup = new paper.Group();
-    labelGroup.name = data.name + "-label";
+    labelGroup.name = data.seqName + "-label";
     group.addChild(labelGroup);
 
 

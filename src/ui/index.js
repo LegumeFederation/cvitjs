@@ -11,7 +11,7 @@ export default class CvitUI extends Component {
       <div>
         <CvitHeader cvitModel={props.cvitModel} />
         <CvitBody cvitModel={props.cvitModel} />
-        <CvitFooter />
+        <CvitFooter cvitModel={props.cvitModel} />
       </div>
     );
   }
