@@ -80,16 +80,28 @@
 #cvit-footer {
     background: #666;
     text-align: center;
+    font-size: 1.5rem;
+    color:white;
+}
+
+#cvit-footer #toggle-title i{
+    font-size:1.5rem;
+    margin: 0 2rem 0 2rem;
+    color: white;
+    position:relative;
+    top: 0.25rem;
+    transition: all 0.2s ease;
 }
 
 #cvit-footer .collapsible {
-    max-height: 200px;
     transition: max-height 0.2s ease-in-out;
     overflow: hidden;
 }
 #cvit-footer .content {
     background: #ffffff;
     overflow-y: auto;
+    transition: max-height 0.2s ease-in-out;
+    color:black;
 
 }
 
@@ -112,8 +124,14 @@
     transition: margin 0.3s ease-in 0s;
 }
 .group-toggle-inner:before, .group-toggle-inner:after {
-    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 16px;
-    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    display: block;
+    float: left;
+    width: 50%;
+    height: 20px;
+    padding: 0;
+    line-height: 16px;
+    font-size: 1rem;
+    color: white;
     box-sizing: border-box;
     border: 2px solid transparent;
     background-clip: padding-box;
@@ -126,7 +144,7 @@
 .group-toggle-inner:after {
     content: "OFF";
     padding-right: 10px;
-    background-color: #D4D4D4; color: ;
+    background-color: #D4D4D4;
     text-align: right;
 }
 .group-toggle-switch {

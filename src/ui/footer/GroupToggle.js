@@ -10,7 +10,7 @@ export default class GroupToggle extends Component{
   toggleVisible(){
     let vis = !this.state.active;
     let group = this.props.groupType;
-    let target = this.props.targetChr;
+    let target = this.props.target;
     let active = paper.project.getActiveLayer().children['cvitView'];
     if(group === 'chromosome'){
       active.children[target].visible = vis;
@@ -29,13 +29,14 @@ export default class GroupToggle extends Component{
         <input
           type={'checkbox'}
           className={'group-toggle-checkbox'}
-          id={`${props.groupType}-toggle`}
+          id={`${props.target}-toggle`}
+
           onInput={()=>this.toggleVisible()}
           checked={state.active}
         />
         <label
           className={'group-toggle-label'}
-          htmlFor={`${props.groupType}-toggle`}
+          htmlFor={`${props.target}-toggle`}
         >
           <span
             className={'group-toggle-inner'}
