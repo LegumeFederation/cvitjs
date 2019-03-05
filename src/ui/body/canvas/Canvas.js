@@ -2,6 +2,7 @@ import {h, Component} from 'preact';
 import paper from 'paper';
 
 import layoutView from './LayoutView';
+import {spreadBackbones} from '../../../canvas/Utilities';
 
 export default class CvitCanvas extends Component{
   constructor(){
@@ -29,6 +30,10 @@ export default class CvitCanvas extends Component{
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    if(this.props.redraw) {
+      spreadBackbones(this.props.cvitConfig,this.props.cvitView);
+      this.props.setRedraw(false);
+    }
     paper.view.draw();
   }
 

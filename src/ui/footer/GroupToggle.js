@@ -1,5 +1,6 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
+import {spreadBackbones} from '../../canvas/Utilities';
 
 export default class GroupToggle extends Component{
   constructor() {
@@ -19,7 +20,8 @@ export default class GroupToggle extends Component{
         if(child.children.hasOwnProperty(group)) child.children[group].visible = vis;
       });
     }
-    //this.props.cvitModel.setRedraw(true);
+   // this.props.setRedraw(true);
+    spreadBackbones(this.props.cvitModel.config,this.props.cvitModel.view);
     this.setState({active:vis});
   }
 

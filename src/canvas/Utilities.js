@@ -53,3 +53,35 @@ export function collisionOffset(feature,view,offset,pileupGap) {
   return 0;
 }
 
+export function spreadBackbones(config,view){
+  let baseGroup = paper.project.getActiveLayer().children['cvitView'];
+  let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
+  let padding = parseInt(config.general.image_padding);
+  let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
+  let offsetPadding = parseInt(config.general.chrom_spacing);
+  if(!parseInt(config.general.fixed_chrom_spacing)){
+    let groupW = 0;
+    let groupV = 0;
+    baseGroup.children.forEach(child =>{
+      if(child.visible){
+        groupW += child.getStrokeBounds().width;
+        groupV++;
+      }
+    });
+    let calcPadding = ((view.rightEdge-view.leftEdge) - groupW - (2*padding))/(groupV+1);
+    console.log('pad?',offsetPadding, calcPadding, groupW, view.rightEdge-view.leftEdge);
+    offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
+  }
+
+  view.chrOrder.forEach((chr) => {
+    let chrGroup = baseGroup.children[chr];
+    console.log('offsetting',chr);
+    if (chrGroup.visible) {
+      console.log('visible', chr);
+      let chrLeft = chrGroup.getStrokeBounds().left;
+      chrGroup.translate(new paper.Point(lastEdge - chrLeft + offsetPadding, 0));
+      lastEdge = chrGroup.getStrokeBounds().right;
+    }
+  });
+}
+

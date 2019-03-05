@@ -106,8 +106,20 @@
 }
 
 #cvit-footer .content td {
-    border:none;
+    border: none;
+    width: 7rem;
+    padding: 1rem 0 1rem 1rem;
 }
+
+#cvit-footer .control-head{
+    text-align: center;
+}
+
+#cvit-footer .content table {
+    margin-left:auto;
+    margin-right:auto;
+}
+
 
 
 .group-toggle {

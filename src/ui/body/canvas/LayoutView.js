@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from '../../../canvas/glyph';
 import layoutRulers from '../../../canvas/rulers/Rulers';
-import {formatColor} from '../../../canvas/Utilities';
+import {formatColor, spreadBackbones} from '../../../canvas/Utilities';
 
 /**
  * Add view to canvas.
@@ -32,18 +32,14 @@ export default function layoutView(data,config,view){
   view.yAdjust = rulers.children['leftRuler'].rulerStart - view.yOffset.offsetTop;
 
   /** setup default spacing between backbones **/
-  let offsetPadding = parseInt(config.general.chrom_spacing);
-  if(!parseInt(config.general.fixed_chrom_spacing)){
-    offsetPadding = ((view.rightEdge-view.leftEdge) - (view.chrOrder.length*config.general.chrom_width))/(view.chrOrder.length+1);
-  }
-  view.xOffset = view.leftEdge + offsetPadding;
+  view.xOffset = 0; //view.leftEdge; // + offsetPadding;
+
 
   /** draw backbones **/
   if(data.hasOwnProperty('chromosome')) {
     data.chromosome.features.forEach(chromosome => {
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
       baseGroup.addChild(chr.group);
-      view.xOffset = chr.group.getStrokeBounds().right + offsetPadding;
     });
   }
 
@@ -108,16 +104,17 @@ export default function layoutView(data,config,view){
       });
 
       /** Move backbone groups to prevent overlap */
-      view.chrOrder.forEach((chr,i) => {
-        let chrGroup = baseGroup.children[chr];
-        let bndsRight = i === 0 ?
-          rulers.children['leftRuler'].getStrokeBounds().right :
-          baseGroup.children[view.chrOrder[i-1]].getStrokeBounds().right;
-        let chrLeft = chrGroup.getStrokeBounds().left;
-        let padding = parseInt(config.general.image_padding);
-        if(bndsRight + padding > chrLeft)
-        chrGroup.translate(new paper.Point(bndsRight - chrLeft + padding , 0));
-      });
+      spreadBackbones(config,view);
+      //view.chrOrder.forEach((chr,i) => {
+      //  let chrGroup = baseGroup.children[chr];
+      //  let bndsRight = i === 0 ?
+      //    rulers.children['leftRuler'].getStrokeBounds().right :
+      //    baseGroup.children[view.chrOrder[i-1]].getStrokeBounds().right;
+      //  let chrLeft = chrGroup.getStrokeBounds().left;
+      //  let padding = parseInt(config.general.image_padding);
+      //  if(bndsRight + padding > chrLeft)
+      //  chrGroup.translate(new paper.Point(bndsRight - chrLeft + padding , 0));
+      //});
     }
   }
 

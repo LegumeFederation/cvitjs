@@ -7,6 +7,7 @@ export default class CvitFooter extends Component{
   constructor(){
     super();
     this.state = {visible:false};
+    console.log('constructing new footer');
   }
 
   onClick(){
@@ -59,21 +60,23 @@ export default class CvitFooter extends Component{
             />
           </td>
         </tr>
-      )
-    })
+      );
+    });
 
     return(
       <div>
-        <h5> Backbone </h5>
-        <tbody>
-        {bbToggles}
-        </tbody>
-        <h5> Feature Groups </h5>
-        <tbody>
-        {groupToggles}
-        </tbody>
+        <table>
+          <tr>
+            <td class={'control-head'} colSpan={5}><h5> Backbone </h5></td>
+          </tr>
+          {bbToggles}
+          <tr>
+            <td class={'control-head'} colSpan={5}><h5> Feature Groups </h5></td>
+          </tr>
+          {groupToggles}
+        </table>
       </div>
-    )
+    );
   }
 
   render(props,state){
@@ -85,7 +88,7 @@ export default class CvitFooter extends Component{
             id={'footer-toggle'}
             onClick={()=> this.onClick()}
           >
-            <div id="toggle-title">
+            <div id={'toggle-title'}>
               <i className={'material-icons'}> {state.visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }</i>
               <span>View Control</span>
               <i className={'material-icons'}> {state.visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }</i>
@@ -93,11 +96,13 @@ export default class CvitFooter extends Component{
           </div>
 
         </div>
-        <div className={'row collapsible'} id={'cvit-toggle'}
-             style={{maxHeight:state.visible ? 200 : 0}}
+        <div
+          className={'row collapsible'} id={'cvit-toggle'}
+          style={{maxHeight:state.visible ? 200 : 0}}
         >
-          <div class={'twelve columns content'}
-               style={{maxHeight:state.visible ? 200 : 0}}
+          <div
+            class={'twelve columns content'}
+            style={{maxHeight:state.visible ? 200 : 0}}
           >
             {this.generateToggles()}
           </div>
