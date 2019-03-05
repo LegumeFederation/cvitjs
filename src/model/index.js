@@ -112,17 +112,20 @@ export default class Index {
    * Load view _viewData from the passed file locations
    * @param files
    */
-  loadData(files){
-    this._viewData={};
-    files.forEach( file => {
+  loadData(files) {
+    this._viewData = {};
+    files.forEach((file, i) => {
       this.appendData(file)
-        .then(()=> {
-          this._dirty = true;
-          this._inform();
+        .then(() => {
+          if (i === files.length-1) {
+            this._dirty = true;
+            this._inform();
+          }
         })
         .catch(e => console.error(e));
-    });
+    })
   }
+
 
   /**
    * Load _viewConfig from the passed file location
