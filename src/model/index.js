@@ -123,9 +123,8 @@ export default class Index {
           }
         })
         .catch(e => console.error(e));
-    })
+    });
   }
-
 
   /**
    * Load _viewConfig from the passed file location
@@ -150,7 +149,7 @@ export default class Index {
       })
       .then(() => {
         this._dirty = true;
-        this._inform()
+        this._inform();
       })
       .catch(e => console.error(e));
   }
