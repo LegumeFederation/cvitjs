@@ -1,6 +1,7 @@
 import {h, Component} from 'preact';
 import CvitCanvas from './canvas/Canvas';
 import CvitModal from './modal';
+import CvitControls from './overlay/Overlay';
 
 export default class CvitHeader extends Component {
   capitalise(str){
@@ -26,6 +27,10 @@ export default class CvitHeader extends Component {
           active === 'status' ?
             <div className={'twelve columns'} id={'loading-div'}> "Loading Cvit Canvas" </div>
             : <CvitModal active={active} />
+        }
+        {active === 'canvas' ?
+          <CvitControls/> :
+          null
         }
       </div>
     );

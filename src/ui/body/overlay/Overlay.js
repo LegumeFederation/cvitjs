@@ -1,22 +1,15 @@
 import {h, Component} from 'preact';
+import ZoomTool from './overlay_controls/view/ZoomTool';
+import PanTool from './overlay_controls/view/PanTool';
 
 export default class CvitControls extends Component{
-  constructor(){
-    super();
-  }
   render(props,state){
     return (
       <div
-        class={'one column'}
         id={'cvit-controls'}
       >
-        <button
-          style={{
-            display: 'block',
-            position: 'absolute',
-            float: 'left'
-          }}
-        > + </button>
+        <ZoomTool zoomDir={1}/>
+        <ZoomTool zoomDir={-1}/>
       </div>
     );
   }

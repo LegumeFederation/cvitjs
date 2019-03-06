@@ -69,15 +69,12 @@ export function spreadBackbones(config,view){
       }
     });
     let calcPadding = ((view.rightEdge-view.leftEdge) - groupW - (2*padding))/(groupV+1);
-    console.log('pad?',offsetPadding, calcPadding, groupW, view.rightEdge-view.leftEdge);
     offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
   }
 
   view.chrOrder.forEach((chr) => {
     let chrGroup = baseGroup.children[chr];
-    console.log('offsetting',chr);
     if (chrGroup.visible) {
-      console.log('visible', chr);
       let chrLeft = chrGroup.getStrokeBounds().left;
       chrGroup.translate(new paper.Point(lastEdge - chrLeft + offsetPadding, 0));
       lastEdge = chrGroup.getStrokeBounds().right;

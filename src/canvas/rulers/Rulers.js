@@ -20,8 +20,8 @@ export default function layoutRulers(backbone, config, view) {
 
   let rulerGroup = new paper.Group();
   rulerGroup.name = "rulers";
-  rulerGroup.minSeq = view.minSeq;
-  rulerGroup.maxSeq = view.maxSeq;
+  rulerGroup.minSeq = view.chrMin;
+  rulerGroup.maxSeq = view.chrMax;
 
   let rulerConfig = {};
   rulerConfig.min = view.min;

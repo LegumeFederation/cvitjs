@@ -30,10 +30,7 @@ export default function layoutView(data,config,view){
   view.leftEdge = rulers.children['leftRuler'].getStrokeBounds().right;
   view.rightEdge = rulers.children['rightRuler'].getStrokeBounds().left;
   view.yAdjust = rulers.children['leftRuler'].rulerStart - view.yOffset.offsetTop;
-
-  /** setup default spacing between backbones **/
-  view.xOffset = 0; //view.leftEdge; // + offsetPadding;
-
+  view.xOffset = 0;
 
   /** draw backbones **/
   if(data.hasOwnProperty('chromosome')) {
@@ -43,7 +40,7 @@ export default function layoutView(data,config,view){
     });
   }
 
-  //draw all config groups
+  /** draw all config groups **/
   for(let key in config){
     //Iterate through data and add to their target chromosomes
     if(key !== 'general' && config.hasOwnProperty(key)) {
@@ -105,16 +102,6 @@ export default function layoutView(data,config,view){
 
       /** Move backbone groups to prevent overlap */
       spreadBackbones(config,view);
-      //view.chrOrder.forEach((chr,i) => {
-      //  let chrGroup = baseGroup.children[chr];
-      //  let bndsRight = i === 0 ?
-      //    rulers.children['leftRuler'].getStrokeBounds().right :
-      //    baseGroup.children[view.chrOrder[i-1]].getStrokeBounds().right;
-      //  let chrLeft = chrGroup.getStrokeBounds().left;
-      //  let padding = parseInt(config.general.image_padding);
-      //  if(bndsRight + padding > chrLeft)
-      //  chrGroup.translate(new paper.Point(bndsRight - chrLeft + padding , 0));
-      //});
     }
   }
 
@@ -146,6 +133,9 @@ function _initialLayout(cvitModel) {
 
 
 function _setTitle(config){
+  let act = paper.project.getActiveLayer();
+  let bg = new paper.Layer();
+  bg.name = 'cvitTitle';
   let cvitTitle = config.general.title.split(/<[\/i]+>/);
   let titleLoc;
   let titleSize = parseInt(config.general.title_font_size);
@@ -171,8 +161,9 @@ function _setTitle(config){
     title.fontWeight = (i % 2) === 1 ? "Italic" : "normal";
     //console.log( 'tc: ' + config.general.title_color );
     title.fillColor = formatColor(config.general.title_color);
-    titleLoc.x += title.strokeBounds.width;
+    titleLoc.x += title.getStrokeBounds().width;
   }
+  act.activate();
 }
 
 
