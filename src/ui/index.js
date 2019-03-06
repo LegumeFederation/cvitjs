@@ -15,4 +15,4 @@ export default class CvitUI extends Component {
       </div>
     );
   }
-};
+}

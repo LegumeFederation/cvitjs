@@ -22,13 +22,13 @@ export default class ZoomTool extends Component{
     if(rulers.children.hasOwnProperty('leftRuler')){
       rulers.children['leftRuler'].children['rulerLabels'].children.forEach(child => {
         child.scale(1, 1/zoomScale);
-      })
+      });
     }
     if(rulers.children.hasOwnProperty('rightRuler')){
       rulers.children['rightRuler'].children['rulerLabels'].children.forEach(child => {
         child.scale(1, 1/zoomScale);
         //child.translate(new paper.Point(1,newZoom/oldZoom));
-      })
+      });
     }
     // move rulers if needed
     let yMin = cl.children['cvitView'].children[rulers.minSeq].children[rulers.minSeq].bounds.topLeft.y;

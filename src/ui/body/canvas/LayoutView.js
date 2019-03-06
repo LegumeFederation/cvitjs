@@ -6,11 +6,12 @@ import layoutRulers from '../../../canvas/rulers/Rulers';
 import {formatColor, spreadBackbones} from '../../../canvas/Utilities';
 
 /**
- * Add view to canvas.
- * @param cvitModel
+ * Configure paper.project's view to reflect the current cvit model
+ * @param data
+ * @param config
+ * @param view
  */
 export default function layoutView(data,config,view){
-  let components = [];
 
   /** setup paper base layer's main group */
   let active = paper.project.getActiveLayer();
@@ -121,22 +122,17 @@ export default function layoutView(data,config,view){
 }
 
 /**
- * @description
- * Setup basic view information and rulers
- * @param cvitModel
+ * Draw title as a new layer
+ *
+ * @param config
  * @private
  */
-
-function _initialLayout(cvitModel) {
-  console.log('_initialLayout', cvitModel);
-}
-
 
 function _setTitle(config){
   let act = paper.project.getActiveLayer();
   let bg = new paper.Layer();
   bg.name = 'cvitTitle';
-  let cvitTitle = config.general.title.split(/<[\/i]+>/);
+  let cvitTitle = config.general.title.split(/<[/i]+>/);
   let titleLoc;
   let titleSize = parseInt(config.general.title_font_size);
   let titleX;
@@ -158,8 +154,7 @@ function _setTitle(config){
     let title = new paper.PointText(titleLoc);
     title.content = cvitTitle[i];
     title.fontSize = titleSize;
-    title.fontWeight = (i % 2) === 1 ? "Italic" : "normal";
-    //console.log( 'tc: ' + config.general.title_color );
+    title.fontWeight = (i % 2) === 1 ? 'Italic' : 'normal';
     title.fillColor = formatColor(config.general.title_color);
     titleLoc.x += title.getStrokeBounds().width;
   }

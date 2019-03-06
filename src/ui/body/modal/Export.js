@@ -8,7 +8,7 @@ export default class ExportModal extends Component {
       name: 'cvit',
       format: 'svg',
       quality: .95
-    }
+    };
   }
 
   exportImage(blob){
@@ -19,7 +19,7 @@ export default class ExportModal extends Component {
   saveImage(url){
     let name = this.state.name !== '' ? this.state.name : 'cvit';
     name += `.${this.state.format}`;
-    let link = document.createElement("a");
+    let link = document.createElement('a');
     link.download = name;
     link.href = url;
     document.body.appendChild(link);
@@ -29,7 +29,7 @@ export default class ExportModal extends Component {
   onClick(){
 
     if(this.state.format === 'svg'){
-      let url = "data:image/svg+xml;utf8," +
+      let url = 'data:image/svg+xml;utf8,' +
         encodeURIComponent(paper.project.exportSVG({asString:true}));
       this.saveImage(url);
     } else {
@@ -52,49 +52,49 @@ export default class ExportModal extends Component {
       <div class={'twelve columns cvit cvit-modal'} id={'export-modal'} >
         <h4> Export Image </h4>
         <p> Export the current view as an image.</p>
-        <hr/>
+        <hr />
         <form style={{width:'100%'}}>
           <h5> Export Settings: </h5>
           <tbody>
-          <tr>
-            <td><span>File Name: </span></td>
-            <td>
-              <input
-                type={'text'}
-                value={state.name}
-                onInput={(evt)=>this.onInput(evt)}
-                placeholder={'cvit'}
+            <tr>
+              <td><span>File Name: </span></td>
+              <td>
+                <input
+                  type={'text'}
+                  value={state.name}
+                  onInput={(evt)=>this.onInput(evt)}
+                  placeholder={'cvit'}
               />
-            </td>
-          </tr>
+              </td>
+            </tr>
 
-          <tr>
-            <td> <span> File Type: </span> </td>
-            <td>
-              <label>
-                <input
-                  id={'opt-svg'}
-                  type={'radio'}
-                  value={'svg'}
-                  onChange={(evt)=>this.onSelect(evt)}
-                  checked={state.format === 'svg'}
+            <tr>
+              <td> <span> File Type: </span> </td>
+              <td>
+                <label>
+                  <input
+                    id={'opt-svg'}
+                    type={'radio'}
+                    value={'svg'}
+                    onChange={(evt)=>this.onSelect(evt)}
+                    checked={state.format === 'svg'}
                 />
-                <span> svg </span>
-              </label>
-            </td>
-            <td>
-              <label>
-                <input
-                  id={'opt-png'}
-                  type={'radio'}
-                  value={'png'}
-                  onChange={(evt)=>this.onSelect(evt)}
-                  checked={state.format === 'png'}
+                  <span> svg </span>
+                </label>
+              </td>
+              <td>
+                <label>
+                  <input
+                    id={'opt-png'}
+                    type={'radio'}
+                    value={'png'}
+                    onChange={(evt)=>this.onSelect(evt)}
+                    checked={state.format === 'png'}
                 />
-                <span> png </span>
-              </label>
-            </td>
-          </tr>
+                  <span> png </span>
+                </label>
+              </td>
+            </tr>
           </tbody>
         </form>
         <button class={'modal-confirm'}
@@ -103,4 +103,4 @@ export default class ExportModal extends Component {
       </div>
     );
   }
-};
+}

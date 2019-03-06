@@ -16,10 +16,10 @@ export default class HeaderOption extends Component {
     if(props.cvitModel.active === props.option) compClass +=' active';
     return(
       <div class={compClass}
-      onClick={() => this.onClick()}
+        onClick={() => this.onClick()}
       >
         {HeaderOption.capitalise(props.option)}
       </div>
     );
   }
-};
+}

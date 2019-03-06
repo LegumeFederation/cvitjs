@@ -35,7 +35,7 @@ export default class Chromosome {
     group.name = data.seqName;
 
     let labelGroup = new paper.Group();
-    labelGroup.name = data.seqName + "-label";
+    labelGroup.name = data.seqName + '-label';
     group.addChild(labelGroup);
 
 
@@ -49,7 +49,7 @@ export default class Chromosome {
     let r = new paper.Path.Rectangle(rectangle);
 
     r.info = data.attribute;
-    r.thisColor = "black";
+    r.thisColor = 'black';
     r.fillColor = formatColor(config.chrom_color);
 
     if (parseInt(config.chrom_border) === 1) {
@@ -64,11 +64,11 @@ export default class Chromosome {
     point.y = yPos - view.chrWidth;
 
     let label = new paper.PointText(point);
-    label.justification = "center";
+    label.justification = 'center';
     label.content = group.name;
     label.fontSize = parseInt(config.chrom_font_size);
     label.fillColor = formatColor(config.chrom_label_color);
-    label.name = group.name + "Label";
+    label.name = group.name + 'Label';
     labelGroup.addChild(label);
 
     return group;
@@ -78,6 +78,6 @@ export default class Chromosome {
    * simple console log to make sure class is loading properly
    */
   static test() {
-    console.log("Access of centromere glyph");
+    console.log('Access of centromere glyph');
   }
 }

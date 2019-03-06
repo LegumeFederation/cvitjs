@@ -19,7 +19,7 @@ export default function layoutRulers(backbone, config, view) {
   rulersLayer.name = 'rulersLayer';
 
   let rulerGroup = new paper.Group();
-  rulerGroup.name = "rulers";
+  rulerGroup.name = 'rulers';
   rulerGroup.minSeq = view.chrMin;
   rulerGroup.maxSeq = view.chrMax;
 
@@ -36,14 +36,14 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
 
-  console.log("CViTjs: Drawing rulers");
+  console.log('CViTjs: Drawing rulers');
   try {
     //Draw right Ruler
-    rulerGroup.addChild(_drawRuler(rulerConfig, "left", 1));
+    rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
     rulerConfig.xOffset = paper.view.size.width - rulerConfig.xOffset;
     //textGroup.maxOff = textGroup.w;
     //Draw left Ruler
-    rulerGroup.addChild(_drawRuler(rulerConfig, "right", 0));
+    rulerGroup.addChild(_drawRuler(rulerConfig, 'right', 0));
 
   } catch (e) {
     console.log(e);
@@ -75,7 +75,7 @@ function _drawRuler(rc, side, dir) {
   // get actual on-canvas size of label
   let label = new paper.PointText(0, 0);
   label.content = rc.max;
-  label.fontSize = rc.fontSize + "px";
+  label.fontSize = rc.fontSize + 'px';
   rc.labelWidth = label.bounds.width + rc.fontSize;
   label.remove();
 
@@ -88,7 +88,7 @@ function _drawRuler(rc, side, dir) {
   let point = new paper.Point(xPos, yPos);
   let size = new paper.Point(0, (max + (0 - min)) * rc.scale);
   let r = new paper.Path.Line(point, point.add(size));
-  r.name = "ruler" + side[0].toUpperCase() + side.slice(1);
+  r.name = 'ruler' + side[0].toUpperCase() + side.slice(1);
   r.strokeColor = rc.color;
   r.strokeWidth = 2;
   rGroup.addChild(r);
@@ -108,7 +108,7 @@ function _drawRuler(rc, side, dir) {
   let labelX = dir === 1 ? ticP.x + ticO.x + rc.fontSize : ticD - rc.fontSize;
   label = new paper.PointText(labelX, ticP.y);
   label.content = min;
-  label.fontSize = rulerFontSize + "px";
+  label.fontSize = rulerFontSize + 'px';
   if (dir !== 1) {
     label.position.x -= label.bounds.width;
   }
@@ -125,7 +125,7 @@ function _drawRuler(rc, side, dir) {
     if (i % ticInt === 0) {
       label = new paper.PointText(labelX, mTicP.y);
       label.content = i;
-      label.fontSize = rulerFontSize + "px";
+      label.fontSize = rulerFontSize + 'px';
       rTextGroup.w = label.bounds.bottomRight.x;
       if (dir !== 1) {
         label.position.x -= label.bounds.width;

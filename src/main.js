@@ -23,7 +23,7 @@ const main = () => {
   const evtName = 'DOMContentLoaded';
   // add alternative config/gff locations priority order: HTML _viewData attribute > querystring > cvit.conf
   const loadedHandler = () => {
-    let dataset = document.getElementById("cvit-app").dataset;
+    let dataset = document.getElementById('cvit-app').dataset;
     let dConf = dataset.conf ? JSON.parse(dataset.config) : null;
     let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
     let configData = {

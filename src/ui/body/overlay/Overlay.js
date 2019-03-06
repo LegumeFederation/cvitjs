@@ -8,8 +8,8 @@ export default class CvitControls extends Component{
       <div
         id={'cvit-controls'}
       >
-        <ZoomTool zoomDir={1}/>
-        <ZoomTool zoomDir={-1}/>
+        <ZoomTool zoomDir={1} />
+        <ZoomTool zoomDir={-1} />
       </div>
     );
   }

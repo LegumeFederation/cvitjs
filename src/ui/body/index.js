@@ -12,7 +12,7 @@ export default class CvitHeader extends Component {
   render(props,state){
     let active = props.cvitModel.active;
     return (
-      <div class="row cvit" id={'cvit-main'}>
+      <div class='row cvit' id={'cvit-main'}>
         {active === 'canvas' ?
           <CvitCanvas
             cvitData={props.cvitModel.data}
@@ -29,10 +29,10 @@ export default class CvitHeader extends Component {
             : <CvitModal active={active} />
         }
         {active === 'canvas' ?
-          <CvitControls/> :
+          <CvitControls /> :
           null
         }
       </div>
     );
   }
-};
+}

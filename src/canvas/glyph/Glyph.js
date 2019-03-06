@@ -33,11 +33,11 @@ export default class Glyph {
   }
 
   formatGlyph(data, config, view) {
-    data.name = data.attribute.name ? data.attribute.name : "";
+    data.name = data.attribute.name ? data.attribute.name : '';
     let fGroup = new paper.Group();
     fGroup.name = data.name;
     let labelGroup = new paper.Group();
-    labelGroup.name = data.name + "-label";
+    labelGroup.name = data.name + '-label';
     fGroup.addChild(labelGroup);
 
     let r = this.drawFeature(data,config,view);
@@ -92,20 +92,24 @@ export default class Glyph {
    * simple console log to make sure class is loading properly
    */
   static test() {
-    console.log("Access of centromere glyph");
+    console.log('Access of centromere glyph');
   }
 
   /**
-   * This needs to be extended by the actual glyph
+   * This needs to be extended by the actual glyph but
+   * formats the actual drawn glyph
+   *
    * @param data
    * @param config
    * @param view
-   * @returns glyph
+   * @returns object
    */
 
-  drawFeature(data,config,view){A
-    let topLeft = new paper.Point(0, 0);
-    let rectSize = new paper.Size(1, 1);
-    return new paper.Path.Rectangle(new paper.Rectangle(topLeft, rectSize));
+  drawFeature(data,config,view){
+    if(data && config && view) {
+      let topLeft = new paper.Point(0, 0);
+      let rectSize = new paper.Size(1, 1);
+      return new paper.Path.Rectangle(new paper.Rectangle(topLeft, rectSize));
+    }
   }
 }

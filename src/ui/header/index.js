@@ -17,4 +17,4 @@ export default class CvitHeader extends Component {
       </header>
     );
   }
-};
+}

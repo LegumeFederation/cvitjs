@@ -5,7 +5,7 @@ export function parseFile(location,format) {
   return fetch(location)
     .then(response =>{
       if(response.status !== 200){
-        throw new Error(location+' was not found.')
+        throw new Error(location+' was not found.');
       } else if(format === 'json') {
         return response.json();
       } else {
@@ -24,6 +24,6 @@ export function parseFile(location,format) {
           throw new Error(format + ' is not a supported file format.');
       }
     })
-    .catch(e => console.error(e))
+    .catch(e => console.error(e));
 }
 

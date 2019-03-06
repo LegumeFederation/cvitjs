@@ -5,7 +5,7 @@ import CvitModel from './model';
 
 export default class CVIT {
   constructor(passedData){
-    this.model = new CvitModel(passedData,()=>{this._inform()});
+    this.model = new CvitModel(passedData,()=>{this._inform();});
     this.ui = render( <CvitUI cvitModel={this.model} />, document.querySelector('#cvit-app'));
   }
 
@@ -38,7 +38,7 @@ export default class CVIT {
    * @private
    */
   _inform(){
-    render(<CvitUI cvitModel={this.model}/>,
+    render(<CvitUI cvitModel={this.model} />,
       document.querySelector('#cvit-app'),
       this.ui);
   }
