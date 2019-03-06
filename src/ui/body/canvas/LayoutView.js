@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from '../../../canvas/glyph';
 import layoutRulers from '../../../canvas/rulers/Rulers';
-import {formatColor, spreadBackbones} from '../../../canvas/Utilities';
+import {formatColor, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
 
 /**
  * Configure paper.project's view to reflect the current cvit model
@@ -115,6 +115,7 @@ export default function layoutView(data,config,view){
   r.fillColor = view.canvas.color;
   bg.sendToBack();
   act.activate();
+  zoomCanvas(1,1);
 
   //cvitModel.setDrawn();
   paper.view.draw();

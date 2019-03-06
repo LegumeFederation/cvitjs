@@ -7,6 +7,7 @@
  *
  */
 import '../node_modules/skeleton.css/skeleton.css';
+import '../css/cvit.css';
 
 import CVIT from './cvit';
 

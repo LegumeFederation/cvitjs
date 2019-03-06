@@ -2,13 +2,9 @@ import {h, Component} from 'preact';
 import paper from 'paper';
 
 import layoutView from './LayoutView';
-import {spreadBackbones} from '../../../canvas/Utilities';
+import {calculateZoomAndPan, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
 
 export default class CvitCanvas extends Component{
-  constructor(){
-    super();
-  }
-
   layoutCanvasView(data,config,view){
     layoutView(data, config, view);
     this.props.setDirty(false);
@@ -16,14 +12,13 @@ export default class CvitCanvas extends Component{
   }
 
   componentDidMount() {
-    console.log('component did mount dirty redraw',this.props.dirty, this.props.redraw);
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
+      if(paper.project) paper.project.clear();
       paper.setup(document.getElementById('cvit-canvas'));
       let layer = new paper.Layer();
       layer.name = 'cvitLayer';
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
     } else if(this.props.redraw){
-      console.log('redraw?');
       paper.view.draw();
       this.props.setRedraw(false);
     }
@@ -44,6 +39,14 @@ export default class CvitCanvas extends Component{
     paper.view.draw();
   }
 
+  zoomOnMouse(event){
+    event.preventDefault();
+    let oz = paper.project.getActiveLayer().zoom;
+    let nz = calculateZoomAndPan(oz,event.deltaY,paper.project.layers[0].position,paper.project.layers[0].position);
+    zoomCanvas(nz[0],oz);
+    paper.view.draw();
+  }
+
   render(props,state){
     let canvas = props.cvitView.canvas;
     let computedStyle = {
@@ -56,9 +59,10 @@ export default class CvitCanvas extends Component{
 
     return (
       <canvas
-        class={'twelve columns'}
+        class={'eleven columns'}
         id={'cvit-canvas'}
         style={computedStyle}
+        onWheel={this.zoomOnMouse}
       />
     );
   }

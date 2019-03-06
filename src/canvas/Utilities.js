@@ -92,3 +92,79 @@ export function spreadBackbones(config,view){
   al.scale(z);
 }
 
+/**
+ * zoom the cvit view and the ruler to match the current requested drawing
+ * @param newZoom
+ * @param oldZoom
+ */
+
+export function zoomCanvas(newZoom,oldZoom){
+  let zoomScale = newZoom/oldZoom;
+  let cl = paper.project.layers['cvitLayer'];
+  let rl = paper.project.layers['rulersLayer'];
+  //Scale drawing and rulers
+  cl.scale(zoomScale);
+  rl.scale(1, zoomScale);
+  let rulers = paper.project.layers['rulersLayer'].children['rulers'];
+  //back scale ruler labels
+  if(rulers.children.hasOwnProperty('leftRuler')){
+    rulers.children['leftRuler'].children['rulerLabels'].children.forEach(child => {
+      child.scale(1, 1/zoomScale);
+    });
+  }
+  if(rulers.children.hasOwnProperty('rightRuler')){
+    rulers.children['rightRuler'].children['rulerLabels'].children.forEach(child => {
+      child.scale(1, 1/zoomScale);
+      //child.translate(new paper.Point(1,newZoom/oldZoom));
+    });
+  }
+  // move rulers if needed
+  let yMin = cl.children['cvitView'].children[rulers.minSeq].children[rulers.minSeq].bounds.topLeft.y;
+  let yMax = cl.children['cvitView'].children[rulers.maxSeq].children[rulers.maxSeq].bounds.bottomRight.y;
+  rulers.children.forEach(child => {
+    let baseRuler;
+    if(child.children.hasOwnProperty('rulerLeft')){
+      baseRuler = child.children['rulerLeft'];
+    } else {
+      baseRuler = child.children['rulerRight'];
+    }
+    baseRuler.bounds.topLeft.y = yMin;
+    baseRuler.bounds.bottomRight.y = yMax;
+    let tg = child.children['rulerTics'];
+    let lg = child.children['rulerLabels'];
+    tg.bounds.topLeft.y = yMin;
+    lg.bounds.topLeft.y = yMin - lg.children[0].bounds.height;
+  });
+
+  //draw and update zoomLevel
+  paper.project.getActiveLayer().zoom = newZoom;
+  paper.view.draw();
+}
+
+/**
+ * Calculates the zoom and x-y offset required for pan
+ * @param current - current zoom multiplier 1-8
+ * @param delta - 1 or -1 zoom in or out
+ * @param center - center of current view
+ * @param mouse - center of new view (usually based on mouse position)
+ * @param newScale - if you want to set the new zoom to an explicit level
+ * @returns {*[]}
+ */
+
+export function calculateZoomAndPan (current, delta, center, mouse, newScale=current) {
+  let zoomLevel = newScale;
+  let factor = 1.05;
+  if (newScale === current) {
+    if (delta < 0) {
+      zoomLevel = current / factor;
+    }
+    if (delta > 0) {
+      zoomLevel = current * factor;
+    }
+  }
+  zoomLevel = zoomLevel < 1 ? 1 : zoomLevel > 8 ?  8: zoomLevel;
+  let scale = current / zoomLevel;
+  let pos = mouse.subtract(center);
+  let offset = mouse.subtract(pos.multiply(scale)).subtract(center);
+  return [zoomLevel, offset];
+}

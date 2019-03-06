@@ -55,6 +55,30 @@
 }
 
 /**
+ * cvit-controls is the control panel for zoom
+ * and pan interactions (zoom, reset, pan, annotate)
+ */
+#cvit-controls hr{
+    margin: 0.5rem 0 1rem 0;
+}
+
+#cvit-controls .control-label{
+    font-size:0.75em;
+    color: #666;
+    text-align: center;
+}
+
+#cvit-controls .cvit-button {
+    padding: 0;
+    margin: 0;
+    border-radius:0;
+}
+
+#cvit-controls .cvit-button i{
+    position:relative;
+    top: 0.5rem;
+}
+/**
  * cvit-modal is the class for all menu modal windows
  */
 .cvit-modal {

@@ -14,6 +14,10 @@ export default class CvitHeader extends Component {
     return (
       <div class='row cvit' id={'cvit-main'}>
         {active === 'canvas' ?
+          <CvitControls /> :
+          null
+        }
+        {active === 'canvas' ?
           <CvitCanvas
             cvitData={props.cvitModel.data}
             cvitConfig={props.cvitModel.config}
@@ -27,10 +31,6 @@ export default class CvitHeader extends Component {
           active === 'status' ?
             <div className={'twelve columns'} id={'loading-div'}> "Loading Cvit Canvas" </div>
             : <CvitModal active={active} />
-        }
-        {active === 'canvas' ?
-          <CvitControls /> :
-          null
         }
       </div>
     );
