@@ -1,13 +1,13 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
-import {calculateZoomAndPan, zoomCanvas} from '../../../../../canvas/Utilities';
+import {calculateZoomAndPan, panCanvas, zoomCanvas} from '../../../../../canvas/Utilities';
 
 export default class ResetTool extends Component{
   onClick(event) {
     event.preventDefault();
     let oz = paper.project.getActiveLayer().zoom || 1;
-    let nz = calculateZoomAndPan(oz, this.props.zoomDir,paper.view.center, paper.view.center,1);
-    zoomCanvas(nz[0],oz);
+    zoomCanvas(1,oz);
+    panCanvas(paper.view.center.subtract(paper.project.layers['cvitLayer'].position));
     paper.view.draw();
   }
 

@@ -19,6 +19,8 @@ export default function layoutView(data,config,view){
   active.cvitComponents = [];
   let baseGroup = new paper.Group();
   baseGroup.name = 'cvitView';
+  let labelGroup = new paper.Group();
+  labelGroup.name = 'cvitLabels';
 
   /** draw Title */
   _setTitle(config);
@@ -38,6 +40,7 @@ export default function layoutView(data,config,view){
     data.chromosome.features.forEach(chromosome => {
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
       baseGroup.addChild(chr.group);
+      labelGroup.addChild(chr.labelGroup);
     });
   }
 

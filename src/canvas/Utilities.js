@@ -61,6 +61,7 @@ export function spreadBackbones(config,view){
 
   /** Calculate spacing between backbones */
   let baseGroup = al.children['cvitView'];
+  let labelGroup = al.children['cvitLabels'];
   let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
   let padding = parseInt(config.general.image_padding);
   let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
@@ -81,10 +82,15 @@ export function spreadBackbones(config,view){
   /** Move backbones */
   view.chrOrder.forEach((chr) => {
     let chrGroup = baseGroup.children[chr];
+    let lb = labelGroup.children[`${chr}-label`];
     if (chrGroup.visible) {
       let chrLeft = chrGroup.getStrokeBounds().left;
       chrGroup.translate(new paper.Point(lastEdge - chrLeft + offsetPadding, 0));
       lastEdge = chrGroup.getStrokeBounds().right;
+      lb.position.x = chrGroup.children[chr].position.x;
+      lb.visible = true;
+    } else {
+      lb.visible = false;
     }
   });
 
@@ -174,7 +180,11 @@ export function calculateZoomAndPan (current, delta, center, mouse, newScale=cur
   }
   zoomLevel = zoomLevel < 1 ? 1 : zoomLevel > 8 ?  8: zoomLevel;
   let scale = current / zoomLevel;
+  mouse = paper.project.getActiveLayer().children['cvitView'].globalToLocal(mouse);
+  center = paper.project.getActiveLayer().children['cvitView'].globalToLocal(center);
   let pos = mouse.subtract(center);
-  let offset = mouse.subtract(pos.multiply(scale)).subtract(center);
-  return [zoomLevel, offset];
+  let offset = center.subtract(mouse.subtract(center));
+
+  console.log('offset',mouse,center,offset,paper.project.getActiveLayer());
+  return [zoomLevel, pos];
 }

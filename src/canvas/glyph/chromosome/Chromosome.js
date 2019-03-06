@@ -22,6 +22,7 @@ import {formatColor} from '../../Utilities';
 export default class Chromosome {
   constructor(data,config, view) {
     this.positionTree = rbush();
+    this.seqName = data.seqName;
     this.group =  this.formatChromosome(data,config,view);
   }
 
@@ -30,12 +31,16 @@ export default class Chromosome {
     return this.group.children;
   }
 
+  get labelGroup(){
+    return this.group.children[`${this.seqName}-label`];
+  }
+
   formatChromosome(data, config, view){
     let group = new paper.Group();
-    group.name = data.seqName;
+    group.name = this.seqName;
 
     let labelGroup = new paper.Group();
-    labelGroup.name = data.seqName + '-label';
+    labelGroup.name = this.seqName + '-label';
     group.addChild(labelGroup);
 
 
