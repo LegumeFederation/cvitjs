@@ -142,6 +142,16 @@ export function zoomCanvas(newZoom,oldZoom){
 }
 
 /**
+ * Pans canvas by x,y offset;
+ * @param drag
+ */
+export function panCanvas(drag){
+  let delta = new paper.Point(drag);
+  paper.project.layers['cvitLayer'].translate(delta);
+  zoomCanvas(paper.project.getActiveLayer().zoom, paper.project.getActiveLayer().zoom);
+}
+
+/**
  * Calculates the zoom and x-y offset required for pan
  * @param current - current zoom multiplier 1-8
  * @param delta - 1 or -1 zoom in or out

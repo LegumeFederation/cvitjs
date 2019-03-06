@@ -2,9 +2,22 @@ import {h, Component} from 'preact';
 import paper from 'paper';
 
 import layoutView from './LayoutView';
-import {calculateZoomAndPan, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
+import {calculateZoomAndPan, panCanvas, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
 
 export default class CvitCanvas extends Component{
+
+  constructor(){
+    super();
+    this.state = {
+      isMouseDown: false
+    };
+
+    /** Bind mouse move events for click-and-drag events */
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+  }
+
   layoutCanvasView(data,config,view){
     layoutView(data, config, view);
     this.props.setDirty(false);
@@ -47,6 +60,21 @@ export default class CvitCanvas extends Component{
     paper.view.draw();
   }
 
+  onMouseUp(e){
+    this.setState({isMouseDown:false});
+  }
+
+  onMouseDown(e){
+    this.setState({isMouseDown:true});
+  }
+
+  onMouseMove(e){
+   if(this.state.isMouseDown){
+     console.log(e);
+     panCanvas({x:e.movementX, y:e.movementY});
+   }
+  }
+
   render(props,state){
     let canvas = props.cvitView.canvas;
     let computedStyle = {
@@ -63,6 +91,10 @@ export default class CvitCanvas extends Component{
         id={'cvit-canvas'}
         style={computedStyle}
         onWheel={this.zoomOnMouse}
+        onClick={()=>console.log('onClick!')}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onMouseMove={this.onMouseMove}
       />
     );
   }
