@@ -54,12 +54,18 @@ export function collisionOffset(feature,view,offset,pileupGap) {
 }
 
 export function spreadBackbones(config,view){
-  let baseGroup = paper.project.getActiveLayer().children['cvitView'];
+  /** scale cvitView to 1 to prevent sizing to current zoom */
+  let al = paper.project.getActiveLayer();
+  let z = al.zoom || 1;
+  al.scale(1/z);
+
+  /** Calculate spacing between backbones */
+  let baseGroup = al.children['cvitView'];
   let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
   let padding = parseInt(config.general.image_padding);
   let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
   let offsetPadding = parseInt(config.general.chrom_spacing);
-  if(!parseInt(config.general.fixed_chrom_spacing)){
+  if(!parseInt(config.general.fixed_chrom_spacing)){ // chrom spacing is variable
     let groupW = 0;
     let groupV = 0;
     baseGroup.children.forEach(child =>{
@@ -72,6 +78,7 @@ export function spreadBackbones(config,view){
     offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
   }
 
+  /** Move backbones */
   view.chrOrder.forEach((chr) => {
     let chrGroup = baseGroup.children[chr];
     if (chrGroup.visible) {
@@ -80,5 +87,8 @@ export function spreadBackbones(config,view){
       lastEdge = chrGroup.getStrokeBounds().right;
     }
   });
+
+  /** scale back */
+  al.scale(z);
 }
 
