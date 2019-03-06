@@ -40,6 +40,7 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
     overflow-x: auto;
+    overflow-y: hidden
 }
 
 /**
@@ -50,8 +51,9 @@
  * is is suggested width is only changed as a last resort.
  */
 
-#cvit-canvas {
-    background: #fff;
+#cvit-display {
+    overflow-x: auto;
+    max-width: 91%;
 }
 
 /**

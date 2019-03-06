@@ -19,18 +19,19 @@ export default class CvitCanvas extends Component{
   }
 
   layoutCanvasView(data,config,view){
+    if(paper.project) paper.project.clear();
+    paper.setup(document.getElementById('cvit-canvas'));
+    let layer = new paper.Layer();
+    layer.name = 'cvitLayer';
     layoutView(data, config, view);
-    this.props.setDirty(false);
+    //this.props.setDirty(false);
     paper.view.draw();
   }
 
   componentDidMount() {
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
-      if(paper.project) paper.project.clear();
-      paper.setup(document.getElementById('cvit-canvas'));
-      let layer = new paper.Layer();
-      layer.name = 'cvitLayer';
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+      this.props.setDirty(false);
     } else if(this.props.redraw){
       paper.view.draw();
       this.props.setRedraw(false);
@@ -38,7 +39,7 @@ export default class CvitCanvas extends Component{
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if(this.props.redraw) {
+    if(nextProps.redraw) {
       spreadBackbones(this.props.cvitConfig,this.props.cvitView);
       this.props.setRedraw(false);
     }
@@ -48,6 +49,8 @@ export default class CvitCanvas extends Component{
   componentDidUpdate(){
     if(this.props.dirty) {
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+      this.props.setDirty(false);
+      this.props.setRedraw(true);
     }
     paper.view.draw();
   }
@@ -56,6 +59,7 @@ export default class CvitCanvas extends Component{
     event.preventDefault();
     let oz = paper.project.getActiveLayer().zoom;
     let nz = calculateZoomAndPan(oz,event.deltaY,paper.project.layers[0].position,paper.project.layers[0].position);
+    console.log('mousewheel',event);
     zoomCanvas(nz[0],oz);
     paper.view.draw();
   }
@@ -70,32 +74,37 @@ export default class CvitCanvas extends Component{
 
   onMouseMove(e){
    if(this.state.isMouseDown){
-     console.log(e);
      panCanvas({x:e.movementX, y:e.movementY});
    }
+  }
+
+  onClick(e){
+    console.log('click',e,paper.view.getEventPoint(e));
   }
 
   render(props,state){
     let canvas = props.cvitView.canvas;
     let computedStyle = {
       backgroundColor: canvas.color,
-      height: canvas.height
+      height: canvas.height,
+      width: canvas.width ? canvas.width : '100%'
     };
-    if(canvas.width){
-      computedStyle.width = canvas.width;
-    }
 
     return (
-      <canvas
-        class={'eleven columns'}
-        id={'cvit-canvas'}
-        style={computedStyle}
-        onWheel={this.zoomOnMouse}
-        onClick={()=>console.log('onClick!')}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onMouseMove={this.onMouseMove}
-      />
+      <div
+        className={'eleven columns'}
+        id={'cvit-display'}
+      >
+          <canvas
+            id={'cvit-canvas'}
+            style={computedStyle}
+            onWheel={this.zoomOnMouse}
+            onClick={this.onClick}
+            onMouseDown={this.onMouseDown}
+            onMouseUp={this.onMouseUp}
+            onMouseMove={this.onMouseMove}
+          />
+      </div>
     );
   }
 }
