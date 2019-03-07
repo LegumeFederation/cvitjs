@@ -14,7 +14,10 @@ export default class CvitHeader extends Component {
     return (
       <div class='row cvit' id={'cvit-main'}>
         {active === 'canvas' ?
-          <CvitControls /> :
+          <CvitControls
+            mouseTool = {props.cvitModel.mouseTool}
+            selectTool = {(state) =>{props.cvitModel.setTool(state)}}
+          /> :
           null
         }
         {active === 'canvas' ?

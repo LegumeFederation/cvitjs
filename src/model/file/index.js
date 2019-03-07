@@ -1,7 +1,10 @@
 import {parseGff} from './ParseGff';
 import {parseIni} from './ParseIni';
 
-export function parseFile(location,format) {
+export function parseFile(location,format,strArray=[]) {
+  if(typeof location === 'object'){
+    return location;
+  }
   return fetch(location)
     .then(response =>{
       if(response.status !== 200){
@@ -17,7 +20,7 @@ export function parseFile(location,format) {
         case 'ini':
           return parseIni(responseText);
         case 'gff':
-          return parseGff(responseText);
+          return parseGff(responseText,strArray);
         case 'json':
           return responseText;
         default:

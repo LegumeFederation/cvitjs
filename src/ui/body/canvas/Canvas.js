@@ -61,7 +61,6 @@ export default class CvitCanvas extends Component{
     let oz = paper.project.getActiveLayer().zoom;
     let nz = calculateZoomAndPan(oz, e.deltaY, evtPt);
    // panCanvas(nz[1].multiply(-1));
-    console.log(nz);
     zoomCanvas(nz,oz);
   }
 
@@ -74,11 +73,9 @@ export default class CvitCanvas extends Component{
   }
 
   onMouseMove(e){
+    e.preventDefault();
    if(this.state.isMouseDown){
-     panCanvas({x:e.movementX, y:e.movementY});
-     console.log('pan',
-       paper.project.view.center,
-       paper.project.layers['cvitLayer'].position);
+     paper.tool.onMouseDrag(e); //tools are set in overlay_controls/tool
    }
   }
 

@@ -1,4 +1,4 @@
-export function parseGff(text){
+export function parseGff(text,seqNames=[]){
   let parsed = {};
   let gffLine = {};
 
@@ -35,14 +35,34 @@ export function parseGff(text){
               return parsedAttributes;
             }())
         };
+        /** attempt to match with existing sequences if data already loaded */
+        let seqName = gffLine.seqName;
+        if(seqNames.length > 0){
+          seqNames.some(seq => {
+            let re = new RegExp('.*'+seq+'^').test(seqName);
+            console.log('seqT',re,seq,seqName);
+            if(re){
+              seqName = seq;
+              gffLine.seqName = seq;
+              return true;
+            }
+            return false;
+          });
+        }
+
+        /**
+         * Add the feature to the object of it's underlying
+         * feature category (gff column 3)
+         */
+
         if (parsed[gffLine.feature] === undefined) {
           parsed[gffLine.feature] = {features:[]};
         }
-        if (parsed[gffLine.feature][gffLine.seqName] === undefined) {
-          parsed[gffLine.feature][gffLine.seqName] = {features:[]};
+        if (parsed[gffLine.feature][seqName] === undefined) {
+          parsed[gffLine.feature][seqName] = {features:[]};
         }
         parsed[gffLine.feature].features.push(gffLine);
-        parsed[gffLine.feature][gffLine.seqName].features.push(gffLine);
+        parsed[gffLine.feature][seqName].features.push(gffLine);
       }
     });
   return parsed;

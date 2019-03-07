@@ -1,7 +1,9 @@
 import {h, Component} from 'preact';
-import ZoomTool from './overlay_controls/view/ZoomTool';
-import PanTool from './overlay_controls/view/PanTool';
-import ResetTool from './overlay_controls/view/ResetTool';
+import ZoomTool from './overlay_controls/zoom/ZoomTool';
+import ResetTool from './overlay_controls/zoom/ResetTool';
+import PanTool from './overlay_controls/drawing/PanTool';
+import FreeTool from './overlay_controls/drawing/FreedrawTool';
+import EraserTool from './overlay_controls/drawing/EraserTool';
 
 export default class CvitControls extends Component{
   render(props,state){
@@ -15,8 +17,16 @@ export default class CvitControls extends Component{
         </div>
         <ZoomTool zoomDir={1} />
         <ZoomTool zoomDir={-1} />
-        <ResetTool/>
-        <hr/>
+        <ResetTool />
+        <hr />
+        <div class={'control-label'}>
+          <span> Mouse </span>
+        </div>
+        <PanTool active={props.mouseTool} selectTool={(tool)=> props.selectTool(tool)} />
+        <FreeTool active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
+        <EraserTool active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
+        <hr />
+
       </div>
     );
   }

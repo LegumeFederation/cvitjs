@@ -1,8 +1,13 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
-import {calculateZoomAndPan, panCanvas, zoomCanvas} from '../../../../../canvas/Utilities';
+import {calculateZoomAndPan, zoomCanvas} from '../../../../../canvas/Utilities';
 
 export default class ZoomTool extends Component{
+  constructor(){
+    super();
+    this.onClick = this.onClick.bind(this);
+  }
+
   onClick(event) {
     event.preventDefault();
     let oz = paper.project.getActiveLayer().zoom || 1;
@@ -15,7 +20,7 @@ export default class ZoomTool extends Component{
     return (
       <button
         className={'u-full-width cvit-button'}
-        onClick={(e)=>this.onClick(e)}
+        onClick={this.onClick}
       >
         <i className={'material-icons'}> {props.zoomDir === 1 ? 'zoom_in' : 'zoom_out' } </i>
       </button>

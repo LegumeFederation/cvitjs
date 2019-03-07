@@ -28,10 +28,15 @@ const main = () => {
     let dConf = dataset.conf ? JSON.parse(dataset.config) : null;
     let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
     let configData = {
-      viewConf : dConf,
-      gff : dGff
+      viewConf: dConf,
+      gff: dGff
     };
     let _cvit = new CVIT(configData);
+    document.addEventListener('baseDataLoaded', () => {
+      console.log('data loaded event!');
+      _cvit.appendData('data/test5/data2.gff');
+    });
+
     document.removeEventListener(evtName, loadedHandler);
   };
   document.addEventListener(evtName, loadedHandler);

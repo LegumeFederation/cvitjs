@@ -76,6 +76,11 @@
     border-radius:0;
 }
 
+#cvit-controls .cvit-button:disabled {
+    background:darkseagreen;
+    color:#fff;
+}
+
 #cvit-controls .cvit-button i{
     position:relative;
     top: 0.5rem;

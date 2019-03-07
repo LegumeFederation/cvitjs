@@ -19,6 +19,7 @@ export default class Index {
     this._viewConfig = {};
     this._tag = '';
     this._active = 'status';
+    this._mouseTool = 'pan';
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
@@ -79,7 +80,14 @@ export default class Index {
 
   set dirty(state){
     this._dirty = state;
-    this._inform();
+  }
+
+  get mouseTool(){
+    return this._mouseTool;
+  }
+
+  set mouseTool(tool){
+    this._mouseTool = tool;
   }
 
   get redraw(){
@@ -88,7 +96,6 @@ export default class Index {
 
   set redraw(state){
     this._redraw = state;
-    this._inform();
   }
 
   get view(){
@@ -97,11 +104,17 @@ export default class Index {
 
   setDirty(state){
     this.dirty = state;
+    this._inform();
   }
 
   setRedraw(state){
-    console.log('redrawing', state);
     this.redraw = state;
+    this._inform();
+  }
+
+  setTool(state){
+    this.mouseTool = state;
+    this._inform();
   }
 
   /**
@@ -119,6 +132,8 @@ export default class Index {
         .then(() => {
           if (i === files.length-1) {
             this._dirty = true;
+            let x= new CustomEvent('baseDataLoaded');
+            document.dispatchEvent(x);
             this._inform();
           }
         })
@@ -160,9 +175,21 @@ export default class Index {
    * @returns {promise}
    */
   appendData(file){
-    return parseFile(file, 'gff')
+
+    if(this._active !== 'status'){
+      this._active = 'status';
+      this._inform();
+    }
+    console.log('appending',file,this._viewLayout);
+
+    return parseFile(file, 'gff',this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
-      .then(()=> this._dirty = true )
+      .then(()=> console.log('vd',this._viewData))
+      .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
+      .then(()=> {
+        this._dirty = true;
+        this._redraw = true;
+      })
       .catch(e => console.error(e));
   }
 
@@ -220,7 +247,7 @@ export default class Index {
    * @private
    */
  _setupView(dataModel,viewConfig) {
-    let chr = dataModel.chromosome;
+    let chr = dataModel.hasOwnProperty('chromosome') ? dataModel.chromosome : null; //should never return null
     // set up view limits
     let viewSetup = {
       min: 0,
@@ -271,6 +298,20 @@ export default class Index {
     viewSetup.yScale = this._setYScale(viewSetup.canvas.height, viewSetup.max,viewSetup.min,viewSetup.yOffset);
 
     return viewSetup;
+  }
+
+  _setChrOrder(viewData){
+   let order = this._viewLayout.chrOrder || [];
+   for(let key in viewData){
+     if(viewData.hasOwnProperty(key)){
+       for(let k in viewData[key]){
+         if(viewData[key].hasOwnProperty(k) && k !=='features' && order.indexOf(k) !== -1){
+           order.push(k);
+         }
+       }
+     }
+   }
+   return order;
   }
 
   /**
