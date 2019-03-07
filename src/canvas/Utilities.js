@@ -104,12 +104,12 @@ export function spreadBackbones(config,view){
  * @param oldZoom
  */
 
-export function zoomCanvas(newZoom,oldZoom){
-  let zoomScale = newZoom/oldZoom;
+export function zoomCanvas(newZoom , oldZoom){
+  let zoomScale = newZoom.zoom / oldZoom;
   let cl = paper.project.layers['cvitLayer'];
   let rl = paper.project.layers['rulersLayer'];
   //Scale drawing and rulers
-  cl.scale(zoomScale);
+  cl.scale(zoomScale,newZoom.center);
   rl.scale(1, zoomScale);
   let rulers = paper.project.layers['rulersLayer'].children['rulers'];
   //back scale ruler labels
@@ -125,8 +125,8 @@ export function zoomCanvas(newZoom,oldZoom){
     });
   }
   // move rulers if needed
-  let yMin = cl.children['cvitView'].children[rulers.minSeq].children[rulers.minSeq].bounds.topLeft.y;
-  let yMax = cl.children['cvitView'].children[rulers.maxSeq].children[rulers.maxSeq].bounds.bottomRight.y;
+  let yMin = cl.children['cvitView'].bounds.topLeft.y;
+  let yMax = cl.children['cvitView'].bounds.bottomRight.y;
   rulers.children.forEach(child => {
     let baseRuler;
     if(child.children.hasOwnProperty('rulerLeft')){
@@ -143,7 +143,7 @@ export function zoomCanvas(newZoom,oldZoom){
   });
 
   //draw and update zoomLevel
-  paper.project.getActiveLayer().zoom = newZoom;
+  paper.project.getActiveLayer().zoom = newZoom.zoom;
   paper.view.draw();
 }
 
@@ -154,7 +154,8 @@ export function zoomCanvas(newZoom,oldZoom){
 export function panCanvas(drag){
   let delta = new paper.Point(drag);
   paper.project.layers['cvitLayer'].translate(delta);
-  zoomCanvas(paper.project.getActiveLayer().zoom, paper.project.getActiveLayer().zoom);
+  let al= paper.project.getActiveLayer();
+  zoomCanvas({zoom:al.zoom}, al.zoom);
 }
 
 /**
@@ -167,7 +168,7 @@ export function panCanvas(drag){
  * @returns {*[]}
  */
 
-export function calculateZoomAndPan (current, delta, center, mouse, newScale=current) {
+export function calculateZoomAndPan (current, delta, center, newScale=current) {
   let zoomLevel = newScale;
   let factor = 1.05;
   if (newScale === current) {
@@ -179,12 +180,7 @@ export function calculateZoomAndPan (current, delta, center, mouse, newScale=cur
     }
   }
   zoomLevel = zoomLevel < 1 ? 1 : zoomLevel > 8 ?  8: zoomLevel;
-  let scale = current / zoomLevel;
-  mouse = paper.project.getActiveLayer().children['cvitView'].globalToLocal(mouse);
-  center = paper.project.getActiveLayer().children['cvitView'].globalToLocal(center);
-  let pos = mouse.subtract(center);
-  let offset = center.subtract(mouse.subtract(center));
-
-  console.log('offset',mouse,center,offset,paper.project.getActiveLayer());
-  return [zoomLevel, pos];
+  let pl = paper.project.getActiveLayer().children['cvitView'];
+  center = pl.globalToLocal(center);
+  return {zoom:zoomLevel, center:center};
 }

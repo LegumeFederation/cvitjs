@@ -5,9 +5,13 @@ import {calculateZoomAndPan, panCanvas, zoomCanvas} from '../../../../../canvas/
 export default class ResetTool extends Component{
   onClick(event) {
     event.preventDefault();
-    let oz = paper.project.getActiveLayer().zoom || 1;
-    zoomCanvas(1,oz);
-    panCanvas(paper.view.center.subtract(paper.project.layers['cvitLayer'].position));
+    let al = paper.project.getActiveLayer();
+    let oz = al.zoom || 1;
+    let offset = paper.view.cvtCenter.subtract(al.children['cvitView'].position);
+    panCanvas(offset);
+    zoomCanvas({zoom:1},oz);
+    offset = paper.view.cvtCenter.subtract(al.children['cvitView'].position);
+    panCanvas(offset);
     paper.view.draw();
   }
 

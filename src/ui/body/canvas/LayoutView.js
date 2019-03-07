@@ -118,8 +118,10 @@ export default function layoutView(data,config,view){
   r.fillColor = view.canvas.color;
   bg.sendToBack();
   act.activate();
-  zoomCanvas(1,1);
-
+  zoomCanvas({zoom:1},1);
+  const x = baseGroup.position.x;
+  const y = baseGroup.position.y;
+  paper.view.cvtCenter = new paper.Point(x,y); //store the center-point for resetting the view
   //cvitModel.setDrawn();
   paper.view.draw();
   //return components;

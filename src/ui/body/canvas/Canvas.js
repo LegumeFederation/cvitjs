@@ -57,14 +57,12 @@ export default class CvitCanvas extends Component{
 
   zoomOnMouse(e){
     e.preventDefault();
-    let evtLayer = paper.project.layers['cvitLayer'];
     let evtPt = paper.view.getEventPoint(e);
     let oz = paper.project.getActiveLayer().zoom;
-    let nz = calculateZoomAndPan(oz, e.deltaY, evtLayer.position , evtPt);
-    console.log('mousewheel',nz[1]);
-    zoomCanvas(nz[0],oz);
-    panCanvas(nz[1]);
-    paper.view.draw();
+    let nz = calculateZoomAndPan(oz, e.deltaY, evtPt);
+   // panCanvas(nz[1].multiply(-1));
+    console.log(nz);
+    zoomCanvas(nz,oz);
   }
 
   onMouseUp(e){

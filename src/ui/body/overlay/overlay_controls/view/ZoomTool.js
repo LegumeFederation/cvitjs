@@ -1,13 +1,13 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
-import {calculateZoomAndPan, zoomCanvas} from '../../../../../canvas/Utilities';
+import {calculateZoomAndPan, panCanvas, zoomCanvas} from '../../../../../canvas/Utilities';
 
 export default class ZoomTool extends Component{
   onClick(event) {
     event.preventDefault();
     let oz = paper.project.getActiveLayer().zoom || 1;
-    let nz = calculateZoomAndPan(oz, this.props.zoomDir,paper.view.center, paper.view.center);
-    zoomCanvas(nz[0],oz);
+    let nz = calculateZoomAndPan(oz, this.props.zoomDir ,paper.view.center);
+    zoomCanvas({zoom:nz.zoom},oz);
     paper.view.draw();
   }
 
