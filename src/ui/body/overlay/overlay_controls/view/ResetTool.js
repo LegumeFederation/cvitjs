@@ -1,6 +1,6 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
-import {calculateZoomAndPan, panCanvas, zoomCanvas} from '../../../../../canvas/Utilities';
+import {panCanvas, zoomCanvas} from '../../../../../canvas/Utilities';
 
 export default class ResetTool extends Component{
   onClick(event) {
