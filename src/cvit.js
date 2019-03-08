@@ -1,7 +1,8 @@
 import {h, render} from 'preact';
-
+import paper from 'paper';
 import CvitUI from './ui';
 import CvitModel from './model';
+import {calculateZoomAndPan, zoomCanvas} from './canvas/Utilities';
 
 export default class CVIT {
   constructor(passedData){
@@ -15,7 +16,10 @@ export default class CVIT {
    * @param file
    */
   appendData(file){
-    this.model.appendData(file);
+    this.model.appendData(file)
+      .then(()=>{
+        this.model.setDirty(true);
+      });
   }
 
   /**
@@ -23,7 +27,10 @@ export default class CVIT {
    * @param  files
    */
   overwriteData(files){
-    this.model.setData(files);
+    this.model.setData(files)
+      .then(()=>{
+        this.model.setDirty(true);
+      });
   }
 
   /**
@@ -31,7 +38,8 @@ export default class CVIT {
    * @param  file
    */
   overwriteConfig(file){
-    this.model.loadViewConfig(file);
+    this.model.loadViewConfig(file)
+      .then( () => this.model.setDirty(true));
   }
 
   /**
