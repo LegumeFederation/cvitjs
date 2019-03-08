@@ -1,8 +1,6 @@
 import {h, render} from 'preact';
-import paper from 'paper';
 import CvitUI from './ui';
 import CvitModel from './model';
-import {calculateZoomAndPan, zoomCanvas} from './canvas/Utilities';
 
 export default class CVIT {
   constructor(passedData){

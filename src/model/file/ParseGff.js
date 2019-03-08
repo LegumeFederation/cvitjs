@@ -39,7 +39,7 @@ export function parseGff(text,seqNames=[]){
         let seqName = gffLine.seqName;
         if(seqNames.length > 0){
           seqNames.some(seq => {
-            let re = new RegExp('.*'+seq+'^').test(seqName);
+            let re = new RegExp('.*'+seq).test(seqName);
             console.log('seqT',re,seq,seqName);
             if(re){
               seqName = seq;

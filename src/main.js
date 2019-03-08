@@ -32,38 +32,17 @@ const main = () => {
       gff: dGff
     };
     let _cvit = new CVIT(configData);
-    document.addEventListener('baseDataLoaded', () => {
+
+    const postLoadHandler = () => {
       console.log('data loaded event!');
       _cvit.appendData('data/test5/data2.gff');
-    });
+      document.removeEventListener('baseDataLoaded',postLoadHandler);
+    };
 
+    document.addEventListener('baseDataLoaded', postLoadHandler);
     document.removeEventListener(evtName, loadedHandler);
   };
   document.addEventListener(evtName, loadedHandler);
 };
 
 main();
-//console.log("CViTjs: Starting CViTJS");
-// cvit.init(dataset) to have the provided dataset
-//override defaults or URI string
-//var passedData = document.getElementById("cvit-div");
-//var dataset = passedData.dataset.backbone ? passedData.dataset.backbone : undefined;
-//var gff = passedData.dataset.gff ? file.getFile(passedData.dataset.gff) : undefined;
-//
-//$.when(gff).then(function (additionalData) {
-// // do any additional _viewData parsing here to make the additional gff
-// // _viewData acceptable to match with your backbone.
-//
-// // Initialize the cvit view
-//  cvit.init(dataset, additionalData);
-//},
-//  function (err) {
-//  console.log(err);
-//  document.getElementById("cvit-div").innerHTML = err.message;
-//});
-//},
-//function (err) {
-//  console.log(err);
-//  document.getElementById("cvit-div").innerHTML = err.message;
-//}
-//);

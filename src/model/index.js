@@ -11,7 +11,6 @@ export default class Index {
   constructor(passedConfig,sub){
     this.onChanges = [sub];
     this._dirty = false;
-    this._redraw = true;
     let qs = Query;
     this._viewLayout = {};
     this._viewData = {};
@@ -20,6 +19,8 @@ export default class Index {
     this._tag = '';
     this._active = 'status';
     this._mouseTool = 'pan';
+    this._dataLoaded = new CustomEvent('baseDataLoaded');
+    this._trigger = false;
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
@@ -80,6 +81,7 @@ export default class Index {
 
   set dirty(state){
     this._dirty = state;
+    this._inform();
   }
 
   get mouseTool(){
@@ -90,27 +92,14 @@ export default class Index {
     this._mouseTool = tool;
   }
 
-  get redraw(){
-    return this._redraw;
-  }
-
-  set redraw(state){
-    this._redraw = state;
-  }
-
   get view(){
     return this._viewLayout;
   }
 
   setDirty(state){
     this.dirty = state;
-    this._inform();
   }
 
-  setRedraw(state){
-    this.redraw = state;
-    this._inform();
-  }
 
   setTool(state){
     this.mouseTool = state;
@@ -132,8 +121,6 @@ export default class Index {
         .then(() => {
           if (i === files.length-1) {
             this._dirty = true;
-            let x= new CustomEvent('baseDataLoaded');
-            document.dispatchEvent(x);
             this._inform();
           }
         })
@@ -180,8 +167,8 @@ export default class Index {
       this._active = 'status';
       this._inform();
     }
-    console.log('appending',file,this._viewLayout);
 
+    console.log('appending',file,this._viewLayout,this._viewData);
     return parseFile(file, 'gff',this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> console.log('vd',this._viewData))
@@ -206,6 +193,10 @@ export default class Index {
     if(this._viewConfig.general && this._viewData.hasOwnProperty('chromosome') && this._dirty){
       this._viewLayout = this._setupView(this._viewData,this._viewConfig);
       this._active = 'canvas';
+      if(!this._trigger) {
+        this._trigger = true;
+        document.dispatchEvent(this._dataLoaded);
+      }
     }
 
     this.onChanges.forEach(callBack => callBack());
@@ -243,7 +234,7 @@ export default class Index {
    * the chromosome backbone.
    * @param dataModel - data object
    * @param viewConfig - config object
-   * @returns {{chrOrder: Array.string, min: number, max: number, chrMax: string, zoom: number, chrMin: string}}
+   * @returns {{chrOrder: Array, yOffset: {offsetTop: number, offsetBottom: number}, canvas: {color: any, width: number, height: number}, min: number, xOffset: number, max: number, chrMax: *, chrWidth: number, zoom: number, chrMin: *, yScale: number}}
    * @private
    */
  _setupView(dataModel,viewConfig) {

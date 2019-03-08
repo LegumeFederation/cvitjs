@@ -124,6 +124,7 @@ export default function layoutView(data,config,view){
   paper.view.cvtCenter = new paper.Point(x,y); //store the center-point for resetting the view
   //cvitModel.setDrawn();
   paper.view.draw();
+
   //return components;
 }
 

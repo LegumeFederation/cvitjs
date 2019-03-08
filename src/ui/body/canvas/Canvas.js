@@ -16,43 +16,62 @@ export default class CvitCanvas extends Component{
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+    if(paper.view) paper.view.draw();
   }
 
   layoutCanvasView(data,config,view){
-    if(paper.project) paper.project.clear();
-    paper.setup(document.getElementById('cvit-canvas'));
+    console.log('lcv');
+    console.log(paper.view);
+    let zoom = 1;
+    if(paper.view === null) {
+      paper.setup(this.base.children[0]);
+    } else {
+      paper.project.clear();
+      zoom = paper.view.zoom;
+    }
+
     let layer = new paper.Layer();
     layer.name = 'cvitLayer';
+    paper.view.zoom = zoom;
     layoutView(data, config, view);
-    //this.props.setDirty(false);
     paper.view.draw();
   }
 
   componentDidMount() {
+    console.log('cdm');
+    if(paper.view) paper.view.draw();
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-      this.props.setDirty(false);
-    } else if(this.props.redraw){
-      paper.view.draw();
-      this.props.setRedraw(false);
+      paper.view.draw()
     }
+
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if(nextProps.redraw) {
-      spreadBackbones(this.props.cvitConfig,this.props.cvitView);
-      this.props.setRedraw(false);
+    console.log('cwrp');
+    if(paper.view) paper.view.draw();
+  }
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    console.log('cwu');
+    if (paper.view) {
+      paper.view.draw();
+      if (nextProps.dirty) {
+        this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+        paper.view.draw();
+      }
     }
-    paper.view.draw();
   }
 
-  componentDidUpdate(){
-    if(this.props.dirty) {
-      this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-      this.props.setDirty(false);
-      this.props.setRedraw(true);
+
+  componentDidUpdate(previousProps, previousState, previousContext) {
+    console.log('cdu');
+    if(paper.view) {
+      paper.view.draw();
+      if (this.props.dirty) {
+        this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+        this.props.setDirty(false);
+      }
     }
-    paper.view.draw();
   }
 
   zoomOnMouse(e){
