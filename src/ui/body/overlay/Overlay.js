@@ -4,6 +4,7 @@ import ResetTool from './overlay_controls/zoom/ResetTool';
 import PanTool from './overlay_controls/drawing/PanTool';
 import FreeTool from './overlay_controls/drawing/FreedrawTool';
 import EraserTool from './overlay_controls/drawing/EraserTool';
+import RectTool from './overlay_controls/drawing/RectTool';
 
 export default class CvitControls extends Component{
   render(props,state){
@@ -24,6 +25,7 @@ export default class CvitControls extends Component{
         </div>
         <PanTool active={props.mouseTool} selectTool={(tool)=> props.selectTool(tool)} />
         <FreeTool active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
+        <RectTool active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
         <EraserTool active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
         <hr />
 

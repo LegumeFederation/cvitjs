@@ -8,7 +8,7 @@ export default class EraserTool extends Component{
     this.onClick = this.onClick.bind(this);
   }
   componentDidMount() {
-    let eraser = new paper.Tool();
+    let tool = new paper.Tool();
     let hitOptions = {
       segments: true,
       stroke: true,
@@ -16,23 +16,23 @@ export default class EraserTool extends Component{
       tolerance: 5
     };
 
-    eraser.omd = (e)=>{
+    tool.omd = (e)=>{
       let hitTest = paper.project.hitTest(new paper.Point(e.layerX,e.layerY), hitOptions);
       if (hitTest.item.isErasable) {
         hitTest.item.remove();
       }
     };
 
-    eraser.name = 'eraser';
-    this.setState({tool:eraser});
+    tool.name = 'eraser';
+    this.setState({tool:tool});
   }
 
   componentWillUnmount() {
     this.state.tool.remove();
   }
 
-  onClick(event) {
-    event.preventDefault();
+  onClick(e) {
+    e.preventDefault();
     this.props.selectTool('erase');
     this.state.tool.activate();
   }

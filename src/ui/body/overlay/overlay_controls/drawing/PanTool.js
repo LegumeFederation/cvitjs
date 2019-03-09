@@ -9,21 +9,31 @@ export default class PanTool extends Component{
     this.state = { tool: null};
   }
   componentDidMount() {
-    let pan = new paper.Tool();
-    pan.name = 'pan';
-    pan.omm = (e)=>{
+    let tool = new paper.Tool();
+    tool.name = 'pan';
+
+    tool.omd = () =>{
+      document.body.style.cursor = 'all-scroll';
+    };
+
+    tool.omm = (e)=>{
       panCanvas({x:e.movementX, y:e.movementY});
     };
-    this.setState({tool:pan});
-    pan.activate();
+
+    tool.omu = ()=>{
+      document.body.style.cursor = 'default';
+    };
+
+    this.setState({tool:tool});
+    tool.activate();
   }
 
   componentWillUnmount() {
     this.state.tool.remove();
   }
 
-  onClick(event) {
-    event.preventDefault();
+  onClick(e) {
+    e.preventDefault();
     this.props.selectTool('pan');
     this.state.tool.activate();
   }
