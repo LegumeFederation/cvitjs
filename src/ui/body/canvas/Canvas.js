@@ -20,8 +20,6 @@ export default class CvitCanvas extends Component{
   }
 
   layoutCanvasView(data,config,view){
-    console.log('lcv');
-    console.log(paper.view);
     let zoom = 1;
     if(paper.view === null) {
       paper.setup(this.base.children[0]);
@@ -38,7 +36,6 @@ export default class CvitCanvas extends Component{
   }
 
   componentDidMount() {
-    console.log('cdm');
     if(paper.view) paper.view.draw();
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
@@ -48,11 +45,9 @@ export default class CvitCanvas extends Component{
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    console.log('cwrp');
     if(paper.view) paper.view.draw();
   }
   componentWillUpdate(nextProps, nextState, nextContext) {
-    console.log('cwu');
     if (paper.view) {
       paper.view.draw();
       if (nextProps.dirty) {
@@ -85,20 +80,32 @@ export default class CvitCanvas extends Component{
 
   onMouseUp(e){
     this.setState({isMouseDown:false});
+    if(paper.tool.omu){
+      paper.tool.omu(e);
+    }
+    paper.view.draw()
   }
 
   onMouseDown(e){
+    e.preventDefault();
     this.setState({isMouseDown:true});
+    console.log('omd', paper.tool);
+    if(paper.tool.omd){
+      paper.tool.omd(e);
+    }
+    paper.view.draw()
   }
 
   onMouseMove(e){
     e.preventDefault();
    if(this.state.isMouseDown){
-     paper.tool.onMouseDrag(e); //tools are set in overlay_controls/tool
+     paper.tool.omm(e); //tools are set in overlay_controls/tool
    }
+    paper.view.draw()
   }
 
   onClick(e){
+    e.preventDefault();
     console.log('click',e,paper.view.getEventPoint(e));
   }
 

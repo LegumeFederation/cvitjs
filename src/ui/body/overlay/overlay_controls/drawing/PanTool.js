@@ -11,7 +11,7 @@ export default class PanTool extends Component{
   componentDidMount() {
     let pan = new paper.Tool();
     pan.name = 'pan';
-    pan.onMouseDrag = (e)=>{
+    pan.omm = (e)=>{
       panCanvas({x:e.movementX, y:e.movementY});
     };
     this.setState({tool:pan});

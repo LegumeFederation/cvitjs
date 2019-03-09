@@ -6,7 +6,7 @@ export default class CVIT {
   constructor(passedData){
     this.model = new CvitModel(passedData,()=>{this._inform();});
     this.ui = render( <CvitUI cvitModel={this.model} />, document.querySelector('#cvit-app'));
-    window.onresize = () => {this.model.dirty=true; this._inform()};
+    window.onresize = () => {this.model.dirty=true; this._inform();};
   }
 
   /**

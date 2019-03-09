@@ -9,9 +9,18 @@ export default class EraserTool extends Component{
   }
   componentDidMount() {
     let eraser = new paper.Tool();
+    let hitOptions = {
+      segments: true,
+      stroke: true,
+      fill: true,
+      tolerance: 5
+    };
 
-    eraser.onMouseDrag = (e)=>{
-      panCanvas({x:e.movementX, y:e.movementY});
+    eraser.omd = (e)=>{
+      let hitTest = paper.project.hitTest(new paper.Point(e.layerX,e.layerY), hitOptions);
+      if (hitTest.item.isErasable) {
+        hitTest.item.remove();
+      }
     };
 
     eraser.name = 'eraser';

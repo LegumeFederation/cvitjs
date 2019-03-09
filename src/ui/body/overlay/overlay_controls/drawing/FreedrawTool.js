@@ -10,6 +10,30 @@ export default class FreeTool extends Component{
   componentDidMount() {
     let free = new paper.Tool();
     free.name = 'free';
+    free.omd = function (event) { // mouse down
+      if (!paper.project.color1) {
+        paper.project.color1 = new paper.Color(0, 0, 0, 1);
+      }
+      let path = new paper.Path();
+      let point = new paper.Point(event.layerX,event.layerY);
+      path.add(point);
+      console.log(path);
+      path.isErasable = true;
+      path.strokeColor = paper.project.color1;
+      free.path = path;
+    };
+
+    free.omm = function (event) { // mouse move
+      console.log('on mouseDrag');
+      event.preventDefault();
+      let point = new paper.Point(event.layerX,event.layerY);
+      free.path.add(point);
+    };
+
+    free.omu = function () { //mouse up
+      free.path.simplify(10);
+    };
+
     this.setState({tool:free});
 
   }
