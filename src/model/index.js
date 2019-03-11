@@ -96,6 +96,10 @@ export default class Index {
     return this._viewLayout;
   }
 
+  setActive(state){
+    this.active = state;
+  }
+
   setDirty(state){
     this.dirty = state;
   }

@@ -12,7 +12,7 @@ export default class GroupToggle extends Component{
     let vis = !this.state.active;
     let group = this.props.groupType;
     let target = this.props.target;
-    let active = paper.project.getActiveLayer().children['cvitView'];
+    let active = paper.projects[0].getActiveLayer().children['cvitView'];
     if(group === 'chromosome'){
       active.children[target].visible = vis;
     } else {

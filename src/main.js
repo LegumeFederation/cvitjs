@@ -32,18 +32,22 @@ const main = () => {
     };
     let _cvit = new CVIT(configData);
     if(dataset.registerGlobal) window.cvit = _cvit;
+
+    const postLoadHandler = () => {
+      console.log("CViTjs:","Data successfully loaded");
+      document.removeEventListener('baseDataLoaded',postLoadHandler);
+    };
+
     /** example loading post-creation data */
     /*
 
     const postLoadHandler = () => {
-      console.log('data loaded event!');
+      console.log("CViTjs:","Data successfully loaded");
       //_cvit.appendData('data/test5/data2.gff');
       document.removeEventListener('baseDataLoaded',postLoadHandler);
     };
-
+    **/
     document.addEventListener('baseDataLoaded', postLoadHandler);
-
-    */
 
     document.removeEventListener(evtName, loadedHandler);
   };

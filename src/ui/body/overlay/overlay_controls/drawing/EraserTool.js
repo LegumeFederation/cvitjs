@@ -35,17 +35,20 @@ export default class EraserTool extends Component{
     e.preventDefault();
     this.props.selectTool('erase');
     this.state.tool.activate();
+    this.props.changeModal('canvas');
   }
 
   render(props,state){
     return (
-      <button
-        className={'u-full-width cvit-button'}
-        onClick={this.onClick}
-        disabled={props.active === 'erase'}
-      >
-        <i className={'material-icons'}> {'remove'} </i>
-      </button>
+      <span title={'Eraser'}>
+        <button
+          className={'u-full-width cvit-button'}
+          onClick={this.onClick}
+          disabled={props.active === 'erase'}
+        >
+          <i className={'material-icons'}> {'remove'} </i>
+        </button>
+      </span>
     );
   }
 }

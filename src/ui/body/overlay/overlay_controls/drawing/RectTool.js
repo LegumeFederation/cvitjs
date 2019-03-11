@@ -69,13 +69,15 @@ export default class RectTool extends Component{
 
   render(props,state){
     return (
-      <button
-        className={'u-full-width cvit-button'}
-        onClick={this.onClick}
-        disabled={props.active === 'rect'}
-      >
-        <i className={'material-icons'}> {'crop_square'} </i>
-      </button>
+      <span title={'Draw Rectangle'}>
+        <button
+          className={'u-full-width cvit-button'}
+          onClick={this.onClick}
+          disabled={props.active === 'rect'}
+        >
+          <i className={'material-icons'}> {'crop_square'} </i>
+        </button>
+      </span>
     );
   }
 }

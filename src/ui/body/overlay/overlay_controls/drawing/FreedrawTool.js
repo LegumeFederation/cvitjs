@@ -15,9 +15,13 @@ export default class FreeTool extends Component{
       if (!paper.project.color1) {
         paper.project.color1 = new paper.Color(0, 0, 0, 1);
       }
+      if(!paper.project.toolStroke){
+        paper.project.toolStroke = 2;
+      }
       let path = new paper.Path();
       let point = new paper.Point(e.layerX,e.layerY);
       path.add(point);
+      path.strokeWidth = paper.project.toolStroke;
       console.log(path);
       path.isErasable = true;
       path.strokeColor = paper.project.color1;
@@ -45,17 +49,20 @@ export default class FreeTool extends Component{
     event.preventDefault();
     this.props.selectTool('free');
     this.state.tool.activate();
+    this.props.changeModal('canvas');
   }
 
   render(props,state){
     return (
-      <button
-        className={'u-full-width cvit-button'}
-        onClick={this.onClick}
-        disabled={props.active === 'free'}
-      >
-        <i className={'material-icons'}> {'create'} </i>
-      </button>
+      <span title={'Free Draw'}>
+        <button
+          className={'u-full-width cvit-button'}
+          onClick={this.onClick}
+          disabled={props.active === 'free'}
+        >
+          <i className={'material-icons'}> {'create'} </i>
+        </button>
+      </span>
     );
   }
 }

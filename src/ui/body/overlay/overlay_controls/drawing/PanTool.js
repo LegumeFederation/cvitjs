@@ -36,17 +36,20 @@ export default class PanTool extends Component{
     e.preventDefault();
     this.props.selectTool('pan');
     this.state.tool.activate();
+    this.props.changeModal('canvas');
   }
 
   render(props,state){
     return (
-      <button
-        className={'u-full-width cvit-button'}
-        onClick={this.onClick}
-        disabled={props.active === 'pan'}
-      >
-        <i className={'material-icons'}> {'pan_tool'} </i>
-      </button>
+      <span title={'Pan View'}>
+        <button
+          className={'u-full-width cvit-button'}
+          onClick={this.onClick}
+          disabled={props.active === 'pan'}
+        >
+          <i className={'material-icons'}> {'pan_tool'} </i>
+        </button>
+      </span>
     );
   }
 }

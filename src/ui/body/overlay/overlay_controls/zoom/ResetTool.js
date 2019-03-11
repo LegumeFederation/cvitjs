@@ -13,16 +13,19 @@ export default class ResetTool extends Component{
     offset = paper.view.cvtCenter.subtract(al.children['cvitView'].position);
     panCanvas(offset);
     paper.view.draw();
+    this.props.changeModal('canvas');
   }
 
   render(props,state){
     return (
-      <button
-        className={'u-full-width cvit-button'}
-        onClick={(e)=>this.onClick(e)}
-      >
-        <i className={'material-icons'}> {'all_out' } </i>
-      </button>
+      <span title={'Reset Zoom and Pan'}>
+        <button
+          className={'u-full-width cvit-button'}
+          onClick={(e)=>this.onClick(e)}
+        >
+          <i className={'material-icons'}> {'all_out' } </i>
+        </button>
+      </span>
     );
   }
 }

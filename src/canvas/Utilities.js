@@ -55,14 +55,14 @@ export function collisionOffset(feature,view,offset,pileupGap) {
 
 export function spreadBackbones(config,view){
   /** scale cvitView to 1 to prevent sizing to current zoom */
-  let al = paper.project.getActiveLayer();
+  let al = paper.projects[0].getActiveLayer();
   let z = al.zoom || 1;
   al.scale(1/z);
 
   /** Calculate spacing between backbones */
   let baseGroup = al.children['cvitView'];
   let labelGroup = al.children['cvitLabels'];
-  let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
+  let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
   let padding = parseInt(config.general.image_padding);
   let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
   let offsetPadding = parseInt(config.general.chrom_spacing);
@@ -106,8 +106,8 @@ export function spreadBackbones(config,view){
 
 export function zoomCanvas(newZoom , oldZoom){
   let zoomScale = newZoom.zoom / oldZoom;
-  let cl = paper.project.layers['cvitLayer'];
-  let rl = paper.project.layers['rulersLayer'];
+  let cl = paper.projects[0].layers['cvitLayer'];
+  let rl = paper.projects[0].layers['rulersLayer'];
   //Scale drawing and rulers
   cl.scale(zoomScale,newZoom.center);
   rl.scale(1, zoomScale);
@@ -143,7 +143,7 @@ export function zoomCanvas(newZoom , oldZoom){
   });
 
   //draw and update zoomLevel
-  paper.project.getActiveLayer().zoom = newZoom.zoom;
+  paper.projects[0].getActiveLayer().zoom = newZoom.zoom;
   paper.view.draw();
 }
 
@@ -153,7 +153,7 @@ export function zoomCanvas(newZoom , oldZoom){
  */
 export function panCanvas(drag){
   let delta = new paper.Point(drag);
-  paper.project.layers['cvitLayer'].translate(delta);
+  paper.projects[0].layers['cvitLayer'].translate(delta);
   let al= paper.project.getActiveLayer();
   zoomCanvas({zoom:al.zoom}, al.zoom);
 }
@@ -180,7 +180,7 @@ export function calculateZoomAndPan (current, delta, center, newScale=current) {
     }
   }
   zoomLevel = zoomLevel < 1 ? 1 : zoomLevel > 8 ?  8: zoomLevel;
-  let pl = paper.project.getActiveLayer().children['cvitView'];
+  let pl = paper.projects[0].getActiveLayer().children['cvitView'];
   center = pl.globalToLocal(center);
   return {zoom:zoomLevel, center:center};
 }

@@ -18,7 +18,7 @@ export default class CvitFooter extends Component{
     let backbone = [];
     let groups = [];
     if(paper.project){
-      paper.project.getActiveLayer().children['cvitView'].children.forEach(child =>{
+      paper.projects[0].getActiveLayer().children['cvitView'].children.forEach(child =>{
         let name = child.name;
         let bbItem = (
           <td>
