@@ -4,14 +4,13 @@ import builtins from 'rollup-plugin-node-builtins';
 import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
-import jsx from 'rollup-plugin-jsx';
+//import jsx from 'rollup-plugin-jsx';
 import replace from 'rollup-plugin-replace';
 import {eslint}  from 'rollup-plugin-eslint';
 import postcss from 'rollup-plugin-postcss';
 import uglify from 'rollup-plugin-uglify';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-//import babelrc from 'babelrc-rollup';
 
 // PostCSS plugins
 import simplevars from 'postcss-simple-vars';

@@ -1,6 +1,10 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
 
+/**
+ * Tool for drawing rectangles for picture annotation.
+ */
+
 export default class RectTool extends Component{
   constructor(){
     super();

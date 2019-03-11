@@ -12,14 +12,13 @@ import '../css/cvit.css';
 import CVIT from './cvit';
 
 const main = () => {
-  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    // support commonjs loading, if it exists.
-    module.exports = CVIT;
-  }
-  else {
-    // otherwise put cmap constructor in window global
-    window.cvit = CVIT;
-  }
+  //if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  //  // support commonjs loading, if it exists.
+  //  module.exports = CVIT;
+  //}  else {
+  //  // otherwise put cmap constructor in window global
+  //  window.cvit = CVIT;
+  //}
   //emit event when cvit _viewData is properly loaded
   const evtName = 'DOMContentLoaded';
   // add alternative config/gff locations priority order: HTML _viewData attribute > querystring > cvit.conf
@@ -32,14 +31,20 @@ const main = () => {
       gff: dGff
     };
     let _cvit = new CVIT(configData);
+    if(dataset.registerGlobal) window.cvit = _cvit;
+    /** example loading post-creation data */
+    /*
 
     const postLoadHandler = () => {
       console.log('data loaded event!');
-      _cvit.appendData('data/test5/data2.gff');
+      //_cvit.appendData('data/test5/data2.gff');
       document.removeEventListener('baseDataLoaded',postLoadHandler);
     };
 
     document.addEventListener('baseDataLoaded', postLoadHandler);
+
+    */
+
     document.removeEventListener(evtName, loadedHandler);
   };
   document.addEventListener(evtName, loadedHandler);

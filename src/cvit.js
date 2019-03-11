@@ -40,6 +40,10 @@ export default class CVIT {
       .then( () => this.model.setDirty(true));
   }
 
+  pingModel(){
+    console.log('ping',this.model);
+  }
+
   /**
    * Inform preact that the component's props have updated
    * @private
