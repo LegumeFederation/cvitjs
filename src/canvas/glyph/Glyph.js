@@ -81,9 +81,56 @@ export default class Glyph {
 
     /** Attach Popover Listener */
     //TODO: Attach Popover
-    //r.onMouseDown = function () {
-    //  utility.attachPopover(r, marker);
-    //};
+    r.onClick = (e) => {
+      e.preventDefault();
+      console.log('target evt',e.point);
+      let pt = fGroup.localToGlobal(fGroup.getStrokeBounds().rightCenter)
+        .add(new paper.Point(paper.view.element.offsetLeft,paper.view.element.offsetTop));
+      let bl = paper.project.getActiveLayer();
+      let ptrl = paper.project.layers['pointerLayer'] ? paper.project.layers['pointerLayer'] : new paper.Layer();
+      ptrl.target = fGroup;
+      ptrl.activate();
+      if (!ptrl.name) ptrl.name = 'pointerLayer';
+      if(ptrl.children.length) ptrl.removeChildren();
+      let ptrGrp = new paper.Group();
+      ptrGrp.strokeWidth = 2;
+      ptrGrp.strokeColor = 'white';
+      let innerCross = new paper.CompoundPath({
+        children: [
+          new paper.Path.Line(e.point.add({x: 0, y: 1}), e.point.add({x: 0, y: 3})),
+          new paper.Path.Line(e.point.add({x: 0, y: -1}), e.point.add({x: 0, y: -3})),
+          new paper.Path.Line(e.point.add({y: 0, x: 1}), e.point.add({y: 0, x: 3})),
+          new paper.Path.Line(e.point.add({y: 0, x: -1}), e.point.add({y: 0, x: -3}))
+        ],
+        strokeColor: 'white',
+        strokeWidth: 2
+      });
+      ptrGrp.addChild(innerCross);
+      let outerCross = new paper.CompoundPath({
+        children: [
+          new paper.Path.Line(e.point.add({x: 0, y: 3}), e.point.add({x: 0, y: 6})),
+          new paper.Path.Line(e.point.add({x: 0, y: -3}), e.point.add({x: 0, y: -6})),
+          new paper.Path.Line(e.point.add({y: 0, x: 3}), e.point.add({y: 0, x: 6})),
+          new paper.Path.Line(e.point.add({y: 0, x: -3}), e.point.add({y: 0, x: -6}))
+        ],
+        strokeColor: 'black',
+        strokeWidth: 2
+      });
+      ptrGrp.addChild(outerCross);
+      bl.activate();
+      view.setPopover(
+        {
+          visible:true,
+          position: {
+            x:pt.x,
+            y:pt.y,
+          },
+          data:[data]
+        }
+      );
+
+      e.stopPropagation();
+    };
 
     return fGroup;
   }

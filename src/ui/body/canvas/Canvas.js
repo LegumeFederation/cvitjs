@@ -3,6 +3,7 @@ import paper from 'paper';
 
 import layoutView from './LayoutView';
 import {calculateZoomAndPan, panCanvas, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
+import {popoverContents} from '../../../templates/Popover';
 
 export default class CvitCanvas extends Component{
 
@@ -79,6 +80,7 @@ export default class CvitCanvas extends Component{
   }
 
   onMouseUp(e){
+    this.props.cvitView.setPopover({visible:false});
     this.setState({isMouseDown:false});
     if(paper.tool.omu){
       paper.tool.omu(e);
@@ -131,6 +133,17 @@ export default class CvitCanvas extends Component{
             onMouseUp={this.onMouseUp}
             onMouseMove={this.onMouseMove}
           />
+          <div
+            style={{
+              position:'absolute',
+              top: props.popover.position.y,
+              left: props.popover.position.x,
+              display: props.popover.visible ? 'block' : 'none',
+              background:'antiquewhite'
+            }}
+          >
+            {popoverContents(props.popover.data)}
+          </div>
       </div>
     );
   }

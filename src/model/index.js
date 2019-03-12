@@ -24,6 +24,14 @@ export default class Index {
     this._trigger = false;
     this._color1 = new paper.Color(0, 0, 0, 1);
     this._color2 = new paper.Color(0.7, 0.8, 0.8, 0.4);
+    this._popoverConfig = {
+      visible: false,
+      position:{
+        x:0,
+        y:0
+      },
+      data:[]
+    };
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
@@ -123,6 +131,10 @@ export default class Index {
     this._color2 = color;
   }
 
+  get popoverConfig(){
+    return this._popoverConfig;
+  }
+
   setColor(target,color){
     this[target] = color;
     this._inform();
@@ -131,6 +143,15 @@ export default class Index {
 
   setTool(state){
     this.mouseTool = state;
+    this._inform();
+  }
+
+  setPopover(props){
+    for(let key in props){
+      if(props.hasOwnProperty(key) && this._popoverConfig.hasOwnProperty(key)){
+        this._popoverConfig[key] = props[key];
+      }
+    }
     this._inform();
   }
 
@@ -298,7 +319,8 @@ export default class Index {
           this.baseConfig['general'].hasOwnProperty('canvasColor') ?
             this.baseConfig['general'].canvasColor :
             'white',
-      }
+      },
+      setPopover: (props)=> this.setPopover(props)
     };
 
     chr.features.forEach(data => {

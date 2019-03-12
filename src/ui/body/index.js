@@ -45,6 +45,7 @@ export default class CvitHeader extends Component {
             cvitView={props.cvitModel.view}
             dirty={props.cvitModel.dirty}
             setDirty={(newState)=>props.cvitModel.setDirty(newState)}
+            popover={props.cvitModel.popoverConfig}
           />
           :
           active === 'status' ?
