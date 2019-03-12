@@ -5,10 +5,11 @@ import PanTool from './overlay_controls/drawing/PanTool';
 import FreeTool from './overlay_controls/drawing/FreedrawTool';
 import EraserTool from './overlay_controls/drawing/EraserTool';
 import RectTool from './overlay_controls/drawing/RectTool';
-import Colorselect from './overlay_controls/drawing/Colorselect';
+import ColorSelector from './overlay_controls/drawing/ColorSelector';
 
 export default class CvitControls extends Component{
   render(props,state){
+    console.log('cvitControls',props);
     return (
       <div
         class={'one column'}
@@ -24,22 +25,40 @@ export default class CvitControls extends Component{
         <div class={'control-label'}>
           <span> Mouse </span>
         </div>
-        <PanTool changeModal={props.changeModal} active={props.mouseTool} selectTool={(tool)=> props.selectTool(tool)} />
-        <FreeTool changeModal={props.changeModal} active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
-        <RectTool changeModal={props.changeModal} active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
+        <PanTool
+          changeModal={props.changeModal}
+          active={props.mouseTool}
+          selectTool={(tool)=> props.selectTool(tool)}
+        />
+        <FreeTool
+          changeModal={props.changeModal}
+          active={props.mouseTool}
+          selectTool={(tool)=>props.selectTool(tool)}
+          colors={props.cColors}
+        />
+        <RectTool
+          changeModal={props.changeModal}
+          active={props.mouseTool}
+          selectTool={(tool)=>props.selectTool(tool)}
+          colors={props.cColors}
+        />
         <EraserTool changeModal={props.changeModal} active={props.mouseTool} selectTool={(tool)=>props.selectTool(tool)} />
         <hr />
         {props.mouseTool === 'free' || props.mouseTool === 'rect' ?
-          <Colorselect
+          <ColorSelector
             changeModal={props.changeModal}
+            color={props.cColors.color1}
+            setColor={props.setColor}
             target={'color1'}
           />
         :
           null
         }
         {props.mouseTool === 'rect' ?
-          <Colorselect
+          <ColorSelector
             changeModal={props.changeModal}
+            color={props.cColors.color2}
+            setColor={props.setColor}
             target={'color2'}
           />
           :

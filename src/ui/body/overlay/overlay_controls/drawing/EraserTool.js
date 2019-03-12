@@ -16,7 +16,7 @@ export default class EraserTool extends Component{
       tolerance: 5
     };
 
-    tool.omd = (e)=>{
+    tool.omd = (e) => {
       let hitTest = paper.project.hitTest(new paper.Point(e.layerX,e.layerY), hitOptions);
       if (hitTest.item.isErasable) {
         hitTest.item.remove();

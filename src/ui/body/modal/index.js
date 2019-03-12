@@ -5,8 +5,8 @@ import HelpModal from './Help';
 import ColorModal from './ColorSelect';
 
 export default class CvitModal extends Component {
-  static chooseModal(active){
-    let test = active;
+  static chooseModal(props){
+    let test = props.active;
     if(/color.*/.test(test)) test = 'color';
     switch(test){
       case 'export':
@@ -17,7 +17,9 @@ export default class CvitModal extends Component {
         return <HelpModal />;
       case 'color':
         return <ColorModal
-          target={active}
+          target={props.active}
+          cColors={props.cColors}
+          setColor={props.setColor}
         />;
       default:
         return (<div> This Menu Is Under Development </div>);
@@ -26,7 +28,7 @@ export default class CvitModal extends Component {
 
   render(props,state){
     return (
-      CvitModal.chooseModal(props.active)
+      CvitModal.chooseModal(props)
     );
   }
 }

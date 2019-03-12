@@ -7,14 +7,12 @@ export default class FreeTool extends Component{
     this.onClick = this.onClick.bind(this);
     this.state = { tool:null};
   }
+
   componentDidMount() {
     let tool = new paper.Tool();
     
     tool.name = 'free';
-    tool.omd = function (e) { // mouse down
-      if (!paper.project.color1) {
-        paper.project.color1 = new paper.Color(0, 0, 0, 1);
-      }
+    tool.omd = (e) => { // mouse down
       if(!paper.project.toolStroke){
         paper.project.toolStroke = 2;
       }
@@ -24,16 +22,16 @@ export default class FreeTool extends Component{
       path.strokeWidth = paper.project.toolStroke;
       console.log(path);
       path.isErasable = true;
-      path.strokeColor = paper.project.color1;
+      path.strokeColor = this.props.colors.color1;
       tool.path = path;
     };
 
-    tool.omm = function (e) { // mouse move
+    tool.omm =  (e) => { // mouse move
       let point = new paper.Point(e.layerX,e.layerY);
       tool.path.add(point);
     };
 
-    tool.omu = function () { //mouse up
+    tool.omu = () => { //mouse up
       tool.path.simplify(10);
     };
 

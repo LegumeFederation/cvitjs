@@ -5,17 +5,10 @@ import paper from 'paper';
  * Tool for drawing rectangles for picture annotation.
  */
 
-export default class Colorselect extends Component{
+export default class ColorSelector extends Component{
   constructor(props){
     super(props);
-    if (!paper.project.color1) {
-      paper.project.color1 = new paper.Color(0, 0, 0, 1);
-    }
-    if (!paper.project.color2) {
-      paper.project.color2 = new paper.Color(0.7, 0.8, 0.8, 0.4);
-    }
     this.onClick = this.onClick.bind(this);
-    this.state = { color:paper.projects[0][props.target]};
   }
 
   onClick(e) {
@@ -32,7 +25,7 @@ export default class Colorselect extends Component{
         >
           <i
             className={'material-icons'}
-            style={{color:state.color.toCSS()}}
+            style={{color:props.color.toCSS()}}
           >
             {'stop'}
           </i>

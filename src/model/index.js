@@ -1,3 +1,4 @@
+import paper from 'paper';
 import Query from './QueryString';
 import {parseFile} from './file';
 import {defaultConfig} from './DefaultConfig';
@@ -21,6 +22,8 @@ export default class Index {
     this._mouseTool = 'pan';
     this._dataLoaded = new CustomEvent('baseDataLoaded');
     this._trigger = false;
+    this._color1 = new paper.Color(0, 0, 0, 1);
+    this._color2 = new paper.Color(0.7, 0.8, 0.8, 0.4);
 
     parseFile('cvit.conf','ini')
       .then(response => this.baseConfig = response)
@@ -64,7 +67,6 @@ export default class Index {
 
   set active(view){
     this._active = view;
-    this._inform();
   }
 
   get config(){
@@ -81,7 +83,6 @@ export default class Index {
 
   set dirty(state){
     this._dirty = state;
-    this._inform();
   }
 
   get mouseTool(){
@@ -98,10 +99,33 @@ export default class Index {
 
   setActive(state){
     this.active = state;
+    this._inform();
   }
 
   setDirty(state){
     this.dirty = state;
+    this._inform();
+  }
+
+  get color1(){
+    return this._color1;
+  }
+
+  get color2(){
+    return this._color2;
+  }
+
+  set color1(color){
+    this._color1 = color;
+  }
+
+  set color2(color){
+    this._color2 = color;
+  }
+
+  setColor(target,color){
+    this[target] = color;
+    this._inform();
   }
 
 

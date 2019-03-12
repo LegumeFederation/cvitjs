@@ -20,7 +20,6 @@ export default class CvitHeader extends Component {
 
   render(props,state){
     let active = props.cvitModel.active;
-    console.log('modal test',active,/color.*/.test(active));
     return (
       <div class='row cvit' id={'cvit-main'}>
         {active === 'canvas' || /color.*/.test(active) ?
@@ -34,6 +33,8 @@ export default class CvitHeader extends Component {
                 props.cvitModel.setActive('canvas');
               }
             }}
+            cColors={{color1:props.cvitModel.color1, color2:props.cvitModel.color2}}
+            setColor={(target,color) => props.cvitModel.setColor(target,color)}
           /> :
           null
         }
@@ -50,6 +51,8 @@ export default class CvitHeader extends Component {
             <div className={'twelve columns'} id={'loading-div'}> "Loading Cvit Canvas" </div>
             : <CvitModal
               active={active}
+              cColors={{color1:props.cvitModel.color1,color2:props.cvitModel.color2}}
+              setColor={(target,color) => props.cvitModel.setColor(target,color)}
             />
         }
       </div>

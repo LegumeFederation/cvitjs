@@ -15,10 +15,10 @@ export default class RectTool extends Component{
   drawRect(start,end){
     let box = new paper.Path.Rectangle(start, end);
     box.strokeWidth = 2;
-    box.strokeColor = paper.project.color1;
+    box.strokeColor = this.props.colors.color1;
     box.dashArray = [2, 2];
     box.isErasable = true;
-    box.fillColor = paper.project.color2;
+    box.fillColor = this.props.colors.color2;
     paper.view.draw();
     return box;
   }
@@ -29,12 +29,12 @@ export default class RectTool extends Component{
 
     tool.omd = (e) => { // mouse down
       document.body.style.cursor = 'crosshair';
-      if (!paper.project.color1) {
-        paper.project.color1 = new paper.Color(0, 0, 0, 1);
-      }
-      if (!paper.project.color2) {
-        paper.project.color2 = new paper.Color(0.7, 0.8, 0.8, 0.4);
-      }
+     // if (!paper.project.color1) {
+     //   paper.project.color1 = new paper.Color(0, 0, 0, 1);
+     // }
+     // if (!paper.project.color2) {
+     //   paper.project.color2 = new paper.Color(0.7, 0.8, 0.8, 0.4);
+     // }
       let pt = new paper.Point(e.layerX,e.layerY);
       tool.box = this.drawRect(pt,pt);
       tool.dwnPt =  pt;

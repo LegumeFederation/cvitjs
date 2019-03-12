@@ -22,7 +22,7 @@ export default class ColorModal extends Component {
   componentDidUpdate(previousProps, previousState, previousContext) {
     if(previousProps.target !== this.props.target) {
       let s = this.state;
-      this.setPosition(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, this.props.target);
+      this.setPosition(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, this.props.cColors[this.props.target]);
       this.changeColor(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, s.sRad, s.colPrev);
     }
   }
@@ -159,7 +159,7 @@ export default class ColorModal extends Component {
     aSlide.position.y = aGra.bounds.topLeft.y;
 
     /** set pointer position and box colors */
-    this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.target);
+    this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
     this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
@@ -214,8 +214,7 @@ export default class ColorModal extends Component {
     if (paper.projects[1]) paper.projects[1].remove();
   }
 
-  setPosition (pointer,pGra,sSlide,sGra,aSlide,aGra,target){
-    let color = paper.projects[0][target];
+  setPosition (pointer,pGra,sSlide,sGra,aSlide,aGra,color){
     pointer.position.x = ((pGra.bounds.width * color.hue)/360) +  pGra.topLeft.x;
     pointer.position.y = pGra.bounds.height*-color.brightness + pGra.bounds.height + pGra.bounds.topLeft.y;
     sSlide.position.y = sGra.bounds.height*-color.saturation + sGra.bounds.height + sGra.bounds.topLeft.y;
@@ -265,13 +264,13 @@ export default class ColorModal extends Component {
   onCancel(e){
     e.preventDefault();
     let s = this.state;
-    this.setPosition(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, this.props.target);
+    this.setPosition(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, this.props.cColors[this.props.target]);
     this.changeColor(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, s.sRad, s.colPrev);
   }
 
   onConfirm(e){
     e.preventDefault();
-    paper.projects[0][this.props.target] = this.state.colPrev.fillColor;
+    this.props.setColor(this.props.target, this.state.colPrev.fillColor);
   }
 
   render(props, state) {
@@ -298,7 +297,7 @@ export default class ColorModal extends Component {
             className={'modal-confirm'}
             onClick={this.onCancel}
           >
-            Close
+            Reset
           </button>
         </div>
       </div>
