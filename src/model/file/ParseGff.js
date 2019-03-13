@@ -1,3 +1,5 @@
+import rbush from 'rbush';
+
 export function parseGff(text,seqNames=[]){
   let parsed = {};
   let gffLine = {};
@@ -59,10 +61,14 @@ export function parseGff(text,seqNames=[]){
           parsed[gffLine.feature] = {features:[]};
         }
         if (parsed[gffLine.feature][seqName] === undefined) {
-          parsed[gffLine.feature][seqName] = {features:[]};
+          parsed[gffLine.feature][seqName] = {
+            features: [],
+            itree: rbush()
+          }
         }
         parsed[gffLine.feature].features.push(gffLine);
         parsed[gffLine.feature][seqName].features.push(gffLine);
+        parsed[gffLine.feature][seqName].itree.insert({minX:gffLine.start,maxX:gffLine.end,minY:0,maxY:0,data:gffLine});
       }
     });
   return parsed;
