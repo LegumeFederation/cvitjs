@@ -42,7 +42,6 @@ export function parseGff(text,seqNames=[]){
         if(seqNames.length > 0){
           seqNames.some(seq => {
             let re = new RegExp('.*'+seq).test(seqName);
-            console.log('seqT',re,seq,seqName);
             if(re){
               seqName = seq;
               gffLine.seqName = seq;
@@ -63,12 +62,35 @@ export function parseGff(text,seqNames=[]){
         if (parsed[gffLine.feature][seqName] === undefined) {
           parsed[gffLine.feature][seqName] = {
             features: [],
-            itree: rbush()
-          }
+            itree: rbush(),
+            maxScore:{
+              value: null,
+              scoreCol: null
+            },
+            minScore:{
+              value: null,
+              scoreCol: null
+            }
+          };
         }
         parsed[gffLine.feature].features.push(gffLine);
-        parsed[gffLine.feature][seqName].features.push(gffLine);
-        parsed[gffLine.feature][seqName].itree.insert({minX:gffLine.start,maxX:gffLine.end,minY:0,maxY:0,data:gffLine});
+        let sn = parsed[gffLine.feature][seqName];
+        sn.features.push(gffLine);
+
+        /** preprocess for drawing as measure */
+        sn.itree.insert({minX:gffLine.start,maxX:gffLine.end,minY:0,maxY:0,data:gffLine});
+        let value = gffLine.attribute.value || null;
+        let scoreCol = isNaN(gffLine.score) ? null : gffLine.score;
+        let max = sn.maxScore;
+        let min = sn.minScore;
+        sn.maxScore = {
+          value: value === null && max.value === null ? null : value > max.value ? value : max.value,
+          scoreCol: scoreCol === null && max.scoreCol === null ? null : scoreCol > max.scoreCol ? scoreCol : max.scoreCol
+        };
+        sn.minScore = {
+          value: value === null && min.value === null ? null : value < min.value || min.value === null ? value : min.value,
+          scoreCol: scoreCol === null && min.scoreCol === null ? null : scoreCol < min.scoreCol || min.scoreCol === null ? scoreCol : min.scoreCol
+        };
       }
     });
   return parsed;
