@@ -8,7 +8,7 @@ export default class HeaderOption extends Component {
   }
   onClick(){
     console.log('clickity!');
-    this.props.cvitModel.active = this.props.option;
+    this.props.cvitModel.setActive(this.props.option);
   }
 
   render(props,state){

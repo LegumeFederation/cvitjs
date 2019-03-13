@@ -108,11 +108,6 @@ export function zoomCanvas(newZoom , oldZoom){
   let zoomScale = newZoom.zoom / oldZoom;
   let cl = paper.projects[0].layers['cvitLayer'];
   let rl = paper.projects[0].layers['rulersLayer'];
-  let pt = paper.projects[0].layers['pointerLayer'];
-  let ob = {x:0,y:0};
-  if(pt){
-    ob = pt.children[0].position.subtract(pt.target.position);
-  }
   //Scale drawing and rulers
   cl.scale(zoomScale,newZoom.center);
   rl.scale(1, zoomScale);
@@ -147,12 +142,6 @@ export function zoomCanvas(newZoom , oldZoom){
     lg.bounds.topLeft.y = yMin - lg.children[0].bounds.height;
   });
 
-  /** Move pointer with zoom */
-  if(pt) {
-    let delta = ob.subtract(pt.children[0].position.subtract(pt.target.position));
-    pt.children[0].translate(delta);
-  }
-
   /** draw and update zoomLevel */
   paper.projects[0].getActiveLayer().zoom = newZoom.zoom;
   paper.view.draw();
@@ -164,10 +153,7 @@ export function zoomCanvas(newZoom , oldZoom){
  */
 export function panCanvas(drag){
   let delta = new paper.Point(drag);
-  let cv = paper.projects[0].layers['cvitLayer'];
-  let pt = paper.projects[0].layers['pointerLayer'];
-  cv.translate(delta);
-  if(pt) pt.translate(delta);
+  paper.projects[0].layers['cvitLayer'].translate(delta);
   let al= paper.project.getActiveLayer();
   zoomCanvas({zoom:al.zoom}, al.zoom);
 }

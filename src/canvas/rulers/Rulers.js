@@ -15,6 +15,7 @@ export default function layoutRulers(backbone, config, view) {
   // Establish layers and core groups
 
   let baseLayer = paper.project.getActiveLayer();
+  if(paper.project.getLayers()['rulersLayer']) paper.project.getLayers['rulersLayer'].remove();
   let rulersLayer = new paper.Layer();
   rulersLayer.name = 'rulersLayer';
 

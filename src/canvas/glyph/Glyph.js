@@ -48,19 +48,19 @@ export default class Glyph {
 
     /** set glyphs stroke */
     if((config.hasOwnProperty('border') && parseInt(config.border)) ||
-       (config.hasOwnProperty('stroke_width'))
+      (config.hasOwnProperty('stroke_width'))
     ){
-     r.strokeWidth = config.hasOwnProperty('border_width') ?
-       parseInt(config.border_width) :
-       config.hasOwnProperty('stroke_width') ?
-         parseInt(config.stroke_width) :
-         2;
-     let strokeColor = config.hasOwnProperty('border_color') ?
-       config.border_color :
-       r.info.hasOwnProperty('border_color') ?
-         r.info.border_color :
-         fillColor;
-     r.strokeColor = formatColor(strokeColor);
+      r.strokeWidth = config.hasOwnProperty('border_width') ?
+        parseInt(config.border_width) :
+        config.hasOwnProperty('stroke_width') ?
+          parseInt(config.stroke_width) :
+          2;
+      let strokeColor = config.hasOwnProperty('border_color') ?
+        config.border_color :
+        r.info.hasOwnProperty('border_color') ?
+          r.info.border_color :
+          fillColor;
+      r.strokeColor = formatColor(strokeColor);
     } else {
       r.strokeWidth = 0;
     }
@@ -86,13 +86,11 @@ export default class Glyph {
       console.log('target evt',e.point);
       let pt = fGroup.localToGlobal(fGroup.getStrokeBounds().rightCenter)
         .add(new paper.Point(paper.view.element.offsetLeft,paper.view.element.offsetTop));
-      let bl = paper.project.getActiveLayer();
-      let ptrl = paper.project.layers['pointerLayer'] ? paper.project.layers['pointerLayer'] : new paper.Layer();
-      ptrl.target = fGroup;
-      ptrl.activate();
-      if (!ptrl.name) ptrl.name = 'pointerLayer';
-      if(ptrl.children.length) ptrl.removeChildren();
+      let cl = paper.projects[0].layers['cvitLayer'].children[0];
+      if(cl.children['cvitPtr']) cl.children['cvitPtr'].remove();
+      console.log('cvitLayer',cl.children);
       let ptrGrp = new paper.Group();
+      ptrGrp.name = 'cvitPtr';
       ptrGrp.strokeWidth = 2;
       ptrGrp.strokeColor = 'white';
       let innerCross = new paper.CompoundPath({
@@ -117,7 +115,7 @@ export default class Glyph {
         strokeWidth: 2
       });
       ptrGrp.addChild(outerCross);
-      bl.activate();
+      cl.addChild(ptrGrp);
       view.setPopover(
         {
           visible:true,

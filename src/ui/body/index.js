@@ -12,14 +12,9 @@ export default class CvitHeader extends Component {
     });
   }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if(paper.projects[0] && nextProps.cvitModel.active === 'canvas'){
-      paper.projects[0].activate();
-    }
-  };
-
   render(props,state){
     let active = props.cvitModel.active;
+    if(paper.project) console.log('body',active,paper.project.getActiveLayer());
     return (
       <div class='row cvit' id={'cvit-main'}>
         {active === 'canvas' || /color.*/.test(active) ?

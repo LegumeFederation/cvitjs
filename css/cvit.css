@@ -60,12 +60,12 @@
  * cvit-controls is the control panel for zoom
  * and pan interactions (zoom, reset, pan, annotate)
  */
-#cvit-controls hr{
+#cvit-controls hr {
     margin: 0.5rem 0 1rem 0;
 }
 
-#cvit-controls .control-label{
-    font-size:0.75em;
+#cvit-controls .control-label {
+    font-size: 0.75em;
     color: #666;
     text-align: center;
 }
@@ -73,18 +73,19 @@
 #cvit-controls .cvit-button {
     padding: 0;
     margin: 0;
-    border-radius:0;
+    border-radius: 0;
 }
 
 #cvit-controls .cvit-button:disabled {
-    background:darkseagreen;
-    color:#fff;
+    background: darkseagreen;
+    color: #fff;
 }
 
-#cvit-controls .cvit-button i{
-    position:relative;
+#cvit-controls .cvit-button i {
+    position: relative;
     top: 0.5rem;
 }
+
 /**
  * cvit-modal is the class for all menu modal windows
  */
@@ -108,18 +109,30 @@
     width: 50%
 }
 
+#cvit-popover {
+    position: absolute;
+    display: block;
+    max-height: 50%;
+    background: white;
+    overflow-y: scroll;
+    padding: 1em;
+}
+
+/**
+ * Footer and viewtoggle config
+ */
 #cvit-footer {
     background: #666;
     text-align: center;
     font-size: 1.5rem;
-    color:white;
+    color: white;
 }
 
-#cvit-footer #toggle-title i{
-    font-size:1.5rem;
+#cvit-footer #toggle-title i {
+    font-size: 1.5rem;
     margin: 0 2rem 0 2rem;
     color: white;
-    position:relative;
+    position: relative;
     top: 0.25rem;
     transition: all 0.2s ease;
 }
@@ -128,11 +141,12 @@
     transition: max-height 0.2s ease-in-out;
     overflow: hidden;
 }
+
 #cvit-footer .content {
     background: #ffffff;
     overflow-y: auto;
     transition: max-height 0.2s ease-in-out;
-    color:black;
+    color: black;
 
 }
 
@@ -142,30 +156,39 @@
     padding: 1rem 0 1rem 1rem;
 }
 
-#cvit-footer .control-head{
+#cvit-footer .control-head {
     text-align: center;
 }
 
 #cvit-footer .content table {
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 
 
 .group-toggle {
-    position: relative; width: 80px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    position: relative;
+    width: 80px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .group-toggle-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 0px;
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #999999;
+    border-radius: 0;
 }
+
 .group-toggle-inner {
-    display: block; width: 200%; margin-left: -100%;
+    display: block;
+    width: 200%;
+    margin-left: -100%;
     transition: margin 0.3s ease-in 0s;
 }
+
 .group-toggle-inner:before, .group-toggle-inner:after {
     display: block;
     float: left;
@@ -179,35 +202,46 @@
     border: 2px solid transparent;
     background-clip: padding-box;
 }
+
 .group-toggle-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #D4D4D4; color: #FFFFFF;
+    background-color: #D4D4D4;
+    color: #FFFFFF;
 }
+
 .group-toggle-inner:after {
     content: "OFF";
     padding-right: 10px;
     background-color: #D4D4D4;
     text-align: right;
 }
+
 .group-toggle-switch {
-    display: block; width: 30px; margin: 0px;
+    display: block;
+    width: 30px;
+    margin: 0;
     background: #A1A1A1;
-    position: absolute; top: 0; bottom: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
     right: 50px;
     transition: all 0.3s ease-in 0s;
 }
+
 .group-toggle-checkbox:checked + .group-toggle-label .group-toggle-inner {
     margin-left: 0;
 }
+
 .group-toggle-checkbox:checked + .group-toggle-label .group-toggle-switch {
-    right: 0px;
+    right: 0;
     background-color: #8FBC8F;
 }
 
 .group-toggle-checkbox {
     display: none;
 }
-.container input[type='checkbox']{
+
+.container input[type='checkbox'] {
     display: none;
 }

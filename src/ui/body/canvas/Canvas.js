@@ -3,12 +3,11 @@ import paper from 'paper';
 
 import layoutView from './LayoutView';
 import {calculateZoomAndPan, panCanvas, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
-import {popoverContents} from '../../../templates/Popover';
 
 export default class CvitCanvas extends Component{
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       isMouseDown: false
     };
@@ -17,7 +16,6 @@ export default class CvitCanvas extends Component{
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
-    if(paper.view) paper.view.draw();
   }
 
   layoutCanvasView(data,config,view){
@@ -34,6 +32,7 @@ export default class CvitCanvas extends Component{
     paper.view.zoom = zoom;
     layoutView(data, config, view);
     paper.view.draw();
+    this.props.setDirty(false);
   }
 
   componentDidMount() {
@@ -48,6 +47,7 @@ export default class CvitCanvas extends Component{
   componentWillReceiveProps(nextProps, nextContext) {
     if(paper.view) paper.view.draw();
   }
+
   componentWillUpdate(nextProps, nextState, nextContext) {
     if (paper.view) {
       paper.view.draw();
@@ -58,9 +58,7 @@ export default class CvitCanvas extends Component{
     }
   }
 
-
   componentDidUpdate(previousProps, previousState, previousContext) {
-    console.log('cdu');
     if(paper.view) {
       paper.view.draw();
       if (this.props.dirty) {
@@ -90,8 +88,8 @@ export default class CvitCanvas extends Component{
 
   onMouseDown(e){
     e.preventDefault();
+
     this.setState({isMouseDown:true});
-    console.log('omd', paper.tool);
     if(paper.tool.omd){
       paper.tool.omd(e);
     }
@@ -133,17 +131,6 @@ export default class CvitCanvas extends Component{
             onMouseUp={this.onMouseUp}
             onMouseMove={this.onMouseMove}
           />
-          <div
-            style={{
-              position:'absolute',
-              top: props.popover.position.y,
-              left: props.popover.position.x,
-              display: props.popover.visible ? 'block' : 'none',
-              background:'antiquewhite'
-            }}
-          >
-            {popoverContents(props.popover.data)}
-          </div>
       </div>
     );
   }

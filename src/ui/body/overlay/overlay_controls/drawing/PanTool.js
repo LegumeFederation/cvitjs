@@ -24,8 +24,8 @@ export default class PanTool extends Component{
       document.body.style.cursor = 'default';
     };
 
-    this.setState({tool:tool});
     tool.activate();
+    this.setState({tool:tool});
   }
 
   componentWillUnmount() {

@@ -37,7 +37,7 @@ export default class CvitFooter extends Component{
         backbone.push(bbItem);
         child.children.forEach(bbchild =>{
           let cname = bbchild.name;
-          if(cname !== name && !cname.match(/.*-label/g) && groups.indexOf(cname) === -1) {
+          if(cname && cname !== name && !cname.match(/.*-label/g) && groups.indexOf(cname) === -1) {
             groups.push(bbchild.name);
           }
         });

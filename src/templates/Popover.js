@@ -9,7 +9,7 @@ export function popoverContents(data){
       }
     }
     return(
-      <div>
+      <div className={'popover-contents'}>
         <table>
           <thead>
             <tr>
