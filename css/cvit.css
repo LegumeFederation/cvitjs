@@ -1,16 +1,18 @@
-/**
- * General CViTjs config
- * #cvit-app is the wrapper div for the entire
- * cvit application
- */
+/*
+    General CViTjs config
+    #cvit-app is the wrapper div for the entire
+    cvit application
+*/
+
 
 #cvit-app {
     max-width: 85%;
 }
 
-/**
- * cvit-header is the import/export/help menu
- * display : none to hide
+
+/*
+    cvit-header is the import/export/help menu
+    display : none to hide
  */
 
 #cvit-header {
@@ -31,9 +33,9 @@
     background-color: darkseagreen;
 }
 
-/**
- * cvit-main shows the canvas or modal menus
- * the core of cvit-js
+/*
+    cvit-main shows the canvas or modal menus
+    the core of cvit-js
  */
 
 #cvit-main {
@@ -44,11 +46,11 @@
 }
 
 /**
- * cvit-canvas is the keystone feature of cvit-js.
- * in addition to being configured here, height,width, and background
- * color may be configured in cvit.conf
- * as height, width and canvasColor.
- * is is suggested width is only changed as a last resort.
+  cvit-canvas is the keystone feature of cvit-js.
+  in addition to being configured here, height,width, and background
+  color may be configured in cvit.conf
+  as height, width and canvasColor.
+  is is suggested width is only changed as a last resort.
  */
 
 #cvit-display {
@@ -57,8 +59,8 @@
 }
 
 /**
- * cvit-controls is the control panel for zoom
- * and pan interactions (zoom, reset, pan, annotate)
+   cvit-controls is the control panel for zoom
+   and pan interactions (zoom, reset, pan, annotate)
  */
 #cvit-controls hr {
     margin: 0.5rem 0 1rem 0;
@@ -87,7 +89,7 @@
 }
 
 /**
- * cvit-modal is the class for all menu modal windows
+   cvit-modal is the class for all menu modal windows
  */
 .cvit-modal {
     overflow: hidden;
@@ -132,8 +134,9 @@
 
 
 /**
- * Footer and viewtoggle config
+   Footer and viewtoggle config
  */
+
 #cvit-footer {
     background: #666;
     text-align: center;

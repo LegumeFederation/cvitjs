@@ -60,6 +60,18 @@ export default function layoutView(data,config,view){
         cDataGroup = [key];
       }
 
+      /** Preprocessing required for 'measure' style glyphs */
+      if(config[key].glyph === 'measure'){
+        console.log('measure found',key, data);
+        view.chrOrder.forEach(chr => {
+          if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
+            let itree = data[cDataGroup[0]][chr].itree;
+            let ct = itree.all().length;
+            console.log('itree size', chr, ct);
+          }
+        });
+      }
+
       //Go through each chromosome's backbone in order
       view.chrOrder.forEach(chr => {
         //Draw features if they exist
@@ -104,10 +116,10 @@ export default function layoutView(data,config,view){
         }
       });
 
-      /** Move backbone groups to prevent overlap */
-      spreadBackbones(config,view);
     }
   }
+  /** Move backbone groups to prevent overlap */
+  spreadBackbones(config,view);
 
   /** Set background */
   let act = paper.project.getActiveLayer();
