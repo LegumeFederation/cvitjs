@@ -111,12 +111,25 @@
 
 #cvit-popover {
     position: absolute;
-    display: block;
-    max-height: 50%;
+    display: inline-block;
     background: white;
-    overflow-y: scroll;
     padding: 1em;
+    border: #666 1px solid;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 40rem;
+    width: 20rem;
 }
+
+#popover-contents {
+    display: inline-block;
+    position: relative;
+    max-height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow-y: scroll;
+}
+
 
 /**
  * Footer and viewtoggle config
@@ -204,14 +217,14 @@
 }
 
 .group-toggle-inner:before {
-    content: "ON";
+    content: 'ON';
     padding-left: 10px;
     background-color: #D4D4D4;
     color: #FFFFFF;
 }
 
 .group-toggle-inner:after {
-    content: "OFF";
+    content: 'OFF';
     padding-right: 10px;
     background-color: #D4D4D4;
     text-align: right;
