@@ -1,6 +1,6 @@
 import paper from 'paper';
 
-import {formatColor,collisionOffset} from '../../Utilities';
+import {formatColor, collisionOffset, sign} from '../../Utilities';
 import Glyph from '../Glyph';
 
 /**
@@ -13,10 +13,10 @@ import Glyph from '../Glyph';
 
 export default class Range extends Glyph{
   drawFeature(data, config, view) {
-    let featureWidth = parseInt(config.width);
+    let featureWidth = sign(config.offset) ? config.width :  config.width * -1;
     let yLoc = ((data.start - view.min) * view.yScale) + view.yOffset.offsetTop + view.yAdjust;
-    let xOffset = parseInt(config.offset);
-    let chrEdge = xOffset >= +0 ? view.chrBounds.right : view.chrBounds.left - featureWidth;
+    let xOffset = config.offset;
+    let chrEdge =  sign(xOffset) ? view.chrBounds.right : view.chrBounds.left-featureWidth;
     let xLoc = (chrEdge + xOffset);
     let point = new paper.Point(xLoc, yLoc);
     let size = new paper.Size(featureWidth, (data.end - data.start) * view.yScale);

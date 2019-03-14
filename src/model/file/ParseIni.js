@@ -24,7 +24,7 @@ export function parseIni(text){
           });
         } else { //new key
           currentConfigKey = match[1];
-          parsed[currentConfigKey] = parsed[currentConfigKey] === undefined ? {} : parsed[currentConfigKey];
+          if(!parsed.hasOwnProperty(currentConfigKey))  parsed[currentConfigKey] = {};
         }
       } else { //something = value
         confItem = element.split('=');

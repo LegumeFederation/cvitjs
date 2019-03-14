@@ -19,7 +19,7 @@ export function formatColor(color) {
 export function collisionOffset(feature,view,offset,pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
-  let offDir = offset >=+0;
+  let offDir = sign(offset);
   let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
   let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;
   let searchSpace = {
@@ -63,10 +63,10 @@ export function spreadBackbones(config,view){
   let baseGroup = al.children['cvitView'];
   let labelGroup = al.children['cvitLabels'];
   let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
-  let padding = parseInt(config.general.image_padding);
+  let padding = config.general.image_padding;
   let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
-  let offsetPadding = parseInt(config.general.chrom_spacing);
-  if(!parseInt(config.general.fixed_chrom_spacing)){ // chrom spacing is variable
+  let offsetPadding = config.general.chrom_spacing;
+  if(!config.general.fixed_chrom_spacing){ // chrom spacing is variable
     let groupW = 0;
     let groupV = 0;
     baseGroup.children.forEach(child =>{
@@ -191,4 +191,11 @@ export function calculateDistance(point, baseScale, newScale) {
   return loc;
 }
 
-
+/**
+ * returns true if value is >= +0, false if <= -0
+ * @param value
+ * @returns boolean
+ */
+export function sign(value){
+  return 1/value === 1/Math.abs(value);
+}

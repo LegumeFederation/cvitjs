@@ -261,16 +261,15 @@ export default class Index {
    */
 
   _combineObjects(base,append){
+
     if(typeof append !== 'object') return base;
     for(let key in append){
       /** add glyph/draw_as sub-configuration to given configuration object */
       if(append[key].hasOwnProperty('glyph')){
-        append[key] = this._combineObjects(base[append[key]['glyph']],append[key]);
-        console.log('glyph',append[key]);
+        append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['glyph']])),append[key]);
       }
       if(append[key].hasOwnProperty('draw_as')){
-        append[key] = this._combineObjects(base[append[key]['draw_as']],append[key]);
-        console.log('draw_as',append[key]);
+        append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['draw_as']])), append[key]);
       }
 
       if(base.hasOwnProperty(key)){

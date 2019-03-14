@@ -57,7 +57,7 @@ export default class Chromosome {
     r.thisColor = 'black';
     r.fillColor = formatColor(config.chrom_color);
 
-    if (parseInt(config.chrom_border) === 1) {
+    if (config.chrom_border === 1) {
       r.strokeWidth = config.chrom_border_width ? config.chrom_border_width : 2;
       r.strokeColor = formatColor(config.chrom_border_color);
     }
@@ -71,7 +71,7 @@ export default class Chromosome {
     let label = new paper.PointText(point);
     label.justification = 'center';
     label.content = group.name;
-    label.fontSize = parseInt(config.chrom_font_size);
+    label.fontSize = config.chrom_font_size;
     label.fillColor = formatColor(config.chrom_label_color);
     label.name = group.name + 'Label';
     labelGroup.addChild(label);

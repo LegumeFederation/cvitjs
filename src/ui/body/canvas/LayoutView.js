@@ -61,12 +61,12 @@ export default function layoutView(data,config,view){
 
       /** Preprocessing required for 'measure' style glyphs */
       if(config[key].glyph === 'measure'){
-        console.log('measure found',key, data);
         let mb = {
           min: null,
           max:null,
           valueType: config[key].value_type
         };
+
         view.chrOrder.forEach(chr => {
           if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
             let chrGroup = data[cDataGroup[0]][chr];
