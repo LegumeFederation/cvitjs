@@ -12,7 +12,6 @@ import {formatColor, spreadBackbones, zoomCanvas} from '../../../canvas/Utilitie
  * @param view
  */
 export default function layoutView(data,config,view){
-
   /** setup paper base layer's main group */
   let active = paper.project.getActiveLayer();
   active.removeChildren();
@@ -50,7 +49,7 @@ export default function layoutView(data,config,view){
     if(key !== 'general' && config.hasOwnProperty(key)) {
       //set glyph/subglyph and the data.<group> that the features can be found in.
       let cGlyph = config[key].glyph ? config[key].glyph : key;
-      let cSubglyph = config[key].draw_as ? config[key].draw_as : config[key].shape ? config[key].shape : key;
+      let cSubglyph = config[key].display ? config[key].display : config[key].shape ? config[key].shape : key;
       let cDataGroup;
       //Set data source if custom
       if(config[key].feature){
@@ -63,15 +62,25 @@ export default function layoutView(data,config,view){
       /** Preprocessing required for 'measure' style glyphs */
       if(config[key].glyph === 'measure'){
         console.log('measure found',key, data);
+        let mb = {
+          min: null,
+          max:null,
+          valueType: config[key].value_type
+        };
         view.chrOrder.forEach(chr => {
           if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
-            let itree = data[cDataGroup[0]][chr].itree;
-            let ct = itree.all().length;
-            console.log('itree size', chr, ct);
+            let chrGroup = data[cDataGroup[0]][chr];
+            let min = mb.valueType === 'value_attr' ? chrGroup.minScore.value : chrGroup.minScore.scoreCol;
+            let max = mb.valueType === 'value_attr' ? chrGroup.maxScore.value : chrGroup.maxScore.scoreCol;
+            mb.max = max > mb.max ? max : mb.max;
+            mb.min = min < mb.min || mb.min === null ? min : mb.min;
+           // let itree = data[cDataGroup[0]][chr].itree;
+           // let ct = itree.all().length;
+           // console.log('itree size', chr, ct);
           }
         });
+        view.measureConfig= mb;
       }
-
       //Go through each chromosome's backbone in order
       view.chrOrder.forEach(chr => {
         //Draw features if they exist
@@ -95,7 +104,7 @@ export default function layoutView(data,config,view){
           data[cDataGroup[0]][chr].features.forEach(data => {
             //filter for feature <source>:<type>
             if(cDataGroup[1]){
-              if(data.source !== cDataGroup) return;
+              if(data.source !== cDataGroup[1]) return;
             }
             let feature = glyph({data:data,config:config[key],view:view},cGlyph,cSubglyph);
             if(feature && feature.group){

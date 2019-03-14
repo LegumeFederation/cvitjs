@@ -77,10 +77,10 @@ export function parseGff(text,seqNames=[]){
         let sn = parsed[gffLine.feature][seqName];
         sn.features.push(gffLine);
 
-        /** preprocess for drawing as measure */
+        /** preprocess for drawing as measure -0 to cast to number if possible */
         sn.itree.insert({minX:gffLine.start,maxX:gffLine.end,minY:0,maxY:0,data:gffLine});
-        let value = gffLine.attribute.value || null;
-        let scoreCol = isNaN(gffLine.score) ? null : gffLine.score;
+        let value = isNaN(gffLine.attribute.value-0) ? null : gffLine.attribute.value-0;
+        let scoreCol = isNaN(gffLine.score-0) ? null : gffLine.score-0;
         let max = sn.maxScore;
         let min = sn.minScore;
         sn.maxScore = {

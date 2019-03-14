@@ -110,7 +110,7 @@ export function defaultConfig(){
       'width': 2,
       'enable_pileup': 1,
       'pileup_gap': 0,
-      'heat_colors':  ['red','green'],
+      'heat_colors':  'redgreen',
       'color': 'red',
       'max_distance': 25,
       'hist_perc':  0.9,

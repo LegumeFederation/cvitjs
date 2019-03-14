@@ -184,3 +184,11 @@ export function calculateZoomAndPan (current, delta, center, newScale=current) {
   center = pl.globalToLocal(center);
   return {zoom:zoomLevel, center:center};
 }
+
+
+export function calculateDistance(point, baseScale, newScale) {
+  let loc = ((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
+  return loc;
+}
+
+

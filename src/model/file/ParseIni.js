@@ -29,7 +29,9 @@ export function parseIni(text){
       } else { //something = value
         confItem = element.split('=');
         if (confItem[1] && confItem[1].trim() !== '') {
-          parsed[currentConfigKey][confItem[0].trim()] = confItem[1].trim();
+          let ci = confItem[1].trim();
+          if(!isNaN(ci-0)) ci = ci-0;
+          parsed[currentConfigKey][confItem[0].trim()] = ci;
         }
       }
     }
