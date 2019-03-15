@@ -16,10 +16,10 @@ export function formatColor(color) {
   }
 }
 
-export function collisionOffset(feature,view,offset,pileupGap) {
+export function collisionOffset(feature,view,offset,offDir, pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
-  let offDir = offset >=+0;
+
   let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
   let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;
   let searchSpace = {

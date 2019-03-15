@@ -76,7 +76,7 @@ export default class Glyph {
     if (view.pileup ) {
       let xOffset = parseInt(config.offset);
       let pGap = xOffset >= +0 ? parseInt(config.pileup_gap) : -parseInt(config.pileup_gap);
-      fGroup.translate( new paper.Point(collisionOffset(fGroup, view, xOffset, pGap) ,0));
+      fGroup.translate( new paper.Point(collisionOffset(fGroup, view, xOffset, config.offsetDir, pGap) ,0));
     }
 
     /** Attach Popover Listener */
