@@ -17,10 +17,6 @@ export default class Histogram extends Range{
     let mc = view.measureConfig;
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     let offset = calculateDistance(val,{start:config.offset, stop:config.max_distance},{start:mc.min,stop:mc.max});
-    if(sign(config.offset)){
-      range.bounds.width = offset;
-    } else {
-      range.bounds.width = -offset;
-    }
+    range.bounds.width = config.offsetDir ? offset : -offset;
   }
 }

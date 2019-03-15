@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from '../../../canvas/glyph';
 import layoutRulers from '../../../canvas/rulers/Rulers';
-import {formatColor, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
+import {formatColor, sign, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
 
 /**
  * Configure paper.project's view to reflect the current cvit model
@@ -83,7 +83,7 @@ export default function layoutView(data,config,view){
       }
       //Go through each chromosome's backbone in order
       view.chrOrder.forEach(chr => {
-        //Draw features if they exist
+        //Check if feature's target backbone exists
         if(data[cDataGroup[0]] && data[cDataGroup[0]][chr]){
           let targetChr = baseGroup.children[chr].children[chr];
           view.chrBounds = targetChr.getStrokeBounds();
@@ -99,6 +99,9 @@ export default function layoutView(data,config,view){
             view.pileupTree = keyGroup.rTree;
             view.pileupBounds = keyGroup.getStrokeBounds();
           }
+
+          //make note of offset direction to make drawing a little faster
+          config[key].offsetDir = sign(config[key].offset);
 
           //Add features to be drawn
           data[cDataGroup[0]][chr].features.forEach(data => {
