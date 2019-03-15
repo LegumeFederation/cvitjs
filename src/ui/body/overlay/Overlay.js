@@ -9,20 +9,19 @@ import ColorSelector from './overlay_controls/drawing/ColorSelector';
 
 export default class CvitControls extends Component{
   render(props,state){
-    console.log('cvitControls',props);
     return (
       <div
-        class={'one column'}
+        className={'one column'}
         id={'cvit-controls'}
       >
-        <div class={'control-label'}>
+        <div className={'control-label'}>
           <span> Zoom </span>
         </div>
         <ZoomTool changeModal={props.changeModal} zoomDir={1} />
         <ZoomTool changeModal={props.changeModal} zoomDir={-1} />
         <ResetTool changeModal={props.changeModal} />
         <hr />
-        <div class={'control-label'}>
+        <div className={'control-label'}>
           <span> Mouse </span>
         </div>
         <PanTool

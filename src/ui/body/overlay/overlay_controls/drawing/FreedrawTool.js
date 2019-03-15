@@ -10,7 +10,6 @@ export default class FreeTool extends Component{
 
   componentDidMount() {
     let tool = new paper.Tool();
-    
     tool.name = 'free';
     tool.omd = (e) => { // mouse down
       if(!paper.project.toolStroke){
@@ -20,7 +19,6 @@ export default class FreeTool extends Component{
       let point = new paper.Point(e.layerX,e.layerY);
       path.add(point);
       path.strokeWidth = paper.project.toolStroke;
-      console.log(path);
       path.isErasable = true;
       path.strokeColor = this.props.colors.color1;
       tool.path = path;

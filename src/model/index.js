@@ -39,7 +39,7 @@ export default class Index {
         this._dirty = true;
         this._tag = 'data.';
         if(qs.view ==='general') {
-          if(this.baseConfig.general.data_default){
+          if(this.baseConfig.general.hasOwnProperty('data_default')){
             this._tag += this.baseConfig.general.data_default;
           } else {
             throw new Error('Default dataset has not been configured.');
@@ -58,7 +58,6 @@ export default class Index {
         // Load configuration for view
         this.loadViewConfig(viewConfig);
         // Load _viewData for view
-        console.log('sources',dataSources);
         this.loadData(dataSources);
 
         this._inform();
@@ -217,10 +216,8 @@ export default class Index {
       this._inform();
     }
 
-    console.log('appending',file,this._viewLayout,this._viewData);
     return parseFile(file, 'gff',this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
-      .then(()=> console.log('vd',this._viewData))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
         this._dirty = true;
@@ -345,7 +342,7 @@ export default class Index {
       viewSetup.chrOrder.push(name);
     });
 
-    viewSetup.yScale = this._setYScale(viewSetup.canvas.height, viewSetup.max,viewSetup.min,viewSetup.yOffset);
+    viewSetup.yScale = Index._setYScale(viewSetup.canvas.height, viewSetup.max,viewSetup.min,viewSetup.yOffset);
 
     return viewSetup;
   }
@@ -377,7 +374,7 @@ export default class Index {
    * @private
    */
 
-  _setYScale(height,chrMax,chrMin,{offsetTop,offsetBottom=0}){
+  static _setYScale(height,chrMax,chrMin,{offsetTop,offsetBottom=0}){
     return (height-(offsetTop+offsetBottom))/(chrMax-chrMin);
   }
 }

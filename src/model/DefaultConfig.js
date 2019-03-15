@@ -108,7 +108,7 @@ export function defaultConfig(){
       'display': 'heat',
       'draw_as': 'range',
       'width': 2,
-      'enable_pileup': 1,
+      'enable_pileup': 0,
       'pileup_gap': 0,
       'heat_colors':  'redgreen',
       'color': 'red',
@@ -119,7 +119,9 @@ export function defaultConfig(){
       'draw_label': 1,
       'font_size': 6,
       'label_offset': 0,
-      'label_color': 'black'
+      'label_color': 'black',
+      'generate_bins' : 0,
+      'bin_size':0
     }
   };
 }

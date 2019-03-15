@@ -34,7 +34,7 @@ const main = () => {
     if(dataset.registerGlobal) window.cvit = _cvit;
 
     const postLoadHandler = () => {
-      console.log("CViTjs:","Data successfully loaded");
+      console.log('CViTjs:','Data successfully loaded');
       document.removeEventListener('baseDataLoaded',postLoadHandler);
     };
 
@@ -42,7 +42,6 @@ const main = () => {
     /*
 
     const postLoadHandler = () => {
-      console.log("CViTjs:","Data successfully loaded");
       //_cvit.appendData('data/test5/data2.gff');
       document.removeEventListener('baseDataLoaded',postLoadHandler);
     };

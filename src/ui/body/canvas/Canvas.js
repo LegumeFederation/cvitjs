@@ -2,7 +2,7 @@ import {h, Component} from 'preact';
 import paper from 'paper';
 
 import layoutView from './LayoutView';
-import {calculateZoomAndPan, panCanvas, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
+import {calculateZoomAndPan, zoomCanvas} from '../../../canvas/Utilities';
 
 export default class CvitCanvas extends Component{
 
@@ -39,7 +39,7 @@ export default class CvitCanvas extends Component{
     if(paper.view) paper.view.draw();
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-      paper.view.draw()
+      paper.view.draw();
     }
 
   }
@@ -83,7 +83,7 @@ export default class CvitCanvas extends Component{
     if(paper.tool.omu){
       paper.tool.omu(e);
     }
-    paper.view.draw()
+    paper.view.draw();
   }
 
   onMouseDown(e){
@@ -93,7 +93,7 @@ export default class CvitCanvas extends Component{
     if(paper.tool.omd){
       paper.tool.omd(e);
     }
-    paper.view.draw()
+    paper.view.draw();
   }
 
   onMouseMove(e){
@@ -101,12 +101,11 @@ export default class CvitCanvas extends Component{
    if(this.state.isMouseDown){
      paper.tool.omm(e); //tools are set in overlay_controls/tool
    }
-    paper.view.draw()
+    paper.view.draw();
   }
 
   onClick(e){
     e.preventDefault();
-    console.log('click',e,paper.view.getEventPoint(e));
   }
 
   render(props,state){
@@ -122,15 +121,15 @@ export default class CvitCanvas extends Component{
         className={'eleven columns'}
         id={'cvit-display'}
       >
-          <canvas
-            id={'cvit-canvas'}
-            style={computedStyle}
-            onWheel={this.zoomOnMouse}
-            onClick={this.onClick}
-            onMouseDown={this.onMouseDown}
-            onMouseUp={this.onMouseUp}
-            onMouseMove={this.onMouseMove}
-          />
+        <canvas
+          id={'cvit-canvas'}
+          style={computedStyle}
+          onWheel={this.zoomOnMouse}
+          onClick={this.onClick}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+          onMouseMove={this.onMouseMove}
+        />
       </div>
     );
   }

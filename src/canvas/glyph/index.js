@@ -29,6 +29,6 @@ export default function glyph({data,config,view},glyph,subglyph=glyph){
       return new Measure(data, config, view, subglyph);
 
     default:
-      console.log(glyph+':'+subglyph+' is not supported');
+      console.log(`${glyph}:${subglyph} is not supported`);
   }
 }

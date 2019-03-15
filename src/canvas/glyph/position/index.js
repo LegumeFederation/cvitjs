@@ -12,8 +12,6 @@ export default function Position(data,config,view,subglyph){
       return new Circle(data,config,view);
 
     default:
-      console.log('g-s not supp yet', glyph, subglyph);
-     // return;
-      //throw new Error(glyph + ':' + subglyph + ' is not a valid glyph combination.');
+      console.log(`${subglyph} is not supported yet`);
   }
 }

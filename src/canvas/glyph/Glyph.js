@@ -83,12 +83,10 @@ export default class Glyph {
     //TODO: Attach Popover
     r.onClick = (e) => {
       e.preventDefault();
-      console.log('target evt',e.point);
       let pt = fGroup.localToGlobal(fGroup.getStrokeBounds().rightCenter)
         .add(new paper.Point(paper.view.element.offsetLeft,paper.view.element.offsetTop));
       let cl = paper.projects[0].layers['cvitLayer'].children[0];
       if(cl.children['cvitPtr']) cl.children['cvitPtr'].remove();
-      console.log('cvitLayer',cl.children);
       let ptrGrp = new paper.Group();
       ptrGrp.name = 'cvitPtr';
       ptrGrp.strokeWidth = 2;
@@ -131,13 +129,6 @@ export default class Glyph {
     };
 
     return fGroup;
-  }
-
-  /**
-   * simple console log to make sure class is loading properly
-   */
-  static test() {
-    console.log('Access of centromere glyph');
   }
 
   /**

@@ -49,7 +49,7 @@ export default class ExportModal extends Component {
   render(props,state){
     console.log('proj',paper.project.view.getViewSize());
     return(
-      <div class={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+      <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
         <h4> Export Image </h4>
         <p> Export the current view as an image.</p>
         <hr />
@@ -97,7 +97,7 @@ export default class ExportModal extends Component {
             </tr>
           </tbody>
         </form>
-        <button class={'modal-confirm'}
+        <button className={'modal-confirm'}
           onClick={()=>this.onClick()}
         > Export Image </button>
       </div>

@@ -13,7 +13,7 @@ export default class CvitUI extends Component {
         <CvitHeader cvitModel={props.cvitModel} />
         <CvitBody cvitModel={props.cvitModel} />
         {props.cvitModel.popoverConfig.visible ?
-          <InformationPopover popoverData={props.cvitModel.popoverConfig}/>
+          <InformationPopover popoverData={props.cvitModel.popoverConfig} />
           :
           null
         }

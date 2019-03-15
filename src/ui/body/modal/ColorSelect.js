@@ -275,7 +275,7 @@ export default class ColorModal extends Component {
 
   render(props, state) {
     return (
-      <div class={'eleven columns cvit cvit-modal'} id={'export-modal'}>
+      <div className={'eleven columns cvit cvit-modal'} id={'export-modal'}>
         <h4> Color Select </h4>
         {props.target === 'color1' ?
           <p> Change the stroke color and width of the freedraw and rectangle tools.</p>

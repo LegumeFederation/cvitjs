@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import {h} from 'preact'; //needed to parse JSX properly
 
 export function popoverContents(data) {
 
@@ -9,7 +9,7 @@ export function popoverContents(data) {
         attributes.push((<tr>
           <th>{key}</th>
           <th>{feature.attribute[key]}</th>
-        </tr>))
+        </tr>));
       }
     }
     return (
@@ -42,10 +42,10 @@ export function popoverContents(data) {
           </tbody>
         </table>
       </div>
-    )
+    );
   });
 
-  return(
+  return (
     <div id={'popover-contents'}>
       <h5> Selection </h5>
       <hr/>
@@ -53,6 +53,6 @@ export function popoverContents(data) {
         {attributeContents}
       </div>
     </div>
-  )
+  );
 }
 

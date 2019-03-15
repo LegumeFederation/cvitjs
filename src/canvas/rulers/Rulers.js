@@ -37,12 +37,10 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
 
-  console.log('CViTjs: Drawing rulers');
   try {
     //Draw right Ruler
     rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
     rulerConfig.xOffset = paper.view.size.width - rulerConfig.xOffset;
-    //textGroup.maxOff = textGroup.w;
     //Draw left Ruler
     rulerGroup.addChild(_drawRuler(rulerConfig, 'right', 0));
 

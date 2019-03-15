@@ -12,7 +12,7 @@ export default class ImportModal extends Component {
 
   render(props,state){
     return(
-      <div class={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+      <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
         <h4> Import Data </h4>
         <p> Import your data locally to view it alongside the current image.</p>
         <hr />

@@ -1,12 +1,11 @@
-import paper from 'paper';
-import Range from '../range/Range'
-import {calculateDistance, sign} from '../../Utilities';
+import Range from '../range/Range';
+import {calculateDistance} from '../../Utilities';
 
 /**
- * @file Glyph for drawing ranges, a feature with length placed beside
- *   the chromosome.
+ * @file Glyph for drawing a histogram bin, a feature with length and depth
+ * placed beside the chromosome.
  * @author awilkey
- * @module draw/glyph/range
+ * @module draw/glyph/distance
  *
  */
 

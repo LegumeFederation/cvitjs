@@ -7,7 +7,7 @@ export default class HelpModal extends Component {
 
   render(props,state){
     return(
-      <div class={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+      <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
         <h4> Help and About </h4>
         <hr />
         <h5>About</h5>

@@ -7,7 +7,6 @@ export default class HeaderOption extends Component {
     });
   }
   onClick(){
-    console.log('clickity!');
     this.props.cvitModel.setActive(this.props.option);
   }
 
@@ -15,7 +14,7 @@ export default class HeaderOption extends Component {
     let compClass = 'three columns head-item';
     if(props.cvitModel.active === props.option) compClass +=' active';
     return(
-      <div class={compClass}
+      <div className={compClass}
         onClick={() => this.onClick()}
       >
         {HeaderOption.capitalise(props.option)}

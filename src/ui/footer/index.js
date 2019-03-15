@@ -7,7 +7,6 @@ export default class CvitFooter extends Component{
   constructor(){
     super();
     this.state = {visible:false};
-    console.log('constructing new footer');
   }
 
   onClick(){
@@ -67,11 +66,11 @@ export default class CvitFooter extends Component{
       <div>
         <table>
           <tr>
-            <td class={'control-head'} colSpan={5}><h5> Backbone </h5></td>
+            <td className={'control-head'} colSpan={5}><h5> Backbone </h5></td>
           </tr>
           {bbToggles}
           <tr>
-            <td class={'control-head'} colSpan={5}><h5> Feature Groups </h5></td>
+            <td className={'control-head'} colSpan={5}><h5> Feature Groups </h5></td>
           </tr>
           {groupToggles}
         </table>
@@ -84,7 +83,7 @@ export default class CvitFooter extends Component{
       <footer className={'cvit'} id={'cvit-footer'}>
         <div className={'row'} >
           <div
-            class={'twelve columns'}
+            className={'twelve columns'}
             id={'footer-toggle'}
             onClick={()=> this.onClick()}
           >
@@ -101,7 +100,7 @@ export default class CvitFooter extends Component{
           style={{maxHeight:state.visible ? 200 : 0}}
         >
           <div
-            class={'twelve columns content'}
+            className={'twelve columns content'}
             style={{maxHeight:state.visible ? 200 : 0}}
           >
             {this.generateToggles()}
