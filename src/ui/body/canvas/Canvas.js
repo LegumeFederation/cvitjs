@@ -1,7 +1,7 @@
 import {h, Component} from 'preact';
 import paper from 'paper';
 
-import layoutView from './LayoutView';
+import layoutView from '../../../canvas/LayoutView';
 import {calculateZoomAndPan, zoomCanvas} from '../../../canvas/Utilities';
 
 export default class CvitCanvas extends Component{

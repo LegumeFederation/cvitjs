@@ -1,9 +1,9 @@
 import paper from 'paper';
 import rbush from 'rbush';
 
-import glyph from '../../../canvas/glyph';
-import layoutRulers from '../../../canvas/rulers/Rulers';
-import {formatColor, sign, spreadBackbones, zoomCanvas} from '../../../canvas/Utilities';
+import glyph from './glyph';
+import layoutRulers from './rulers/Rulers';
+import {formatColor, sign, spreadBackbones, zoomCanvas} from './Utilities';
 
 /**
  * Configure paper.project's view to reflect the current cvit model
