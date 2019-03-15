@@ -121,7 +121,8 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'black',
       'generate_bins' : 0,
-      'bin_size':0
+      'bin_size':0,
+      'bin_count':0
     }
   };
 }
