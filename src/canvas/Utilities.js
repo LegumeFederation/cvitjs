@@ -19,7 +19,7 @@ export function formatColor(color) {
 export function collisionOffset(feature,view,offset,pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
-  let offDir = offsetSign(offset);
+  let offDir = offset >=+0;
   let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
   let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;
   let searchSpace = {
@@ -55,49 +55,47 @@ export function collisionOffset(feature,view,offset,pileupGap) {
 
 export function spreadBackbones(config,view){
   /** scale cvitView to 1 to prevent sizing to current zoom */
-  try {
-    let al = paper.project.layers['cvitLayer'];
-    let z = al.zoom || 1;
-    al.scale(1 / z);
+  let al = paper.projects[0].getActiveLayer();
+  let z = al.zoom || 1;
+  al.scale(1/z);
 
-    /** Calculate spacing between backbones */
-    let baseGroup = al.children['cvitView'];
-    let labelGroup = al.children['cvitLabels'];
-    let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
-    let padding = config.general.image_padding;
-    let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
-    let offsetPadding = config.general.chrom_spacing;
-    if (!config.general.fixed_chrom_spacing) { // chrom spacing is variable
-      let groupW = 0;
-      let groupV = 0;
-      baseGroup.children.forEach(child => {
-        if (child.visible) {
-          groupW += child.getStrokeBounds().width;
-          groupV++;
-        }
-      });
-      let calcPadding = ((view.rightEdge - view.leftEdge) - groupW - (2 * padding)) / (groupV + 1);
-      offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
-    }
-
-    /** Move backbones */
-    view.chrOrder.forEach((chr) => {
-      let chrGroup = baseGroup.children[chr];
-      let lb = labelGroup.children[`${chr}-label`];
-      if (chrGroup.visible) {
-        let chrLeft = chrGroup.getStrokeBounds().left;
-        chrGroup.translate(new paper.Point(lastEdge - chrLeft + offsetPadding, 0));
-        lastEdge = chrGroup.getStrokeBounds().right;
-        lb.position.x = chrGroup.children[chr].position.x;
-        lb.visible = true;
-      } else {
-        lb.visible = false;
+  /** Calculate spacing between backbones */
+  let baseGroup = al.children['cvitView'];
+  let labelGroup = al.children['cvitLabels'];
+  let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
+  let padding = parseInt(config.general.image_padding);
+  let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
+  let offsetPadding = parseInt(config.general.chrom_spacing);
+  if(!parseInt(config.general.fixed_chrom_spacing)){ // chrom spacing is variable
+    let groupW = 0;
+    let groupV = 0;
+    baseGroup.children.forEach(child =>{
+      if(child.visible){
+        groupW += child.getStrokeBounds().width;
+        groupV++;
       }
     });
+    let calcPadding = ((view.rightEdge-view.leftEdge) - groupW - (2*padding))/(groupV+1);
+    offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
+  }
 
-    /** scale back */
-    al.scale(z);
-  } catch (e) {console.log('lv error',e);}
+  /** Move backbones */
+  view.chrOrder.forEach((chr) => {
+    let chrGroup = baseGroup.children[chr];
+    let lb = labelGroup.children[`${chr}-label`];
+    if (chrGroup.visible) {
+      let chrLeft = chrGroup.getStrokeBounds().left;
+      chrGroup.translate(new paper.Point(lastEdge - chrLeft + offsetPadding, 0));
+      lastEdge = chrGroup.getStrokeBounds().right;
+      lb.position.x = chrGroup.children[chr].position.x;
+      lb.visible = true;
+    } else {
+      lb.visible = false;
+    }
+  });
+
+  /** scale back */
+  al.scale(z);
 }
 
 /**
@@ -193,11 +191,6 @@ export function calculateDistance(point, baseScale, newScale) {
   return loc;
 }
 
-/**
- * returns true if value is >= +0, false if <= -0
- * @param value
- * @returns boolean
- */
 export function offsetSign(value){
   return 1/value === 1/Math.abs(value);
 }
