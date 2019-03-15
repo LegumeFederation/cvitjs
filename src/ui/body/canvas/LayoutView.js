@@ -101,7 +101,7 @@ export default function layoutView(data,config,view){
           }
 
           //make note of offset direction to make drawing a little faster
-          config[key].offsetDir = sign(config[key].offset);
+          if(config[key].hasOwnProperty('offset')) config[key].offsetDir = sign(config[key].offset);
 
           //Add features to be drawn
           data[cDataGroup[0]][chr].features.forEach(data => {
