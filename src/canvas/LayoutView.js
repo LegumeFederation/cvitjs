@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from './glyph';
 import layoutRulers from './rulers/Rulers';
-import {formatColor, sign, spreadBackbones, zoomCanvas} from './Utilities';
+import {formatColor, offsetSign, spreadBackbones, zoomCanvas} from './Utilities';
 
 /**
  * Configure paper.project's view to reflect the current cvit model
@@ -173,7 +173,7 @@ export default function layoutView(data,config,view){
           }
 
           //make note of offset direction to make drawing a little faster
-          if(config[key].hasOwnProperty('offset')) config[key].offsetDir = sign(config[key].offset);
+          if(config[key].hasOwnProperty('offset')) config[key].offsetDir = offsetSign(config[key].offset);
           let g = data[cDataGroup[0]][chr];
           //set feature group to draw
           let dg = view.hasOwnProperty('measureConfig') && view.measureConfig.generateBin !== 'pre' ?

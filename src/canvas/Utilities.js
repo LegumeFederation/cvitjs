@@ -19,7 +19,7 @@ export function formatColor(color) {
 export function collisionOffset(feature,view,offset,pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
-  let offDir = sign(offset);
+  let offDir = offsetSign(offset);
   let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
   let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;
   let searchSpace = {
@@ -198,6 +198,6 @@ export function calculateDistance(point, baseScale, newScale) {
  * @param value
  * @returns boolean
  */
-export function sign(value){
+export function offsetSign(value){
   return 1/value === 1/Math.abs(value);
 }
