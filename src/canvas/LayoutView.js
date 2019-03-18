@@ -73,7 +73,7 @@ export default function layoutView(data,config,view){
           : config[key]['bin_size'] ? 'size'
             : config[key]['bin_count'] ? 'count' : 'auto';
 
-        if (mb.generateBin === 'size') mb.range = config[key]['bin_size'];
+        if (mb.generateBin === 'size') mb.range[0] = config[key]['bin_size'];
         /** calculation of data groups */
         if (mb.generateBin !== 'pre') {
           mb.valueType = 'value_attr';
