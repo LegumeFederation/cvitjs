@@ -122,7 +122,9 @@ export function defaultConfig(){
       'label_color': 'black',
       'generate_bins' : 0,
       'bin_size':0,
-      'bin_count':0
+      'bin_count':0,
+      'bin_min': 0,
+      'bin_max' : 0
     }
   };
 }
