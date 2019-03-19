@@ -20,7 +20,9 @@ import {formatColor, collisionOffset} from '../Utilities';
 
 export default class Glyph {
   constructor(data, config, view) {
-    this.group = this.formatGlyph(data, config, view);
+    /* not passing constructor allows us to call Glyphs to access functions without
+       the time cost of initial draw, used for measures */
+    if(data) this.group = this.formatGlyph(data, config, view);
   }
 
   // getters and setters

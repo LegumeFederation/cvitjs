@@ -32,3 +32,4 @@ export default function glyph({data,config,view},glyph,subglyph=glyph){
       console.log(`${glyph}:${subglyph} is not supported`);
   }
 }
+
