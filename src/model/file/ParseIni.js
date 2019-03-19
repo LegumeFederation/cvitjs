@@ -1,7 +1,7 @@
 export function parseIni(text){
   let parsed = {};
   let currentConfigKey = '';
-  let confItem = {};
+  let confItem;
   let conf = text.split('\n');
   conf.forEach((element) => {
     if (element.match(/^[^#;]/)) { //filter out comment lines # or ;
@@ -10,18 +10,12 @@ export function parseIni(text){
         //distinguish between [Configheader] key or something = [array]
         if(element.match(/=/)){ //something = array
           confItem = element.split('=');
-          confItem[1]= confItem[1].trim().replace(/[[\]]/g, '');
-          let confArray = confItem[1].split(',');
-          confArray.forEach(item => {
-            if (item.trim() !== '') {
-              if(parsed[currentConfigKey][confItem[0].trim()]) {
-                parsed[currentConfigKey][confItem[0].trim()].push(item.trim());
-              } else {
-                parsed[currentConfigKey][confItem[0].trim()] = [item.trim()];
-              }
-            }
-
-          });
+          let confArray = match[1].trim().split(/[\s]*,[\s]*/);
+          if(parsed[currentConfigKey][confItem[0].trim()]) {
+            parsed[currentConfigKey][confItem[0].trim()].concat(confArray);
+          } else {
+            parsed[currentConfigKey][confItem[0].trim()] = confArray;
+          }
         } else { //new key
           currentConfigKey = match[1];
           if(!parsed.hasOwnProperty(currentConfigKey))  parsed[currentConfigKey] = {};
