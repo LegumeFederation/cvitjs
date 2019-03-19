@@ -108,13 +108,13 @@ export default function layoutView(data,config,view){
               let ct = 0;
               let r = mb.generateBin !== 'count' ? mb.range[0] : mb.range[i];
               /** fudge range to not overflow backbone */
-              let bin = Math.round((target.end - target.start)/r);
-              r = (target.end - target.start)/bin; //
+              let bin = Math.floor(Math.abs(target.end - target.start)/r);
+              r = Math.abs(target.end - target.start)/bin;
               let pos = target.start;
               let end = target.end;
               let measureFeatures = [];
               /** generate features */
-              for(pos; pos < end; pos+=r) {
+              for(pos; pos <= end && ct < bin; pos+=r) {
                 let val = itree.search({minX: pos, maxX: pos + r, minY: 0, maxY: 0}).length;
                 measureFeatures.push({
                   seqName: target.seqName,

@@ -19,16 +19,17 @@ export default class Heat extends Glyph{
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     let fc;
     let colorArray = config.heat_colors;
-    if(colorArray === 'redgreen') colorArray = ['red','green'];
-    if(colorArray === 'greyscale') colorArray = ['black','white'];
+    if(colorArray === 'redgreen') colorArray = ['#FF0000','#00FF00'];
+    if(colorArray === 'greyscale') colorArray = ['#000000','#ffffff'];
     if( val <= mc.min) {
-      //val = mc.min;
+      val = mc.min;
       fc = formatColor(colorArray[0]);
     } else if( val >= mc.max){
       fc = formatColor(colorArray[colorArray.length-1]);
     } else {
       fc = calculateColor(colorArray, mc.min, mc.max, val);
     }
+
     this.group = this.formatGlyph(data, config, view);
     this.group.fillColor = fc;
     config.draw_as === 'marker' ? this.group.strokeColor = fc : this.group.fillColor = fc;

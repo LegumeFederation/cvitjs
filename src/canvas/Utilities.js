@@ -9,22 +9,18 @@ export function formatColor(color) {
       color = parseFloat('.' + grey[1]);
     }
   }
-  if (color[0] === '#') {
-    return color;
-  } else {
     return new paper.Color(color);
-  }
 }
 
 export function calculateColor(colorArray,min,max,val){
-  let stop_dist = Math.abs(max-min)/(colorArray.length-1);
+  val = calculateDistance(val,{start:0,stop:1},{start:min,stop:max});
+  let stop_dist = 1/(colorArray.length-1);
   let cval1 = Math.abs(Math.floor(val/stop_dist));
   let cval2 = Math.abs(Math.ceil(val/stop_dist));
   if(cval1 === cval2) return formatColor(colorArray[cval1]);
   let color1 = formatColor(colorArray[cval1]).components;
   let color2 = formatColor(colorArray[cval2]).components;
-
-  let weight = calculateDistance(val,{start:0,stop:1},{start:min+(cval1*stop_dist),stop:min+(cval2*stop_dist)});
+  let weight = calculateDistance(val,{start:0,stop:1},{start:(cval1*stop_dist),stop:(cval2*stop_dist)});
   let invWeight = 1-weight;
 
  return new paper.Color(
