@@ -16,6 +16,24 @@ export function formatColor(color) {
   }
 }
 
+export function calculateColor(colorArray,min,max,val){
+  let stop_dist = Math.abs(max-min)/(colorArray.length-1);
+  let cval1 = Math.abs(Math.floor(val/stop_dist));
+  let cval2 = Math.abs(Math.ceil(val/stop_dist));
+  if(cval1 === cval2) return formatColor(colorArray[cval1]);
+  let color1 = formatColor(colorArray[cval1]).components;
+  let color2 = formatColor(colorArray[cval2]).components;
+
+  let weight = calculateDistance(val,{start:0,stop:1},{start:min+(cval1*stop_dist),stop:min+(cval2*stop_dist)});
+  let invWeight = 1-weight;
+
+ return new paper.Color(
+    (color2[0]*weight + color1[0]*invWeight) ,
+    (color2[1]*weight + color1[1]*invWeight) ,
+    (color2[2]*weight + color1[2]*invWeight)
+ );
+}
+
 export function collisionOffset(feature,view,offset,offDir, pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
@@ -126,7 +144,6 @@ export function zoomCanvas(newZoom , oldZoom){
   }
   // move rulers if needed
   let yMin = cl.children['cvitView'].bounds.topLeft.y;
-  let yMax = cl.children['cvitView'].bounds.bottomRight.y;
   rulers.children.forEach(child => {
     let baseRuler;
     if(child.children.hasOwnProperty('rulerLeft')){
@@ -135,7 +152,6 @@ export function zoomCanvas(newZoom , oldZoom){
       baseRuler = child.children['rulerRight'];
     }
     baseRuler.bounds.topLeft.y = yMin;
-    baseRuler.bounds.bottomRight.y = yMax;
     let tg = child.children['rulerTics'];
     let lg = child.children['rulerLabels'];
     tg.bounds.topLeft.y = yMin;
