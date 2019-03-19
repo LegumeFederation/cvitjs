@@ -107,8 +107,8 @@ export default function layoutView(data,config,view){
               let viewTarget = data[cDataGroup[0]][chr].features[0];
               let ct = 0;
               let r = mb.generateBin !== 'count' ? mb.range[0] : mb.range[i];
-              /** fudge range to not overflow backbone */
-              let bin = Math.floor(Math.abs(target.end - target.start)/r);
+              /** fudge range to not overflow backbone  ceil as you want at least 1 bin per bb*/
+              let bin = Math.ceil(Math.abs(target.end - target.start)/r);
               r = Math.abs(target.end - target.start)/bin;
               let pos = target.start;
               let end = target.end;
