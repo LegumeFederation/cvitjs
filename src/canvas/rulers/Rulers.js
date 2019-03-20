@@ -33,10 +33,11 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.xOffset = view.xOffset;
   rulerConfig.scale = view.yScale;
   rulerConfig.color = config.general.ruler_color;
+  rulerConfig.ff = config.general.ruler_font_face;
   rulerConfig.width = parseInt(config.general.tick_line_width);
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
-
+  // TODO: draw one or no rulers
   try {
     //Draw right Ruler
     rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
@@ -108,6 +109,7 @@ function _drawRuler(rc, side, dir) {
   label = new paper.PointText(labelX, ticP.y);
   label.content = min;
   label.fontSize = rulerFontSize + 'px';
+  label.fontFamily = rc.ff;
   if (dir !== 1) {
     label.position.x -= label.bounds.width;
   }

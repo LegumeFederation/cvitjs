@@ -313,19 +313,20 @@ export default class Index {
         width: this.baseConfig[this._tag].hasOwnProperty('width') ?
           parseInt(this.baseConfig[this._tag].width) :
           this.baseConfig['general'].hasOwnProperty('width') ?
-            parseInt(this.baseConfig['general'].width) :
-            0,
+            parseInt(this.baseConfig['general'].width) : 0,
         height: this.baseConfig[this._tag].hasOwnProperty('height') ?
           parseInt(this.baseConfig[this._tag].height):
           this.baseConfig['general'].hasOwnProperty('height') ?
-            parseInt(this.baseConfig['general'].height) :
-            600,
+            parseInt(this.baseConfig['general'].height) : 600,
         color: this.baseConfig[this._tag].hasOwnProperty('canvasColor') ?
           parseInt(this.baseConfig[this._tag].canvasColor):
           this.baseConfig['general'].hasOwnProperty('canvasColor') ?
-            this.baseConfig['general'].canvasColor :
-            'white',
+            this.baseConfig['general'].canvasColor : 'white',
       },
+      viewControls: this.baseConfig[this._tag].hasOwnProperty('displayControls') ?
+        this.baseConfig[this._tag].displayControls:
+          this.baseConfig['general'].hasOwnProperty('displayControls') ?
+            this.baseConfig['general'].displayControls : 'full',
       setPopover: (props)=> this.setPopover(props)
     };
 

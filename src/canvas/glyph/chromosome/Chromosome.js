@@ -70,6 +70,7 @@ export default class Chromosome {
 
     let label = new paper.PointText(point);
     label.justification = 'center';
+    label.fontFamily = config.chrom_font_face;
     label.content = group.name;
     label.fontSize = config.chrom_font_size;
     label.fillColor = formatColor(config.chrom_label_color);

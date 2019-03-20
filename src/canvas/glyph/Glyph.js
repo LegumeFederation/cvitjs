@@ -82,7 +82,6 @@ export default class Glyph {
     }
 
     /** Attach Popover Listener */
-    //TODO: Attach Popover
     r.onClick = (e) => {
       e.preventDefault();
       let pt = fGroup.localToGlobal(fGroup.getStrokeBounds().rightCenter)

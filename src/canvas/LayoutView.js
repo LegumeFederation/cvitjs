@@ -259,10 +259,10 @@ function _setTitle(config){
   bg.name = 'cvitTitle';
   let cvitTitle = config.general.title.split(/<[/i]+>/);
   let titleLoc;
-  let titleSize = parseInt(config.general.title_font_size);
+  let titleSize = config.general.title_font_size;
   let titleX;
   let titleY;
-  if (config.general.title_location) {
+  if (config.general.hasOwnProperty('title_location')) {
     let titlePos = config.general.title_location.match(/\((.*),(.*)\)/);
     titleX = parseInt(titlePos[1]);
     titleY = parseInt(titlePos[2]) + titleSize;
@@ -277,10 +277,11 @@ function _setTitle(config){
   titleLoc = new paper.Point(titleX, titleY);
   for (let i = 0; i < cvitTitle.length; i++) {
     let title = new paper.PointText(titleLoc);
+    title.fontFamily = config.general.title_font_face;
     title.content = cvitTitle[i];
-    title.fontSize = titleSize;
+    title.fontSize =  titleSize;
     title.fontWeight = (i % 2) === 1 ? 'Italic' : 'normal';
-    title.fillColor = formatColor(config.general.title_color);
+    title.fillColor = formatColor(config.general.title_font_color);
     titleLoc.x += title.getStrokeBounds().width;
   }
   act.activate();

@@ -77,8 +77,9 @@ In general, the following conventions are used:
 | ---- | ---- |
 | (boolean) | 0 or 1 |
 | (color) | HTML color word, hexvalue or 'gray00 - gray100' for quick gray percentage |
+| fontDefault | ''Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif' |
 
-Sizes are generally in pixels.
+Sizes are generally in pixels, fontDefault is listed here to avoid cluttering the tables.
 
 ### [general]
 
@@ -88,7 +89,7 @@ Sizes are generally in pixels.
 | ---- | ---- | ---- |
 | title | none |  Label for image. |
 | title_height | 20 | Space allowance for title in pixels, can ignore if font face and size set |
-| title_font_face | CSS page default | Font face to use for title, ignored if empty |
+| title_font_face | fontDefault | Font face to use for title, ignored if empty |
 | title_font_size | 10 |Title font size in points, used only in conjunction with font_face |
 | title_color | black | Title font color |
 | title_location | none | Title location as x,y coords, ignored if missing |
@@ -105,7 +106,7 @@ A "chromosome" can be any sort of contiguous sequence: chromosome, arm, contig, 
 | chrom_spacing | 90 | Number of pixles between chromosomes |
 | chrom_color | gray50 | (color) Fill color for the chromosome bar |
 | chrom_border_color | black | Border color for the chromosome bar |
-| chrom_font_face | | Fontface to use for labels |
+| chrom_font_face | fontDefault | Fontface to use for labels |
 | chrom_font_size | 10 | Font size for chromosome labels in points. |
 | chrom_label_color | gray50 | Color of chromosome labels |
 
@@ -117,7 +118,7 @@ In addition the following options have been added from the legacy format:
 | chrom_padding_bottom | 50 | pixles between stop of talles chromosome and bottom of canvas |
 | chrom_border_size | 2 | width of chromosome border |
 
-
+### Ruler configuration 
 ; The ruler is a guide down either side of image showing units
 ;   0=none, 1=both, L=left side only, R=right side only
 ; TYPE: enum|VALUES: 0,1,L,R|DEFAULT: 1
