@@ -16,29 +16,29 @@ export function popoverContents(data) {
       <div className={'popover-contents'}>
         <table>
           <thead>
-          <tr>
-            <th> Name:</th>
-            <th> {feature.attribute.id || i} </th>
-          </tr>
+            <tr>
+              <th> Name:</th>
+              <th> {feature.attribute.id || i} </th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th> Start:</th>
-            <th> {feature.start} </th>
-          </tr>
-          <tr>
-            <th> End:</th>
-            <th> {feature.end} </th>
-          </tr>
-          <tr>
-            <th> Strand:</th>
-            <th> {feature.strand} </th>
-          </tr>
-          <tr>
-            <th> Score:</th>
-            <th> {feature.strand} </th>
-          </tr>
-          {attributes}
+            <tr>
+              <th> Start:</th>
+              <th> {feature.start} </th>
+            </tr>
+            <tr>
+              <th> End:</th>
+              <th> {feature.end} </th>
+            </tr>
+            <tr>
+              <th> Strand:</th>
+              <th> {feature.strand} </th>
+            </tr>
+            <tr>
+              <th> Score:</th>
+              <th> {feature.strand} </th>
+            </tr>
+            {attributes}
           </tbody>
         </table>
       </div>
@@ -48,7 +48,7 @@ export function popoverContents(data) {
   return (
     <div id={'popover-contents'}>
       <h5> Selection </h5>
-      <hr/>
+      <hr />
       <div className={'popover-details'}>
         {attributeContents}
       </div>

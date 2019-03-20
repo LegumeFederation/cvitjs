@@ -44,7 +44,8 @@ export default {
     // linter (see .eslintrc.json)
     eslint({
       exclude: [
-        'src/**/*.css'
+        'src/**/*.css',
+        'css/**/*.css'
       ]
     }),
     nodeResolve({

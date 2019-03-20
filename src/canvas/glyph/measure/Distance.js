@@ -1,6 +1,6 @@
 import Glyph from '../Glyph';
 import getDrawFeature from './drawAsHelper';
-import {calculateDistance,calculateColor} from '../../Utilities';
+import {calculateDistance} from '../../Utilities';
 
 /**
  * @file Glyph for drawing a histogram bin, a feature with length and depth
@@ -13,7 +13,7 @@ import {calculateDistance,calculateColor} from '../../Utilities';
 export default class Distance extends Glyph{
   constructor(data, config, view){
     super();
-    this.drawFeature = getDrawFeature({data,config,view},config.draw_as,config.shape);
+    this.drawFeature = getDrawFeature(config.draw_as,config.shape);
     let mc = view.measureConfig;
     this.group = this.formatGlyph(data, config, view);
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;

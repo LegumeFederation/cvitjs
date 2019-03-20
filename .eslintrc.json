@@ -14,7 +14,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console" : ["warn"],
+    "no-console" : ["off"],
     "linebreak-style": [
       "error",
       "unix"

@@ -136,13 +136,13 @@ export default function layoutView(data,config,view){
                 if( !config[key]['bin_max']) {
                   mb.min = val < mb.min || mb.min === null ? val : mb.min;
                 } else {
-                  mb.min = config[key]['bin_min']
+                  mb.min = config[key]['bin_min'];
                 }
 
                 if (!config[key]['bin_max']){
                   mb.max = val > mb.max ? val : mb.max;
                 } else {
-                  mb.max = config[key]['bin_max']
+                  mb.max = config[key]['bin_max'];
                 }
               }
               data[cDataGroup[0]][chr].calcFeatures = measureFeatures;

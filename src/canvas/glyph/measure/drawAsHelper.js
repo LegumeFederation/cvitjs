@@ -5,7 +5,7 @@ import Marker from '../marker/Marker';
 import Range from '../range/Range';
 import Position from '../position';
 
-export default function getDrawFeature({data,config,view},glyph,subglyph=glyph){
+export default function getDrawFeature(glyph,subglyph=glyph){
   let drawAs;
   /* disable pileup to speed up */
 
