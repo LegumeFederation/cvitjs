@@ -6,12 +6,12 @@
   "scripts": {
     "lint": "eslint src test",
     "build": "rollup -c",
+    "drupalbuild": "rollup -c drupal.rollup.config.js",
     "pretest": "npm run build",
     "test": "mocha",
     "coverage": "nyc npm test",
     "watch": "rollup -c -w --environment WATCH:yes",
-    "validate-config": "ajv -s cmap-schema.json -d cmap.json",
-    "postinstall": "for f in data/*.gz; do gzip -dc $f > `echo $f | sed s/\\.gz//`; done"
+    "validate-config": "ajv -s cmap-schema.json -d cmap.json"
   },
   "author": "Andrew Wilkey",
   "license": "SEE LICENSE IN README",
