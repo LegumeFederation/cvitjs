@@ -1,5 +1,4 @@
 import {h,Component} from 'preact';
-import paper from 'paper';
 
 import CvitCanvas from './canvas/Canvas';
 import CvitModal from './modal';
@@ -8,7 +7,6 @@ import CvitControls from './overlay/Overlay';
 export default class CvitHeader extends Component {
   render(props, state) {
     let active = props.cvitModel.active;
-    if (paper.project) console.log('body', active, paper.project.getActiveLayer());
     return (
       <div className={'row cvit'} id={'cvit-main'}>
         {active === 'canvas' || /color.*/.test(active) ?

@@ -6,7 +6,6 @@
 + [Setup](#setup) 
 + [Embedding](#embedding)
 + [PHP](#php) 
-+ [Gulp](#gulp) 
 + [Roadmap](#roadmap) 
 + [Using CViTjs](#using-cvitjs) 
   + [Definitions and glyph types](#definitions-and-glyph-types)
