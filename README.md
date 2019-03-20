@@ -32,79 +32,94 @@ Functionality:
 + Export image to a png or svg.
 
 Features:
-+ AMD style modules using RequireJS. Makes it easier to manage libraries, avoids polluting the global object, and allows for nicer later expansion.
-+ Software stack: Paper.js, RequireJS and jQuery.
++ ES6+ class style code 
++ Software stack: Preact and Paper.js.
 
 [See CViTjs in action](https://awilkey.github.io/cvitjs/?data=test1)
 
 ## Setup
 
-CViTjs should work right out of the box. One or more _viewData views are defined in cvit.conf,
-which is located in the root folder. Sample views are included in the starting cvit.conf.
-~~~~
+CViTjs needs several libraries to work. Before beginning, you should have should have [node](https://nodejs.org/en/)
+configured and working on your system. Grab required packages and build the tool using:
+```
+npm install
+npm run build
+```
+This will grab required libraries and build the tool for inclusion as a webscript. By default, the package javascript
+will be exported to `build/cvit.min.js`. Once the tool has been built, you can test it by navigating to the index.html.
+
+If planning on doing development work, or want to run locally, it is recomended to use `npm run watch` instead of build.
+This will start a local development server that can be accessed at `localhost:8888` by default.
+
+Once one or more `[data.<tag>]` views are defined in `cvit.conf`, you will be able to begin generating visualisations.
+This cvit.conf should be located in the root folder. Sample views are included in the provided file.
+```
+;Sample cvit.conf file
 [general]
 data_default = test1
 
-[_viewData.test1]
-conf = _viewData/test1/cvit.conf
-defaultData = _viewData/test1/_viewData.gff
-~~~~
-The [general] section and at least one dataset definition is required in cvit.conf.
+[data.test1]
+conf = data/test1/cvit.conf
+defaultData = data/test1/data.gff
 
-In this example, to display the test1 dataset the URL would be: your-CViTjs-URL/cvitjs/?_viewData=test1
+[data.test2]
+conf = data/test2/test2.conf
+defaultData = [data/backbone.gff,data/test2/test2.gff]
+```
+The [general] section and at least one dataset definition are required.
 
-For each dataset you will need a <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and an image configuration file, typically named cvit.ini. Almost every aspect of the presentation of the image can be controlled in the configuration file. See the sample file in _viewData/test1/ for more information.
+In this example, to display the test1 dataset the URL would be: `your-CViTjs-URL/?data=test1`
+
+For each dataset you will need at least one <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and 
+and while not reuired, it is reccomended that you create a visualisation configuration file, typically named cvit.ini.
+ 
+Almost every aspect of the presentation of the image can be controlled in the configuration file. 
+See the [sample file](data/test1/test1.conf) in data/test1/ or [the configuration readme](Configuration.md) for more information.
 
 ## Embedding
 
-Instead of keeping CViTjs in its own special page, it may be embedded to show related _viewData. In the page's head include:
+Instead of keeping CViTjs in its own special page, it may be embedded in other contexts. In the page's head include:
 ```
-<link rel="stylesheet" href="[pathToCViTjs]/js/lib/bootstrap_embed/css/bootstrap.min.css" />
-<link rel="stylesheet" href="[pathToCViTjs]/js/lib/hopscotch/css/hopscotch.min.css" />
-<link rel="stylesheet" href="[pathToCViTjs]/css/cvit.css" />
-
-<script _viewData-main="[pathToCViTjs]/js/lib/require/require-embed-config" src="[pathToCViTjs]/js/lib/require/require.js"></script>
-```
-If you wish to use an alternative main.js entry point, you will have to edit require-config. 
-Replace the value in: `deps: ["../main"]` with the path to your custom main.js entry point, relative to the libs directory.
-
-In the body of the page, all that is required is to place a `<div id="cvit-div">` at the location you want to add CViTjs. By default this will display the default view set in the [general] section of the cvit.conf. If you wish to override this display, CViTjs recognises two `_viewData-` attributes by default:
-```
-<div id="cvit-div" _viewData-backbone="backbone" /div>
-<div id="cvit-div" _viewData-gff = "pathToGff" /div>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="build/cvit.min.js"></script>
 ```
 
-The backbone tag overrides the default dataset and uses the cvit.conf _viewData settings for the provided backbone. The gff tag adds the provided gff to CViTjs to be drawn. These tags may be used seperately or combined to control an embedded instance of CViTjs. See `examples/cvittest.html` for an example of how this control works in practice.
+In the body of the page, all that is required is:
+```
+<div class="container" id="cvit-app" />
+```
+at the point you want to display the cvit tool. 
 
-`<div id="title-div" /div>` is entierly optional, and may be omitted.
+Cvit defaults to displaying the view pointed to by the `data_default` configuration under `[general]` in cvit.conf.
+The view can be changed by the URL (if enabled) or by passing a `data-dataset=<tag>` attribute in the div, for example 
+if wanting to use a dataset 'test2' instead of the default 'test1', the following could be used in the page's html
 
-You may wish to also set `#viewButton` and `#title-div` to `display:none` in the CSS (`css/cvit.css`)as well to ensure that the components don't render in the embedded context.
+```
+<div class="container" id="cvit-app" data-dataset="test2" />
+```
+Which is the same as:
+```
+http://cvitpage/?data=test2
+```
+In terms of priority: `data-dataset='tag' > url/?data=tag > cvit.conf `
+
+Similarly, the default gff files can be overridden in both the URL and the HTML. Like their configuration counterpart, 
+this may be a single file, or an array of files.
+```
+<div class="container" id="cvit-app" data-gff="test1.gff" />
+
+-or-
+
+<div class="container" id="cvit-app" data-gff='["backbone.gff","test2.gff"]' />
+```
+
+Priority is similar to the dataset option.
 
 ## PHP
 
-PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and gff using the `_viewData-` tags, or you can export the desired information as a globaly accessible variable and access it directly from `main.js`. See `examples/main.blast_ui.js` for an example of this based on drupal exports.
-
-## Gulp
-
-Though not required for CViTjs to work, there is a gulpfile available for those that care. Right now it is just setup to do basic linting and beautification of the generated source. the default behavior also includes watching, so if you decided to edit any files, it will lint and beautify them for you.
-
-### How to Gulp
-
-If you have never used gulp before, it is a build system for JavaScript that requires NodeJS
-
-Get Node here (or from your package manager): [Get Node](https://nodejs.org/ "Node's Homepage")
-
-
-+ Navigate your terminal to the root of your copy of CViTjs.
-+ type: ``` npm install ```
-+ This will use the node package manager (npm) to download local copies of the required gulp and node packages as listed in required.json
-+ type: ``` gulp ```
-+ This will run all the tasks in the gulpfile. The current tasks are:
-	+ lint: Runs a linter against the javascript in js/cvit. Will report out any problems it finds in the terminal.
-	+ beautify: Makes the javascript pretty. In this case will go through and remove excess whitespace, and replace tabs with two spaces, as well as starndardize indent levels.
-	+ watch: Watches for files in js/cvit to change.
-	+ default: Runs all of the above tasks. With watch, this means that it will stay active in that terminal window until stopped (^C or equivalent) and run the lint and beautify tasks whenever it detects a change.
-+ Note you can run any task seperately by using ``` gulp <task> ```
+PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and 
+gff using the `data-` tags, or you can export the desired information as a globally accessible variable and access it 
+directly from `main.js`. See `src/drupalMain.js` for an example of this based on drupal exports.
 
 ## Roadmap
 Things to do on the way to the 1.0 release:
@@ -112,35 +127,26 @@ Things to do on the way to the 1.0 release:
 	+ Basic _viewData validation
 	+ Customized glyphs
 + Advanced URI control 
-+ Missing Glyphs:
-    + Measure
-    	+ Heat
-        + Histogram
-        + Distance
 + Release unit tests
 
 ## Using CViTjs
 
 ### Definitions and glyph types
-**chromosome:** a "backbone". Could be a psuedomolecule, linkage group, contig,
-                et cetera.  
-**centromere:** a glyph type that is drawn on the chromosome, with optional overhang on
-                either side of the chromosome bar.  
-**position:**   a glyph representing a point without size which is typically used for 
-                features that are too small to display at scaled size, for example, a 
-                gene.  
-**marker:**     a particular type of position depicted with a horizontal line.
-**range**       a glyph representing a feature with sufficient length to display at scale,
-                for example, centromeres or pericentromeric regions.  
-**measure**     _[Not Yet Implemented]_ a glyph representing a feature with some value, for
-                example, an e-value or expression value. The actual glyph can be a 
-                position or range.  
+
+| Glyph | Description|
+| ---- | ---- |
+|chromosome | a "backbone". Could be a psuedomolecule, linkage group, contig, et cetera. |  
+|centromere | a glyph type that is drawn on the chromosome, with optional overhang on either side of the chromosome bar.  |
+|position | a glyph representing a point without size which is typically used for features that are too small to display at scaled size, for example, a gene.  |
+|marker | a particular type of position depicted with a horizontal line. |
+|range | a glyph representing a feature with sufficient length to display at scale, for example, centromeres or pericentromeric regions. |  
+|measure | a glyph representing a feature with some value, for example, an e-value or expression value. The actual glyph's drawn type depends on the measure-type chosen.  |
 
 ### How to...
-#### 1. prepare _viewData
+#### 1. Prepare data
 
 
-Input _viewData to CViT is in GFF3 (http://www.sequenceontology.org/gff3.shtml).
+Input data to CViT is in GFF3 (http://www.sequenceontology.org/gff3.shtml).
 CViT interpretes files as follows:  
 
     column 1 (seqid)      chromosome name. If column 3 is 'chromosome' the 
@@ -182,7 +188,7 @@ its coordinates must lie within the start and end coordinates of the chromosome.
 
 #### 2. customize drawing options
 Almost all aspects of the output images can be controlled via the .conf file. An example
-can be found inside _viewData/test1. Note that the drawing configuration file is different
+can be found inside data/test1. Note that the drawing configuration file is different
 from the main configuration file, cvit.conf. 
 **Important note:** as CViTjs is still in beta, some of these options may not yet be
 implemented. If an option you need appears to have not been implemented, let us know and
