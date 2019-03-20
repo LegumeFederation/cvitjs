@@ -2,9 +2,9 @@
 
 ## Table of Contents
 + [About](#about)
-+ [Cvit.conf](#cvit)
-+ [Data.conf](#data.conf)
-    + [[General]](#[general])
++ [Cvit.conf](#cvitconf)
++ [Data.conf](#dataconf)
+    + [[General]](#general)
     
 
 ## About
