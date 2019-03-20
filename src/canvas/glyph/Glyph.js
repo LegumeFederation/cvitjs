@@ -48,7 +48,8 @@ export default class Glyph {
     r.info = data.attribute;
     // TODO: deal with classes
     let fillColor = r.info.hasOwnProperty('color') ? r.info.color : config.color;
-
+    let transparent = config.transparent;
+    let t_per = 1-config.transparent_percent;
     /** set glyphs stroke */
     //TODO: play more with border glyph
     if((config.hasOwnProperty('border') && parseInt(config.border)) ||
@@ -65,6 +66,7 @@ export default class Glyph {
           r.info.border_color :
           fillColor;
       r.strokeColor = formatColor(strokeColor);
+      if(transparent) r.strokeColor.alpha = t_per;
     } else {
       r.strokeWidth = 0;
     }
@@ -72,6 +74,7 @@ export default class Glyph {
     /** fill the figure, if it is an option for the glyph */
     let fill = config.hasOwnProperty('fill') ? parseInt(config.fill) : 1;
     if(fill) r.fillColor = formatColor(fillColor);
+    if(transparent) r.fillColor.alpha = t_per;
 
     /** draw label */
     //TODO: Draw labels

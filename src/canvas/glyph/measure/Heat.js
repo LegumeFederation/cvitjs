@@ -27,9 +27,8 @@ export default class Heat extends Glyph{
     } else {
       fc = calculateColor(colorArray, mc.min, mc.max, val);
     }
-
+    if(config.transparent) fc.alpha = 1- config.transparent_percent;
     this.group = this.formatGlyph(data, config, view);
-    this.group.fillColor = fc;
     config.draw_as === 'marker' ? this.group.strokeColor = fc : this.group.fillColor = fc;
   }
 }
