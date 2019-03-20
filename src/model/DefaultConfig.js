@@ -98,7 +98,10 @@ export function defaultConfig(){
       'font_size': 6,
       'label_offset': 0,
       'label_color': 'black',
-      'stroke_width' : 2
+      'stroke_width' : 2,
+      'border' : 0,
+      'border_width' : 2,
+      'border_color' : 'black'
     },
 
     'measure': {
