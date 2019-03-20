@@ -4,8 +4,14 @@
 + [About](#about)
 + [Cvit.conf](#cvitconf)
 + [Data.conf](#dataconf)
-    + [[General]](#general)
-    
+    + [[general]](#general)
+    + [[centromere]](#centromere)
+    + [[position]](#position)
+    + [[range]](#range)
+    + [[border]](#border)
+    + [[marker]](#marker)
+    + [[measure]](#measure)
+    + [[custom]](#custom)
 
 ## About
 
@@ -108,7 +114,7 @@ A "chromosome" can be any sort of contiguous sequence: chromosome, arm, contig, 
 | chrom_border_color | black | Border color for the chromosome bar |
 | chrom_font_face | fontDefault | Fontface to use for labels |
 | chrom_font_size | 10 | Font size for chromosome labels in points. |
-| chrom_label_color | gray50 | Color of chromosome labels |
+| chrom_label_color | gray50 | (color) Color of chromosome labels |
 
 In addition the following options have been added from the legacy format:
 
@@ -118,274 +124,178 @@ In addition the following options have been added from the legacy format:
 | chrom_padding_bottom | 50 | pixles between stop of talles chromosome and bottom of canvas |
 | chrom_border_size | 2 | width of chromosome border |
 
-### Ruler configuration 
-; The ruler is a guide down either side of image showing units
-;   0=none, 1=both, L=left side only, R=right side only
-; TYPE: enum|VALUES: 0,1,L,R|DEFAULT: 1
-display_ruler = L
-; 1=ruler units run greatest to smallest, 0=normal order
-; TYPE: boolean|DEFAULT: 0
-reverse_ruler   = 0
-; Ruler units (e.g. "cM, "kb")
-; TYPE: string
-ruler_units   = kb
-; Minimum value on ruler, if > min chrom value, will be adjusted
-; TYPE: integer|DEFAULT: 0
-ruler_min     = 0
-; Maximum value on ruler, if < max chrom value, will be adjusted
-; TYPE: integer|DEFAULT: 0
-ruler_max     = 0
-; Color to use for the ruler(s)
-; TYPE: color|DEFAULT: gray60
-ruler_color = gray40
-; Which built-in font to use (ruler_font_face overrides this setting)
-;  0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: (0,1,2,3)|DEFAULT: 1
-ruler_font      = 1
-; Font face to use for ruler, ignored if empty
-; TYPE: font
-ruler_font_face = 
-; Ruler font size in points, used only in conjuction with font_face
-; TYPE: integer
-ruler_font_size = 8
+#### Ruler configuration 
 
-; Width of ruler tick marks in pixels
-; TYPE: integer|DEFAULT: 8
-tick_line_width      = 8        
-; Ruler tick mark units in original chromosome units
-; TYPE: integer|DEFAULT: 10000
-tick_interval        = 10000000     
-; Number of minor divisions per major tick (1 for none)
-; TYPE: integer|DEFAULT: 2
-minor_tick_divisions = 2
+| Option | Default | Description |
+| ---- | ---- | ---- | 
+| display_ruler | 1 | The ruler is a guide down either side of image showing units 0=none, 1=both, L=left side only, R=right side only |
+| reverse_ruler | 0 | (boolean) 1 = ruler units run greatest to smallest |
+| ruler_units | none |  Ruler units (e.g. "cM, "kb") |
+| ruler_min | 0 | minimum value on ruler, if > min chrom value, will be adjusted |
+| ruler_max | 0 | Maximum value on ruler, if < max chrom value, will be adjusted |
+| ruler_color | gray60 | (color) Color to use for the rulers and labels |
+| ruler_font_face | fontDefault | Font face to use for ruler labels |
+| ruler_font_size | 6 | Ruler font size in points, used only in conjuction with font_face |
+| tick_line_width | 8 | length of ruler tick marks |
+| tick_interval | 50000 | Ruler tick mark units in original chromosome units |
+| minor_tick_divisions | 2 |  Number of minor divisions per major tick (1 for none) |
 
+`class_colors` and `[classes]` have yet to be implemented.
+```
 ; Use these colors in this order when displaying sequences of different classes.
 ;  For example, different gene families, BACs in different phases.
-; See rgb.txt for possible colors
-; TYPE: classcolors
+; TYPE: colors
 class_colors = red, green, blue, orange, purple, turquoise, OliveDrab, honeydew, chocolate, tomato, aquamarine, MediumSlateBlue, azure, LawnGreen, SkyBlue, chartreuse, LightYellow, maroon, yellow, FloralWhite, cyan, salmon
 
 ; Assign colors to classes like this: <class-name> = <color>
 [classes]
 NBS_TIR = red
 NBS_CC = blue
+```
+
+### [centromere]
+ A centromere is a specialized feature; displayed over top the chromosome bar.
+ A centromere is identified by the word "centromere" in the 3rd column of the
+ GFF file.
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| centromere_overhang| 2 | Centromere rectangle or line extends this far on either side of the chromosome |
+| color | gray30 | (color) Color to use when drawing the centromere |
+| transparent | 0 | (boolean) Whether or not to use transparency |
+| draw_label | 0 | (boolean) 1 = draw centromere label |
+| font_face | fontDefault |  Font face to use for centromere label |
+| font_size | 6 | Size of label in pt |
+| label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
+| label_color | gray30 |  Color to use for labels|
+
+The following options have been added from the legacy format:
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| border | 0 | (boolean) Draw a border around the feature.|
+| border_width | 2 | Width of a drawn border in px |
+| border_color | black | color of drawn border |
+| transparent_percent | 0.6 | Percent transparency from 0-1 |
+
+### [position]
+
+Positions are displayed as dots or rectangles beside the chromosome bar.
+Positions that are too close to be stacked are "piled up" in a line.
+A sequence feature is designated a position if its section sets glyph=position.
 
 
-;#################
-; A centromere is a specialized feature; displayed over top the chromosome bar.
-;  A centromere is identified by the word "centromere" in the 3rd column of the
-;  GFF file.
-[centromere]
-; Centromere rectangle or line extends this far on either side of the 
-;   chromosome bar
-; TYPE: integer|DEFAULT: 2
-centromere_overhang = 1
-; Color to use when drawing the centromere
-; TYPE: color|DEFAULT: gray30
-color               = gray40
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent         = 1
-; 1 = draw centromere label, 0 = don't
-; TYPE: boolean|DEFAULT: 0
-draw_label          = 0
-; Which built-in font to use for centromere labels (font_face overrides this
-;   setting) 0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 2
-font               = 2
-; Font face to use for centromere label
-; TYPE: font
-font_face          = vera/Vera.ttf
-; Start labels this many pixels right of region bar (negative value to move
-;   label to the left)
-; TYPE: integer
-font_size          = 8
-; Start labels this many pixels right of region bar (negative value to move
-;   label to the left)
-; TYPE: integer
-label_offset       = 4
-; Color to use for labels
-; TYPE: color|DEFAULT: gray30
-label_color         = gray30
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| color | red | (color) Color to use when drawing positions |
+| transparent | 0 | (boolean)  add transparency to glyph |
+| shape | circle | shape to draw glyph, cvit by default supports 'circle', 'rect', 'doublecircle' |
+| width | 5 | width of glyph in px |
+| offset | 0 | number of px to offset glyph from backbone, -0 or less draws on the left |
+| enable_pileup | 1 | (boolean) Offset glyph if it would occupy the same space as another of this type.
+| pileup_gap | 0 | Number of px past edge of overlapped glyph to draw |
+| draw_label | 1 | (boolean) 1 = draw centromere label |dd
+| font_face | fontDefault |  Font face to use for centromere label |
+| font_size | 6 | Size of label in pt |
+| label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
+| label_color | gray30 |  Color to use for labels|
+
+The following options have been added from the legacy format:
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| border | 0 | (boolean) Draw a border around the feature.|
+| border_width | 2 | Width of a drawn border in px |
+| border_color | black | color of drawn border |
+| transparent_percent | 0.6 | Percent transparency from 0-1 |
+
+### [range]
+Ranges are displayed as bars alongside the chromosome bar or as borders draw within the chromosome bar.
+A sequence feature is designated a range if its section sets glyph=range or
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| color | red | (color) Color to use when drawing positions |
+| transparent | 0 | (boolean)  add transparency to glyph |
+| width | 5 | width of glyph in px |
+| offset | 0 | number of px to offset glyph from backbone, -0 or less draws on the left |
+| enable_pileup | 1 | (boolean) Offset glyph if it would occupy the same space as another of this type.
+| pileup_gap | 0 | Number of px past edge of overlapped glyph to draw |
+| draw_label | 1 | (boolean) 1 = draw centromere label |
+| font_face | fontDefault |  Font face to use for centromere label |
+| font_size | 6 | Size of label in pt |
+| label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
+| label_color | gray30 |  Color to use for labels|
+
+The following options have been added from the legacy format:
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| border | 0 | (boolean) Draw a border around the feature.|
+| border_width | 2 | Width of a drawn border in px |
+| border_color | black | color of drawn border |
+| transparent_percent | 0.6 | Percent transparency from 0-1 |
+
+### [border]
+
+A border is displayed directly over the chromosome.
+A sequence feature is designated a range if its section sets glyph=border.
+Unlike centromeres, borders are drawn to fit the backbone.
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| color | red | (color) Color to use when drawing the border |
+| fill | 0 | (boolean) Fill the border with color |
+| transparent | 0 | (boolean)  add transparency to glyph |
+| draw_label | 1 | (boolean) 1 = draw centromere label |
+| font_face | fontDefault |  Font face to use for centromere label |
+| font_size | 6 | Size of label in pt |
+| label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
+| label_color | gray30 |  Color to use for labels|
+
+The following options have been added from the legacy format:
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| border_width | 2 | Width of a drawn border in px |
+| fill_color | color | color to use when filling border |
+| transparent_percent | 0.6 | Percent transparency from 0-1 |
 
 
-;#################
-; Positions are displayed as dots or rectangles beside the chromosome bar.
-; Positions that are too close to be stacked are "piled up" in a line.
-; A sequence feature is designated a position if its section sets glyph=position
-;   or if the start and end coordinates are equivalent.
-[position]
-; Color to use when drawing positions, can be overridden with the 
-;  color= attribute in the GFF file
-; TYPE: color|DEFAULT: red
-color        = maroon
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent   = 1
-; Shape to indicate a position
-; TYPE: enum|VALUES: circle,rect,doublecircle|DEFAULT: circle
-shape        = rect
-; Width of the shape
-; TYPE: integer|DEFAULT: 5
-width        = 1
-; Offset shape this many pixels from chromosome bar
-; TYPE: integer
-offset       = 0
-; Whether or not to "pileup" overlaping glyphs
-; TYPE: boolean|DEFAULT: 1
-enable_pileup = 1
-; The space between adjacent, piled-up positions
-; TYPE: integer|DEFAULT: 0
-pileup_gap   = 0
-; 1 = draw position label, 0 = don't
-; TYPE: boolean|DEFAULT: 1
-draw_label   = 0
-; Which built-in font to use for position labels (font_face overrides this
-;   setting) 0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 2
-font         = 3
-; Font face to use for labeling positions (overrides 'font' setting)
-; TYPE: font
-font_face    = 
-; Font size in points, used only in conjunction with font_face
-; TYPE: integer
-font_size    = 8
-; Start labels this many pixels right of region bar (negative value to move
-;   label to the left)
-; TYPE: integer
-label_offset = 4
-; Color to use for labels
-; TYPE: color|DEFAULT: black
-label_color   = black
-
-
-;#################
-; Ranges are displayed as bars alongside the chromosome bar or as borders 
-;   draw within the chromosome bar.
-; A sequence feature is designated a range if its section sets glyph=range or
-;   if the start and end coordinates differ
-[range]
-; Color for drawing ranges; can be overridden with the color= 
-;   attribute in GFF file.
-; TYPE: color|DEFAULT: green
-color            = green
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent      = 0
-; Draw range bars this thick
-; TYPE: integer|DEFAULT: 6
-width            = 6
-; Draw range bars this much to the right of the corresponding chromosome
-;  (negative value to move bar to the left)
-; TYPE: integer
-offset           = 3
-; Whether or not to "pileup" overlaping glyphs
-; TYPE: boolean|DEFAULT: 1
-enable_pileup    = 1
-; Space between adjacent, piled-up ranges
-; TYPE: integer|DEFAULT: 0
-pileup_gap       = 2
-; 1 = draw range label, 0 = don't
-; TYPE: boolean|DEFAULT: 1
-draw_label       = 0
-; Which built-in font to use for range labels (font_face overrides this setting)
-;   0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 1
-font             = 1
-; Font face to use for labeling ranges (overrides 'font' setting)
-; TYPE: font
-font_face        = 
-; Font size in points, used only in conjunction with font_face
-; TYPE: integer
-font_size        = 6
-; Start labels this many pixels right of region bar (negative value to move
-;   label to the left)
-; TYPE: integer
-label_offset     = 5
-; Color to use for labels
-; TYPE: color|DEFAULT: black
-label_color      = black
-
-
-;#################
-; A border is displayed directly over the chromosome.
-; A sequence feature is designated a range if its section sets glyph=border.
-[border]
-; Color for drawing borders; can be over-ridden with the color= 
-;   attribute in GFF file.
-; TYPE: color|DEFAULT: red
-color         = red
 ; 1=fill in area between borders, 0=don't
-; TYPE: boolean|DEFAULT: 0
-fill          = 1
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent   = 0
-; 1 = show labels, 0 = don't
-; TYPE: boolean|DEFAULT: 1
-draw_label    = 1
-; Built-in font to use for border labels (font_face overrides this setting)
-;   0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 1
-font          = 1
-; Font face to use for labeling borders (overrides 'font' setting)
-; TYPE: font
-font_face     = 
-; Font size in points, used only in conjunction with font_face
-; TYPE: integer
-font_size     = 6
-; Start labels this many pixels right of chromosome (negative value to move
-;   label to the left)
-; TYPE: integer
-label_offset  = 5
-; Color to use for labels
-; TYPE: color|DEFAULT: black
-label_color   = black
+
+### [marker]
+Markers are like positions without pileup, treated as a simple line. A sequence feature is designated a marker if its section sets glyph=marker
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| color | red | (color) Color to use when drawing positions |
+| transparent | 0 | (boolean)  add transparency to glyph |
+| offset | 0 | number of px to offset glyph from backbone, -0 or less draws on the left |
+| draw_label | 1 | (boolean) 1 = draw centromere label |dd
+| font_face | fontDefault |  Font face to use for centromere label |
+| font_size | 6 | Size of label in pt |
+| label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
+| label_color | gray30 |  Color to use for labels|
+
+The following options have been added from the legacy format:
+
+| Option | Default | Description |
+| ---- | ---- | ---- |
+| width | 5 | width of glyph in px |
+| stroke_width | 2 | Width of a drawn stroke in px |
+| transparent_percent | 0.6 | Percent transparency from 0-1 |
 
 
-;#################
-; Markers are displayed as lines to the right of the chromosome.
-; A sequence feature is designated a marker if its section sets glyph=marker
-[marker]
-; Color for drawing markers; can be over-ridden with the color= 
-;   attribute in GFF file.
-; TYPE: color|DEFAULT: red
-color        = turquoise
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent  = 0
-; Draw marker this much to the right of the corresponding chromosome
-;  (negative value to move bar to the left)
-; TYPE: integer
-offset      = 2
-; 1=draw marker labels, 0=don't
-; TYPE: boolean|DEFAULT: 1
-draw_label   = 1 
-; Built-in font to use for labeling markers (font_face overrides this setting)
-;   0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 1
-font         = 1
-; Font face to use for labeling markers (overrides 'font' setting)
-; TYPE: font
-font_face    = 
-; Font size in points, used only in conjunction with font_face
-; TYPE: integer
-font_size    = 6
-; Start label this far from the right of the marker
-; TYPE: integer
-label_offset = 8
-; Color to use for labels
-; TYPE: color|DEFAULT: black
-label_color  = black
+
+### [measure]
+Measures are any form of glyph where a value is important to how the glyph is drawn.
+Value is indicated by score (6th) column in GFF or in value= attribute in attribute (9th) column.
 
 
-;#################
-; Measures are heat or histogram values with start and end coordinates in GFF.
-; Value is indicated by score (6th) column in GFF or in value= attribute in 9th 
-;   column of GFF.
-; If value_type = score_col, the value is assumed to be an e-value or p-value,
-;   which will need modification because of the non-linear distribution
-[measure]
+| Option | Default | Description |
+| ---- | ---- | ---- |
+
 ; Measure value is in either the score column (6th) of the GFF file or a 
 ;   value= attribute in the 9th column.
 ; TYPE: enum|VALUES: score_col,value_attr
@@ -447,6 +357,8 @@ label_offset      = 5
 ; TYPE: color|DEFAULT: black
 label_color         = black
 
+
+### [custom]
 
 ;##############################################################################
 ; Characteristics for a custom sequence type can be defined by naming a section

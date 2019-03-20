@@ -46,9 +46,11 @@ export default class Glyph {
     fGroup.addChild(r);
 
     r.info = data.attribute;
+    // TODO: deal with classes
     let fillColor = r.info.hasOwnProperty('color') ? r.info.color : config.color;
 
     /** set glyphs stroke */
+    //TODO: play more with border glyph
     if((config.hasOwnProperty('border') && parseInt(config.border)) ||
       (config.hasOwnProperty('stroke_width'))
     ){

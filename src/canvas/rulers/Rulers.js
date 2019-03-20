@@ -4,6 +4,7 @@
  */
 
 import paper from 'paper';
+import {formatColor} from '../Utilities';
 
 /**
  *
@@ -32,12 +33,17 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.yOffset = view.yOffset;
   rulerConfig.xOffset = view.xOffset;
   rulerConfig.scale = view.yScale;
-  rulerConfig.color = config.general.ruler_color;
+  rulerConfig.color = formatColor(config.general.ruler_color);
   rulerConfig.ff = config.general.ruler_font_face;
   rulerConfig.width = parseInt(config.general.tick_line_width);
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
+
   // TODO: draw one or no rulers
+  // TODO: ruler_min < view.min
+  // TODO: ruler_max > view.max
+  // TODO: display ruler units
+
   try {
     //Draw right Ruler
     rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
