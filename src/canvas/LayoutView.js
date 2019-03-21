@@ -154,25 +154,18 @@ export default function layoutView(data,config,view){
           view.chrOrder.forEach(chr => {
             if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
               let chrGroup = data[cDataGroup[0]][chr];
-              if (!config[key]['bin_min']) {
-                let min = mb.valueType === 'value_attr' ? chrGroup.minScore.value : chrGroup.minScore.scoreCol;
-                mb.min = min < mb.min || mb.min === null ? min : mb.min;
-              } else {
-                mb.min = config[key]['bin_min'];
-              }
-
-              if (!config[key]['bin_max']) {
-                let max = mb.valueType === 'value_attr' ? chrGroup.maxScore.value : chrGroup.maxScore.scoreCol;
-                mb.max = max > mb.max ? max : mb.max;
-              } else {
-                mb.max = config[key]['bin_max'];
-              }
+              let min = mb.valueType === 'value_attr' ? chrGroup.minScore.value : chrGroup.minScore.scoreCol;
+              mb.min = min < mb.min || mb.min === null ? min : mb.min;
+              let max = mb.valueType === 'value_attr' ? chrGroup.maxScore.value : chrGroup.maxScore.scoreCol;
+              mb.max = max > mb.max ? max : mb.max;
             }
           });
         }
         // Use min/max config option.
         if(mb.max < config[key].max) mb.max = config[key].max;
+        if (config[key]['bin_max']) mb.max = config[key]['bin_max'];
         if(mb.min > config[key].min) mb.min = config[key].min;
+        if(config[key]['bin_min']) mb.min = config[key]['bin_min'];
         view.measureConfig = mb;
       }
 
