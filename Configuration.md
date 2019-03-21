@@ -282,7 +282,7 @@ Markers are like positions without pileup, treated as a simple line. A sequence 
 | color | red | (color) Color to use when drawing positions |
 | transparent | 0 | (boolean)  add transparency to glyph |
 | offset | 0 | number of px to offset glyph from backbone, -0 or less draws on the left |
-| draw_label | 1 | (boolean) 1 = draw centromere label |dd
+| draw_label | 1 | (boolean) 1 = draw centromere label |
 | font_face | fontDefault |  Font face to use for centromere label |
 | font_size | 6 | Size of label in pt |
 | label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |
