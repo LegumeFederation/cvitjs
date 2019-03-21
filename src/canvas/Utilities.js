@@ -1,7 +1,6 @@
 import paper from 'paper';
 
 export function formatColor(color) {
-  //TODO: Think about supporting transparency.
   let grey = color.match(/gr[ea]y(.*)/);
   if (grey) {
     color = 'grey';
@@ -76,9 +75,9 @@ export function spreadBackbones(config,view){
   /** Calculate spacing between backbones */
   let baseGroup = al.children['cvitView'];
   let labelGroup = al.children['cvitLabels'];
-  let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
+ // let rulers = paper.projects[0].getLayers()['rulersLayer'].children['rulers'];
   let padding = parseInt(config.general.image_padding);
-  let lastEdge = rulers.children['leftRuler'].getStrokeBounds().right + padding;
+  let lastEdge = view.leftEdge + padding;
   let offsetPadding = parseInt(config.general.chrom_spacing);
   if(!parseInt(config.general.fixed_chrom_spacing)){ // chrom spacing is variable
     let groupW = 0;
@@ -175,7 +174,6 @@ export function panCanvas(drag){
  * @param current - current zoom multiplier 1-8
  * @param delta - 1 or -1 zoom in or out
  * @param center - center of current view
- * @param mouse - center of new view (usually based on mouse position)
  * @param newScale - if you want to set the new zoom to an explicit level
  * @returns {*[]}
  */
@@ -199,8 +197,7 @@ export function calculateZoomAndPan (current, delta, center, newScale=current) {
 
 
 export function calculateDistance(point, baseScale, newScale) {
-  let loc = ((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
-  return loc;
+  return ((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
 }
 
 export function offsetSign(value){

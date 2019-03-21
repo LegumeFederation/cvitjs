@@ -29,9 +29,11 @@ export default function layoutView(data,config,view){
   let rulers = paper.project.getLayers()['rulersLayer'].children['rulers'];
 
   /** setup view area **/
-  view.leftEdge = rulers.children['leftRuler'].getStrokeBounds().right;
-  view.rightEdge = rulers.children['rightRuler'].getStrokeBounds().left;
-  view.yAdjust = rulers.children['leftRuler'].rulerStart - view.yOffset.offsetTop;
+  view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
+  view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : view.canvas.width;
+  let rulerTop = rulers.children['leftRuler'] ? rulers.children['leftRuler'].rulerStart :
+    rulers.children['rightRuler'] ? rulers.children['rightRuler'].rulerStart : view.yOffset.offsetTop;
+  view.yAdjust = rulerTop - view.yOffset.offsetTop;
   view.xOffset = 0;
 
   /** draw backbones **/

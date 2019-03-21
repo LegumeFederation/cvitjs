@@ -39,18 +39,23 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
 
-  // TODO: draw one or no rulers
   // TODO: ruler_min < view.min
   // TODO: ruler_max > view.max
   // TODO: display ruler units
 
   try {
-    //Draw right Ruler
-    rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
-    rulerConfig.xOffset = paper.view.size.width - rulerConfig.xOffset;
-    //Draw left Ruler
-    rulerGroup.addChild(_drawRuler(rulerConfig, 'right', 0));
-
+    //Draw Left Ruler
+    let dispRuler = `${config.general.display_ruler}`;
+    if(dispRuler === '1' || dispRuler.toLowerCase() === 'l'){
+      rulerGroup.addChild(_drawRuler(rulerConfig, 'left', 1));
+      rulerGroup.children['leftRuler'].bounds.left = view.xOffset; // rulerConfig.xOffset;
+    }
+    //rulerConfig.xOffset = paper.view.size.width - rulerConfig.xOffset;
+    //Draw Right Ruler
+    if(dispRuler === '1' || dispRuler.toLowerCase() === 'r'){
+      rulerGroup.addChild(_drawRuler(rulerConfig, 'right', 0));
+      rulerGroup.children['rightRuler'].bounds.right = paper.view.size.width - view.xOffset; // rulerConfig.xOffset;
+    }
   } catch (e) {
     console.log(e);
   }
