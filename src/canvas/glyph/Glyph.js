@@ -47,18 +47,18 @@ export default class Glyph {
 
     r.info = data.attribute;
     // TODO: deal with classes
-    let fillColor = r.info.hasOwnProperty('color') ? r.info.color : config.color;
+    let fillColor = config.color;
     let transparent = config.transparent;
     let t_per = 1-config.transparent_percent;
     /** set glyphs stroke */
     //TODO: play more with border glyph
-    if((config.hasOwnProperty('border') && parseInt(config.border)) ||
+    if((config.hasOwnProperty('border') && config.border) ||
       (config.hasOwnProperty('stroke_width'))
     ){
       r.strokeWidth = config.hasOwnProperty('border_width') ?
-        parseInt(config.border_width) :
+       config.border_width :
         config.hasOwnProperty('stroke_width') ?
-          parseInt(config.stroke_width) :
+          config.stroke_width :
           2;
       let strokeColor = config.hasOwnProperty('border_color') ?
         config.border_color :
@@ -72,7 +72,7 @@ export default class Glyph {
     }
 
     /** fill the figure, if it is an option for the glyph */
-    let fill = config.hasOwnProperty('fill') ? parseInt(config.fill) : 1;
+    let fill = config.hasOwnProperty('fill') ? config.fill : 1;
     if(fill) r.fillColor = formatColor(fillColor);
     if(transparent) r.fillColor.alpha = t_per;
 
@@ -81,8 +81,8 @@ export default class Glyph {
 
     /** pileup */
     if (view.pileup ) {
-      let xOffset = parseInt(config.offset);
-      let pGap = xOffset >= +0 ? parseInt(config.pileup_gap) : -parseInt(config.pileup_gap);
+      let xOffset = config.offset;
+      let pGap = xOffset >= +0 ? config.pileup_gap : -config.pileup_gap;
       fGroup.translate( new paper.Point(collisionOffset(fGroup, view, xOffset, config.offsetDir, pGap) ,0));
     }
 
