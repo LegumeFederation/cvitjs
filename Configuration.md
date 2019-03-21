@@ -3,6 +3,8 @@
 ## Table of Contents
 + [About](#about)
 + [Cvit.conf](#cvitconf)
+    + [[general]](#general-configuration)
+    + [[data.\<tag>]](#datatag-configuration)
 + [Data.conf](#dataconf)
     + [[general]](#general)
     + [[centromere]](#centromere)
@@ -11,6 +13,7 @@
     + [[border]](#border)
     + [[marker]](#marker)
     + [[measure]](#measure)
+        + [Generating values](#generating-bins)
     + [[custom]](#custom)
 
 ## About
@@ -88,6 +91,10 @@ In general, the following conventions are used:
 Sizes are generally in pixels, fontDefault is listed here to avoid cluttering the tables.
 
 ### [general]
+
+The general section describes how to draw the base items of CViT, title, ruler, and any data that has the type column (3rd) as `chromosome`
+this is the only section that requires the third colum to be set as a specific value, and it is suggested in more 
+complicated CViT uses to use one gff file for these backbone values and use a second gff with all your other data. 
 
 #### Title and general configuration
  
@@ -293,121 +300,93 @@ Measures are any form of glyph where a value is important to how the glyph is dr
 Value is indicated by score (6th) column in GFF or in value= attribute in attribute (9th) column.
 
 
-| Option | Default | Description |
+Currently, measure supports the following three display options:
+
+| Option | Available Glyphs | Description |
 | ---- | ---- | ---- |
+| heat | All | Changes the Glyph's color based on value's % of maximum-minimum range |
+| distance | All | Moves Glyph away from backbone based on value's % of maximum-minimum range |
+| histogram | range | Draws range box to take up full space based on value. |
 
-; Measure value is in either the score column (6th) of the GFF file or a 
-;   value= attribute in the 9th column.
-; TYPE: enum|VALUES: score_col,value_attr
-value_type        = value_attr
-; How to display the measurement for each record
-; TYPE: enum|VALUES: histogram/heat/distance|DEFAULT: heat
-display           = distance
-; How to interpret the measure glyph (heatmap and distance only)
-; TYPE: enum|VALUES: range/position/border/marker}DEFAULT: range
-draw_as           = position
-; Heatmap and distance only: shape (don't use 'circle' if measure has meaningful length)
-; TYPE: enum|VALUES: circle,rect|DEFAULT: rect
-shape             = rect
-; Heatmap and distance only: width of rect or circle
-; TYPE: integer|DEFAULT: 2
-width             = 1
-; Heatmap and distance only: whether or not to "pileup" overlaping glyphs
-; TYPE: boolean|DEFAULT: 1
-enable_pileup    = 1
-; Heatmap and distance only: space between adjacent, piled-up ranges
-; TYPE: integer|DEFAULT: 0
-pileup_gap       = 0
-; Heatmap only: color sche to use for scale
-; TYPE: enum|VALUES: redgreen,grayscale|DEFAULT: redgreen
-heat_colors       = redgreen
-; Histogram only: color of measure glyph
-; TYPE: color|DEFAULT: red
-color             = red
-; Distance only: max distance from chromosome
-; TYPE: integer|default: 25
-max_distance      = 25
-; Whether or not to use transparency
-; TYPE: boolean|DEFAULT: 0
-transparent       = 1
-; Distance from chromosome to draw shape
-; TYPE: integer
-offset            = 2
-; 1=draw marker labels, 0=don't
-; TYPE: boolean|DEFAULT: 0
-draw_label        = 0
-; 1 = fill in borders, 0 = don't
-; TYPE: boolean|DEFAULT: 1
-fill              = 1
-; Built-in font to use for labeling markers (font_face overrides this setting)
-;   0=gdLargeFont, 1=gdMediumBoldFont, 2=gdSmallFont, 3=gdTinyFont
-; TYPE: enum|VALUES: 0,1,2,3|DEFAULT: 1
-font              = 1
-; Font face file name to use for labeling measures (overrides 'font' setting)
-; TYPE: font
-font_face         = vera/Vera.ttf
-; Font size in points, used only in conjunction with font_face
-; TYPE: integer
-font_size         = 6
-; Start labels this many pixels right of region bar (negative value to move
-;   label to the left)
-; TYPE: integer
-label_offset      = 5
-; Color to use for labels
-; TYPE: color|DEFAULT: black
-label_color         = black
+Not all options below are available for all display types, these options will be noted. When configuring a distance,
+all the options for the glyph chosen by `draw_as` are also available, and the options defined for that glyph style will 
+be used unless overwritten here.
+ 
+Measures are configured as follows  :
 
+| Option | Use With | Default | Description |
+| ---- | ---- | ---- | ---- |
+| value_type | all | value_attr |  'score_col' - use column 6, 'value_attr' - use colum 9 "value" attribute |
+| display | all | heat | Which of the display options above to use. |
+| draw_as | heat,distance | range | How to draw the glyph. May use centromere, position, range, border or marker |
+| enable_pileup | all | 0 | (boolean) Move glyph if it overlaps with others, suggest leaving off for histograms |
+| heat_colors | heat | redgreen | (array)(colors) Array of two or more colors to use for generating the heat intensity. In addition to an array `redgreen` is an alias for [red,green] and `grayscale` is an alias for [black,white] |
+| max_distance | distance,histogram | 25 | maximum aditional offset in pixels |
+| min | all | 0 | minimum value, will be overridden if actual min is smaller. |
+| max | all | 9 | maximum value, will be overridden if actual max is larger. |
+
+The following options have been added from the legacy format:
+
+| Option | Use With | Default | Description |
+| ---- | ---- | ---- | ---- |
+| generate_bins | all | 0 | (boolean) Generate bins and use count as value. |
+| bin_size | all | 0 | If `generate_bins` size of each bin in backbone units |
+| bin_count | all | 0 | If `generate_bins` number of bins per backbone. |
+| bin_min | all | 0 | Set a hard minimum, will not be overridden |
+| bin_max | all | 0 | If not zero, set a hard maximum |
+
+#### Generating bins
+
+If `genrate_bins = 1` is defined in a measure configuration, instead of using provided values, CViT will attempt to 
+use the provided data to generate values to draw the measure with, it does this based on the state of `bin_size` and `bin_count`.
+In all cases, the value is based on the count of the number of features within a bin. Also, the bin_size used is slightly
+dynamic, as the value is tweaked slightly to prevent counting bins outside either end of the backbone.
+
+##### `generate_bins = 1` and both `bin_count` and `bin_size` are `0`
+
+CViT goes over each backbone and generates bins based on rice's rule 
+```
+Ceil( 2*n^(1/3) )
+
+```
+where n is the number of features on that backbone.
+
+This is used to determine a bin_size for each backbone, with the smallest bin_size being kept for drawing the resulting measure.
+
+
+##### `generate_bins = 1` and `bin_size > 0`
+
+
+The provided `bin_size` is used.
+
+
+##### `generate_bins = 1` and `bin_count > 0`
+
+`bin_size` is calculated per backbone based on fitting the provided number of bins.
+
+##### `generate_bins = 1` and both `bin_count` and `bin_size` are `>0`
+
+Is treated the same as `bin_size > 0`
 
 ### [custom]
 
-;##############################################################################
-; Characteristics for a custom sequence type can be defined by naming a section
-;   by the source and type columns of the GFF. For example, 
-; ZmChr1 IBM2_2008_Neighbors locus 882.70 882.70 . . . Name=tb1;color=moss
-;   would be identified by IBM2_2008_Neighbors-locus.
-; All fields are optional unless marked required.
-; NOTE: [measure] fields cannot be overridden here.
-; Possible fields:
-;   feature   = REQUIRED <source>:<type>
-;   glyph     = centromere/position/range/border/marker
-;   shape     = circle/rect (only applies if glyph=position)
-;   width     = <pixels>
-;   overhang  = <pixels> (only applies to centromeres and markers)
-;   offset    = <pixels>
-;   color     = <color name>
-;   fill      = 1/0 (only applies to borders)
-;   draw_label = 1/0
-;   font      = 0(gdLargeFont)/1(gdMediumBoldFont)/2(gdSmallFont)/3(gdTinyFont)
-;   font_face = <truetype font in fonts/ directory>
-;   font_size = point size
-;   label_offset = 1/0
+Characteristics for a custom sequence type can be defined by naming a section
+by the source and type columns of the GFF. For example,
+``` 
+ZmChr1 IBM2_2008_Neighbors locus 882.70 882.70 . . . Name=tb1;color=moss
+```
+would be identified by IBM2_2008_Neighbors:locus.
 
-;[gene]
-;feature = phytozomev10:gene
-;glyph = position
-;offset = 1
-;color = orange
-;
+Custom fields are initialised by having any text in the header portion of the ini file `[ header ]`  that isn't one of 
+the already discussed reserved keywords (general,centromere,position,border,range,marker)
 
-[snp]
-feature = snp
-glyph = measure
-display = heat
-draw_as = range
-shape = rect
-offset = 5
-width = 5
-enable_pileup = 0
-generate_bins = 1
+After defing a custom feature, it inherits the configuration of the parent `glyph = type`, all of which can be overridden
+in this section.
 
-[other]
-feature = snp
-glyph = measure
-display = histogram
-draw_as = range
-offset = -0
-enable_pileup = 0
+The following two options are required to be defined for a custom glyph
 
+| Option | Description |
+| ---- | ---- |
+| feature | Either <source>:<type> or now just <type>, uses col2:col3 or col3 to determine features to draw |
+| glyph | Which of the above glyphs to draw the feature as. |
 
-
-### [chromosome]
