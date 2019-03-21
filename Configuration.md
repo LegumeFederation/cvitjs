@@ -90,6 +90,9 @@ In general, the following conventions are used:
 
 Sizes are generally in pixels, fontDefault is listed here to avoid cluttering the tables.
 
+Outside of the `[general]` section, any of the configuration options may be overridden in the gff file using the attribute
+column. 
+
 ### [general]
 
 The general section describes how to draw the base items of CViT, title, ruler, and any data that has the type column (3rd) as `chromosome`
