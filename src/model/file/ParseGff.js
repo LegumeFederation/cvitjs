@@ -32,7 +32,7 @@ export function parseGff(text,seqNames=[]){
               attributes.forEach((attribute) => {
                   attribute = attribute.split('=');
                   attribute[0] = attribute[0].toLowerCase();
-                  parsedAttributes[attribute[0]] = attribute[1];
+                  parsedAttributes[attribute[0]] = isNaN(attribute[1]-0) ? attribute[1] : attribute[1]-0; //parses a number as a number
                 });
               return parsedAttributes;
             }())

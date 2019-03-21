@@ -170,8 +170,12 @@ export default function layoutView(data,config,view){
             }
           });
         }
+        // Use min/max config option.
+        if(mb.max < config[key].max) mb.max = config[key].max;
+        if(mb.min > config[key].min) mb.min = config[key].min;
         view.measureConfig = mb;
       }
+
       //Go through each chromosome's backbone in order
       view.chrOrder.forEach(chr => {
         //Check if feature's target backbone exists
@@ -203,7 +207,30 @@ export default function layoutView(data,config,view){
             if(cDataGroup[1]){
               if(data.source !== cDataGroup[1]) return;
             }
+            let baseConf = {};
+
+            // allows overriding configuration option from gff.
+            for (let att in data.attribute){
+              if( data.attribute.hasOwnProperty(att) && config[key].hasOwnProperty(att)){
+               baseConf[att] = config[key][att];
+               config[key][att] = data.attribute[att];
+               if(att === 'display' || att === 'shape' ){
+                 baseConf[att].sg = cSubglyph;
+                 cSubglyph = data.attribute[att];
+               }
+              }
+            }
+
             let feature = glyph({data:data,config:config[key],view:view},cGlyph,cSubglyph);
+
+            // reset config
+            for(let att in baseConf){
+              if( baseConf.hasOwnProperty(att) && config[key].hasOwnProperty(att)){
+                config[key][att] = baseConf[att];
+                if(att === 'display' || att === 'shape' ) cSubglyph = baseConf.sg;
+              }
+            }
+
             if(feature && feature.group){
               keyGroup.addChild(feature.group);
               if(view.pileup){
