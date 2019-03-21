@@ -1,5 +1,10 @@
 import paper from 'paper';
 
+/**
+ *
+ * @param color
+ * @returns {paper.Color}
+ */
 export function formatColor(color) {
   let grey = color.match(/gr[ea]y(.*)/);
   if (grey) {
@@ -11,6 +16,14 @@ export function formatColor(color) {
     return new paper.Color(color);
 }
 
+/**
+ *
+ * @param colorArray
+ * @param min
+ * @param max
+ * @param val
+ * @returns {paper.Color}
+ */
 export function calculateColor(colorArray,min,max,val){
   val = calculateDistance(val,{start:0,stop:1},{start:min,stop:max});
   let stop_dist = 1/(colorArray.length-1);
@@ -29,6 +42,15 @@ export function calculateColor(colorArray,min,max,val){
  );
 }
 
+/**
+ *
+ * @param feature
+ * @param view
+ * @param offset
+ * @param offDir
+ * @param pileupGap
+ * @returns {number}
+ */
 export function collisionOffset(feature,view,offset,offDir, pileupGap) {
   //setup collision search
   let fBounds = feature.getStrokeBounds();
@@ -66,6 +88,11 @@ export function collisionOffset(feature,view,offset,offDir, pileupGap) {
   return 0;
 }
 
+/**
+ *
+ * @param config
+ * @param view
+ */
 export function spreadBackbones(config,view){
   /** scale cvitView to 1 to prevent sizing to current zoom */
   let al = paper.projects[0].getActiveLayer();
@@ -116,7 +143,6 @@ export function spreadBackbones(config,view){
  * @param newZoom
  * @param oldZoom
  */
-
 export function zoomCanvas(newZoom , oldZoom){
   let zoomScale = newZoom.zoom / oldZoom;
   let cl = paper.projects[0].layers['cvitLayer'];
@@ -170,12 +196,12 @@ export function panCanvas(drag){
 }
 
 /**
- * Calculates the zoom and x-y offset required for pan
- * @param current - current zoom multiplier 1-8
- * @param delta - 1 or -1 zoom in or out
- * @param center - center of current view
- * @param newScale - if you want to set the new zoom to an explicit level
- * @returns {*[]}
+ *
+ * @param current
+ * @param delta
+ * @param center
+ * @param newScale
+ * @returns {{center: *, zoom: number}}
  */
 
 export function calculateZoomAndPan (current, delta, center, newScale=current) {
@@ -195,11 +221,23 @@ export function calculateZoomAndPan (current, delta, center, newScale=current) {
   return {zoom:zoomLevel, center:center};
 }
 
+/**
+ *
+ * @param point
+ * @param baseScale
+ * @param newScale
+ * @returns {number}
+ */
 
 export function calculateDistance(point, baseScale, newScale) {
   return ((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
 }
 
+/**
+ *
+ * @param value
+ * @returns {boolean}
+ */
 export function offsetSign(value){
   return 1/value === 1/Math.abs(value);
 }
