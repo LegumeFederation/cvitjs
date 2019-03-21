@@ -272,8 +272,6 @@ The following options have been added from the legacy format:
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
 
 
-; 1=fill in area between borders, 0=don't
-
 ### [marker]
 Markers are like positions without pileup, treated as a simple line. A sequence feature is designated a marker if its section sets glyph=marker
 
