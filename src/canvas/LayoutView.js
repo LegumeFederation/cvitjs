@@ -31,7 +31,7 @@ export default function layoutView(data,config,view){
 
   /** setup view area **/
   view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
-  view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : view.canvas.width;
+  view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.width;
   let rulerTop = rulers.children['leftRuler'] ? rulers.children['leftRuler'].rulerStart :
     rulers.children['rightRuler'] ? rulers.children['rightRuler'].rulerStart : view.yOffset.offsetTop;
   view.yAdjust = rulerTop - view.yOffset.offsetTop;
@@ -54,15 +54,6 @@ export default function layoutView(data,config,view){
       }
     });
   }
-
- /** draw an invisible baseline */
-// let yVal = (data.chromosome.features[view.chrMin].start - view.min) * view.yScale;
-// let from = new paper.Point(view.leftEdge,yVal);
-// let to = new paper.Point(view.rightEdge,yVal);
-//` let baseline = new paper.Path.Line(from,to);
-//` baseline.strokeColor = 'black';
-//` labelGroup.addChild(baseline);
-
 
   /** draw all config groups **/
   for(let key in config){
