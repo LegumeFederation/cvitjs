@@ -48,6 +48,11 @@ export default class Glyph {
     r.info = data.attribute;
     // TODO: deal with classes
     let fillColor = config.color;
+
+    if(data.attribute.hasOwnProperty('class')){
+      if (view.colorClasses.hasOwnProperty(data.attribute.class)) fillColor = view.colorClasses[data.attribute.class];
+    }
+
     let transparent = config.transparent;
     let t_per = 1-config.transparent_percent;
     /** set glyphs stroke */

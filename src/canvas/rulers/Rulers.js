@@ -128,9 +128,7 @@ function _drawRuler(rc, side, dir) {
   // Draw remaining tics and labels
   let ticInt = rc.interval;
   let intDivision = Math.round(ticInt / rc.division);
-  console.log('tic start?', min + intDivision);
   for (let i = min + intDivision; i <= max; i = i + intDivision) {
-    console.log('rulerTics',i);
     let mTicP = new paper.Point(ticD, yPos + ((i-min) * rc.scale));
     let mTic = new paper.Path.Line(mTicP, mTicP.add(ticO));
     mTic.strokeColor = rc.color;

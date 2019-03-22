@@ -327,6 +327,7 @@ export default class Index {
         this.baseConfig[this._tag].displayControls:
           this.baseConfig['general'].hasOwnProperty('displayControls') ?
             this.baseConfig['general'].displayControls : 'full',
+      colorClasses : viewConfig.classes || {},
       setPopover: (props)=> this.setPopover(props)
     };
 

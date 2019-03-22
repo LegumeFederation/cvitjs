@@ -150,18 +150,17 @@ In addition the following options have been added from the legacy format:
 | tick_interval | 50000 | Ruler tick mark units in original chromosome units |
 | minor_tick_divisions | 2 |  Number of minor divisions per major tick (1 for none) |
 
-`class_colors` and `[classes]` have yet to be implemented.
-```
-; Use these colors in this order when displaying sequences of different classes.
-;  For example, different gene families, BACs in different phases.
-; TYPE: colors
-class_colors = red, green, blue, orange, purple, turquoise, OliveDrab, honeydew, chocolate, tomato, aquamarine, MediumSlateBlue, azure, LawnGreen, SkyBlue, chartreuse, LightYellow, maroon, yellow, FloralWhite, cyan, salmon
+`class_colors` has been depreciated, due to issues with reliable reproduction of images in an asynchronous environment.
 
-; Assign colors to classes like this: <class-name> = <color>
-[classes]
-NBS_TIR = red
-NBS_CC = blue
-```
+### [classes] 
+A form of global override of color tag based on a `class=<class-name>` attribute in column 9 of the gff.
+Colors listed here take priority over the `color = (color)` option in any of the following sections, but is overridden
+by a `color=(color)` attribute in column 9 of the gff.
+
+| Option |  Description |
+| ---- | ---- | 
+| <class-name> | (color)  Color override over section default.|
+ 
 
 ### [centromere]
  A centromere is a specialized feature; displayed over top the chromosome bar.
