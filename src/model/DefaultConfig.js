@@ -38,6 +38,10 @@ export function defaultConfig(){
       'minor_tick_divisions': 2
     },
 
+    'classes' : {
+      'uncategorized' : 'black'
+    },
+
     'centromere': {
       'centromere_overhang': 2,
       'color': 'gray30',
@@ -143,7 +147,8 @@ export function defaultConfig(){
       'bin_size':0,
       'bin_count':0,
       'bin_min': 0,
-      'bin_max' : 0
+      'bin_max' : 0,
+      'count_classes' : 0
     }
   };
 }
