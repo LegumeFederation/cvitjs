@@ -31,7 +31,7 @@ export default function layoutView(data,config,view){
 
   /** setup view area **/
   view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
-  view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.width;
+  view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.bounds.width;
   let rulerTop = rulers.children['leftRuler'] ? rulers.children['leftRuler'].rulerStart :
     rulers.children['rightRuler'] ? rulers.children['rightRuler'].rulerStart : view.yOffset.offsetTop;
   view.yAdjust = rulerTop - view.yOffset.offsetTop;

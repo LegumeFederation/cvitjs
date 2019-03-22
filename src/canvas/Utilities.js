@@ -115,7 +115,8 @@ export function spreadBackbones(config,view){
         groupV++;
       }
     });
-    let calcPadding = ((view.rightEdge-view.leftEdge) - groupW - (2*padding))/(groupV+1);
+    let gpad = config.general.display_ruler === 1 ? 1 : 0;
+    let calcPadding = ((view.rightEdge-view.leftEdge) - groupW - (2*padding))/(groupV+gpad);
     offsetPadding = calcPadding > offsetPadding ? calcPadding : offsetPadding;
   }
 
