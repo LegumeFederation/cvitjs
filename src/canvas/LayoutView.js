@@ -21,6 +21,7 @@ export default function layoutView(data,config,view){
   let labelGroup = new paper.Group();
   labelGroup.name = 'cvitLabels';
 
+
   /** draw Title */
   _setTitle(config);
 
@@ -42,8 +43,26 @@ export default function layoutView(data,config,view){
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
       baseGroup.addChild(chr.group);
       labelGroup.addChild(chr.labelGroup);
+      if(chromosome.seqName === view.chrMin){ //add a baseline at view.min to make ruler movement easier.
+        let yVal = view.yOffset.offsetTop + view.yAdjust;
+        let from = new paper.Point(view.leftEdge,yVal);
+        let to = new paper.Point(view.rightEdge,yVal);
+        let baseline = new paper.Path.Line(from,to);
+        baseline.name = 'baseline';
+        baseline.strokeWidth = 0;
+        labelGroup.addChild(baseline);
+      }
     });
   }
+
+ /** draw an invisible baseline */
+// let yVal = (data.chromosome.features[view.chrMin].start - view.min) * view.yScale;
+// let from = new paper.Point(view.leftEdge,yVal);
+// let to = new paper.Point(view.rightEdge,yVal);
+//` let baseline = new paper.Path.Line(from,to);
+//` baseline.strokeColor = 'black';
+//` labelGroup.addChild(baseline);
+
 
   /** draw all config groups **/
   for(let key in config){

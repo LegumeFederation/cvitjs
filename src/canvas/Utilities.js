@@ -164,7 +164,7 @@ export function zoomCanvas(newZoom , oldZoom){
     });
   }
   // move rulers if needed
-  let yMin = cl.children['cvitView'].bounds.topLeft.y;
+  let yMin = cl.children['cvitLabels'].bounds.bottomRight.y;
   rulers.children.forEach(child => {
     let baseRuler;
     if(child.children.hasOwnProperty('rulerLeft')){

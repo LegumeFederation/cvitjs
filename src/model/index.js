@@ -343,6 +343,9 @@ export default class Index {
       viewSetup.chrOrder.push(name);
     });
 
+    if(viewSetup.min > viewConfig.general.ruler_min) viewSetup.min = viewConfig.general.ruler_min;
+    if(viewSetup.max < viewConfig.general.ruler_max) viewSetup.max = viewConfig.general.ruler_max;
+
     viewSetup.yScale = Index._setYScale(viewSetup.canvas.height, viewSetup.max,viewSetup.min,viewSetup.yOffset);
 
     return viewSetup;

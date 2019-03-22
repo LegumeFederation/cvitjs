@@ -39,9 +39,8 @@ export default function layoutRulers(backbone, config, view) {
   rulerConfig.interval = parseInt(config.general.tick_interval);
   rulerConfig.division = parseInt(config.general.minor_tick_divisions);
 
-  // TODO: ruler_min < view.min
-  // TODO: ruler_max > view.max
   // TODO: display ruler units
+  // TODO: invert ruler
 
   try {
     //Draw Left Ruler
@@ -129,8 +128,10 @@ function _drawRuler(rc, side, dir) {
   // Draw remaining tics and labels
   let ticInt = rc.interval;
   let intDivision = Math.round(ticInt / rc.division);
-  for (let i = intDivision; i < max; i = i + intDivision) {
-    let mTicP = new paper.Point(ticD, yPos + (i * rc.scale));
+  console.log('tic start?', min + intDivision);
+  for (let i = min + intDivision; i <= max; i = i + intDivision) {
+    console.log('rulerTics',i);
+    let mTicP = new paper.Point(ticD, yPos + ((i-min) * rc.scale));
     let mTic = new paper.Path.Line(mTicP, mTicP.add(ticO));
     mTic.strokeColor = rc.color;
     mTic.strokeWidth = 2;
