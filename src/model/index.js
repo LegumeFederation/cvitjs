@@ -336,6 +336,8 @@ export default class Index {
       setPopover: (props)=> this.setPopover(props)
     };
 
+    console.log(viewSetup);
+
     chr.features.forEach(data => {
       let name = data.seqName;
       if (data.start < viewSetup.min) {
