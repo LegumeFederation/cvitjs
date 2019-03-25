@@ -70,7 +70,7 @@ The [general] section and at least one dataset definition are required.
 In this example, to display the test1 dataset the URL would be: `your-CViTjs-URL/?data=test1`
 
 For each dataset you will need at least one <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and 
-and while not reuired, it is reccomended that you create a visualisation configuration file, typically named cvit.ini.
+and while not required, it is reccomended that you create a visualisation configuration file, typically named cvit.ini.
  
 Almost every aspect of the presentation of the image can be controlled in the configuration file. 
 See the [sample file](data/test1/test1.conf) in data/test1/ or [the configuration readme](Configuration.md) for more information.
@@ -89,18 +89,18 @@ In the body of the page, all that is required is:
 ```
 at the point you want to display the cvit tool. 
 
-Cvit defaults to displaying the view pointed to by the `data_default` configuration under `[general]` in cvit.conf.
-The view can be changed by the URL (if enabled) or by passing a `data-dataset=<tag>` attribute in the div, for example 
-if wanting to use a dataset 'test2' instead of the default 'test1', the following could be used in the page's html
+Cvit defaults to displaying the view pointed to by the `data_default` configuration under `[general]` in cvit.conf. 
+You may use the html `data-` attribute to pass configuration target as:
 
 ```
-<div class="container" id="cvit-app" data-dataset="test2" />
+<div class="container" id="cvit-app" data-tag="test2" />
 ```
 Which is the same as:
 ```
 http://cvitpage/?data=test2
 ```
-In terms of priority: `data-dataset='tag' > url/?data=tag > cvit.conf `
+In terms of priority: `data-tag='tag' > url/?data=tag > cvit.conf `
+
 
 Similarly, the default gff files can be overridden in both the URL and the HTML. Like their configuration counterpart, 
 this may be a single file, or an array of files.
@@ -112,7 +112,16 @@ this may be a single file, or an array of files.
 <div class="container" id="cvit-app" data-gff='["backbone.gff","test2.gff"]' />
 ```
 
-Priority is similar to the dataset option.
+Priority is similar to the tag  option.
+
+Other `data-` tags are:
+
+| Tag | Description |
+| ---- | ---- |
+| data-tag | select a specific tag |
+| data-gff | (array) one or more gff files to use as base data |
+| data-config | configuration file to use for dataset |
+| data-cvitroot | path prefix if files aren't in the root folder of the page. |
 
 ## PHP
 
