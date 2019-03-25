@@ -170,7 +170,7 @@ export default class Index {
   loadData(files) {
     this._viewData = {};
     files.forEach((file, i) => {
-      this.appendData(file)
+      this.appendData(this.cvitRoot+file)
         .then(() => {
           if (i === files.length-1) {
             this._dirty = true;
@@ -221,7 +221,7 @@ export default class Index {
       this._inform();
     }
 
-    return parseFile(this.cvitRoot+file, 'gff',this._viewLayout.chrOrder)
+    return parseFile(file, 'gff',this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {

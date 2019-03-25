@@ -1,6 +1,7 @@
 export function defaultConfig(){
   return {
     'general': {
+      'title' : '',
       'title_height': 20,
       'title_font': 1,
       'title_font_size': 10,
