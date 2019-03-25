@@ -10,6 +10,7 @@ export default class Index {
    * @param {callback} sub
    */
   constructor(passedConfig,sub){
+    this.cvitRoot = passedConfig.cvitRoot;
     this.onChanges = [sub];
     this._dirty = false;
     let qs = Query;
@@ -33,7 +34,7 @@ export default class Index {
       data:[]
     };
 
-    parseFile('cvit.conf','ini')
+    parseFile(`${this.cvitRoot}cvit.conf`,'ini')
       .then(response => this.baseConfig = response)
       .then(()=>{
         this._dirty = true;
@@ -182,7 +183,7 @@ export default class Index {
    */
   loadViewConfig(file){
     this._viewConfig = {};
-    parseFile(file, 'ini') //get <config.ini/conf>
+    parseFile(this.cvitRoot+file, 'ini') //get <config.ini/conf>
       .then(response => this._viewConfig = this._combineObjects(this.defaultViewConf,response)) //overwrite default conf with passed data
       .then(() => { //set configuration info of custom types
         for(let key in this._viewConfig){
@@ -216,7 +217,7 @@ export default class Index {
       this._inform();
     }
 
-    return parseFile(file, 'gff',this._viewLayout.chrOrder)
+    return parseFile(this.cvitRoot+file, 'gff',this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
