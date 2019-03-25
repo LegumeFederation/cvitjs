@@ -25,11 +25,13 @@ const main = () => {
   const loadedHandler = () => {
     let dataset = document.getElementById('cvit-app').dataset;
     console.log('cvitroot',dataset.cvitroot);
-    let dConf = dataset.conf ? JSON.parse(dataset.config) : null;
+    let dConf = dataset.config ? JSON.parse(dataset.config) : null;
+    let dTag = dataset.tag ? dataset.tag : null;
     let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
     let croot = dataset.cvitroot ? dataset.cvitroot : '';
     let configData = {
       viewConf: dConf,
+      viewTag : dTag,
       gff: dGff,
       cvitRoot : croot
     };

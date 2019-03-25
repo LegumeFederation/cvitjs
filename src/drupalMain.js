@@ -23,13 +23,15 @@ const main = () => {
   const evtName = 'DOMContentLoaded';
   // add alternative config/gff locations priority order: HTML _viewData attribute > querystring > cvit.conf
   const loadedHandler = () => {
-    console.log(Drupal.settings.blast_ui.cvitpath);
+    let ds = window.Drupal.settings;
     let dataset = document.getElementById('cvit-app').dataset;
-    let dConf = window.Drupal.settings.blast_ui.dataset ? JSON.parse(Drupal.settings.blast_ui.dataset) : null;
+    let dTag = ds.blast_ui.dataset ? ds.blast_us.dataset : null;
     let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
-    let cRoot = Drupal.settings.blast_ui.cvitpath ? Drupal.settings.blast_ui.cvitpath : '';
+    let dConf = dataset.config ? dataset.config : null;
+    let cRoot = ds.blast_ui.cvitroot ? ds.blast_ui.cvitroot : '';
     let configData = {
       viewConf: dConf,
+      viewTag : dTag,
       gff: dGff,
       cvitRoot : cRoot
     };

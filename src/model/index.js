@@ -39,15 +39,19 @@ export default class Index {
       .then(()=>{
         this._dirty = true;
         this._tag = 'data.';
-        if(qs.view ==='general') {
-          if(this.baseConfig.general.hasOwnProperty('data_default')){
-            this._tag += this.baseConfig.general.data_default;
-          } else {
-            throw new Error('Default dataset has not been configured.');
-          }
-        } else {
-          this._tag += qs.view;
+        if(passedConfig.viewTag){
+          this._tag += passedConfig.viewTag;
         }
+        console.log('pc',this._tag, passedConfig);
+       // if(qs.view ==='general') {
+       //   if(this.baseConfig.general.hasOwnProperty('data_default')){
+       //     this._tag += this.baseConfig.general.data_default;
+       //   } else {
+       //     throw new Error('Default dataset has not been configured.');
+       //   }
+       // } else {
+       //   this._tag += qs.view;
+       // }
         let tag = this._tag;
         let viewConfig = passedConfig.viewConf ? passedConfig.viewConf : this.baseConfig[tag].conf;
         let dataSources = passedConfig.gff
