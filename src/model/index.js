@@ -323,7 +323,7 @@ export default class Index {
           this.baseConfig['general'].hasOwnProperty('canvasColor') ?
             this.baseConfig['general'].canvasColor : 'white',
       },
-      viewControls: this.baseConfig[this._tag].hasOwnProperty('displayControls') ?
+      displayControls: this.baseConfig[this._tag].hasOwnProperty('displayControls') ?
         this.baseConfig[this._tag].displayControls:
           this.baseConfig['general'].hasOwnProperty('displayControls') ?
             this.baseConfig['general'].displayControls : 'full',

@@ -46,7 +46,6 @@ export default class Glyph {
     fGroup.addChild(r);
 
     r.info = data.attribute;
-    // TODO: deal with classes
     let fillColor = config.color;
 
     if(data.attribute.hasOwnProperty('class')){
@@ -83,6 +82,7 @@ export default class Glyph {
 
     /** draw label */
     //TODO: Draw labels
+    // TODO: Figure out if labels offset from item or from group?
 
     /** pileup */
     if (view.pileup ) {

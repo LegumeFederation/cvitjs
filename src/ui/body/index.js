@@ -7,9 +7,10 @@ import CvitControls from './overlay/Overlay';
 export default class CvitHeader extends Component {
   render(props, state) {
     let active = props.cvitModel.active;
+    let ctrl = props.cvitModel.view.displayControls;
     return (
       <div className={'row cvit'} id={'cvit-main'}>
-        {active === 'canvas' || /color.*/.test(active) ?
+        {(active === 'canvas' || /color.*/.test(active)) && (ctrl !== 'none') ?
           <CvitControls
             mouseTool={props.cvitModel.mouseTool}
             selectTool={(state) => {
@@ -24,6 +25,7 @@ export default class CvitHeader extends Component {
             }}
             cColors={{color1: props.cvitModel.color1, color2: props.cvitModel.color2}}
             setColor={(target, color) => props.cvitModel.setColor(target, color)}
+            displayControls={ctrl}
           /> :
           null
         }
@@ -35,6 +37,7 @@ export default class CvitHeader extends Component {
             dirty={props.cvitModel.dirty}
             setDirty={(newState) => props.cvitModel.setDirty(newState)}
             popover={props.cvitModel.popoverConfig}
+            displayControls={ctrl}
           />
           :
           active === 'status' ?

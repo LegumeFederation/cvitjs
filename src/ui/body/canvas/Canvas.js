@@ -70,11 +70,13 @@ export default class CvitCanvas extends Component{
 
   zoomOnMouse(e){
     e.preventDefault();
-    let evtPt = paper.view.getEventPoint(e);
-    let oz = paper.project.getActiveLayer().zoom;
-    let nz = calculateZoomAndPan(oz, e.deltaY, evtPt);
-   // panCanvas(nz[1].multiply(-1));
-    zoomCanvas(nz,oz);
+    if(this.props.displayControls !== 'none') {
+      let evtPt = paper.view.getEventPoint(e);
+      let oz = paper.project.getActiveLayer().zoom;
+      let nz = calculateZoomAndPan(oz, e.deltaY, evtPt);
+      // panCanvas(nz[1].multiply(-1));
+      zoomCanvas(nz, oz);
+    }
   }
 
   onMouseUp(e){
@@ -101,7 +103,7 @@ export default class CvitCanvas extends Component{
    if(this.state.isMouseDown){
      paper.tool.omm(e); //tools are set in overlay_controls/tool
    }
-    paper.view.draw();
+    //paper.view.draw();
   }
 
   onClick(e){
@@ -118,7 +120,8 @@ export default class CvitCanvas extends Component{
 
     return (
       <div
-        className={'eleven columns'}
+        className={props.displayControls === 'none' ? 'twelve columns' : 'eleven columns'}
+        style={props.displayControls === 'none' ? {maxWidth:'100%'} : {}}
         id={'cvit-display'}
       >
         <canvas
