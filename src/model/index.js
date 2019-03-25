@@ -141,6 +141,7 @@ export default class Index {
 
   setColor(target,color){
     this[target] = color;
+    this.active = 'canvas';
     this._inform();
   }
 
