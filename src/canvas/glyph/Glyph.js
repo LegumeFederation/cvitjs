@@ -7,7 +7,7 @@
 
 import paper from 'paper';
 
-import {formatColor, collisionOffset} from '../Utilities';
+import {formatColor, collisionOffset, offsetSign} from '../Utilities';
 
 /**
  * @description Adds an individual chromosome backbone to the group
@@ -35,7 +35,7 @@ export default class Glyph {
   }
 
   formatGlyph(data, config, view) {
-    data.name = data.attribute.name ? data.attribute.name : '';
+    data.name = data.attribute.hasOwnProperty('name') ? data.attribute.name : '';
     let fGroup = new paper.Group();
     fGroup.name = data.name;
     let labelGroup = new paper.Group();
@@ -79,10 +79,33 @@ export default class Glyph {
     let fill = config.hasOwnProperty('fill') ? config.fill : 1;
     if(fill) r.fillColor = formatColor(fillColor);
     if(transparent) r.fillColor.alpha = t_per;
-
     /** draw label */
     //TODO: Draw labels
     // TODO: Figure out if labels offset from item or from group?
+    if(config.draw_label){
+      let labelOffset = config['label_offset'];
+      let labelY = r.position.y; //position = middle of target
+      let label = new paper.PointText({
+        point: [r.bounds.right,labelY],
+        content: data.name,
+        strokeSize : 1,
+        fontSize: `${config['font_size']}pt`,
+        fontFamily: config['font_face'],
+        fontWeight: 'normal',
+        fillColor: formatColor(config['label_color'])
+
+      });
+
+
+      labelGroup.addChild(label);
+
+      if(offsetSign(labelOffset)){
+        label.translate(labelOffset,0);
+      } else {
+        label.translate((r.getStrokeBounds().left - label.getStrokeBounds().right + labelOffset),0);
+      }
+    }
+
 
     /** pileup */
     if (view.pileup ) {

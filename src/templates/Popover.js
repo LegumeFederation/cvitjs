@@ -18,7 +18,7 @@ export function popoverContents(data) {
           <thead>
             <tr>
               <th> Name:</th>
-              <th> {feature.attribute.id || i} </th>
+              <th> {feature.name || feature.attribute.id} </th>
             </tr>
           </thead>
           <tbody>
