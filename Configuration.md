@@ -93,6 +93,9 @@ Sizes are generally in pixels, fontDefault is listed here to avoid cluttering th
 Outside of the `[general]` section, any of the configuration options may be overridden in the gff file using the attribute
 column. 
 
+It is recommended to avoid the use of `enable_pileup` or `hide_label_overlap` if possible, as they may
+cause slow performance in larger datasets.
+
 ### [general]
 
 The general section describes how to draw the base items of CViT, title, ruler, and any data that has the type column (3rd) as `chromosome`
@@ -190,6 +193,7 @@ The following options have been added from the legacy format:
 | border_width | 2 | Width of a drawn border in px |
 | border_color | black | color of drawn border |
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
+| hide_label_overlap | 0 | (boolean) hide labels if they overlap others |
 
 ### [position]
 
@@ -221,6 +225,7 @@ The following options have been added from the legacy format:
 | border_width | 2 | Width of a drawn border in px |
 | border_color | black | color of drawn border |
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
+| hide_label_overlap | 0 | (boolean) hide labels if they overlap others |
 
 ### [range]
 Ranges are displayed as bars alongside the chromosome bar or as borders draw within the chromosome bar.
@@ -248,6 +253,7 @@ The following options have been added from the legacy format:
 | border_width | 2 | Width of a drawn border in px |
 | border_color | black | color of drawn border |
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
+| hide_label_overlap | 0 | (boolean) hide labels if they overlap others |
 
 ### [border]
 
@@ -273,7 +279,7 @@ The following options have been added from the legacy format:
 | border_width | 2 | Width of a drawn border in px |
 | fill_color | color | color to use when filling border |
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
-
+| hide_label_overlap | 0 | (boolean) hide labels if they overlap others |
 
 ### [marker]
 Markers are like positions without pileup, treated as a simple line. A sequence feature is designated a marker if its section sets glyph=marker
@@ -296,6 +302,7 @@ The following options have been added from the legacy format:
 | width | 5 | width of glyph in px |
 | stroke_width | 2 | Width of a drawn stroke in px |
 | transparent_percent | 0.6 | Percent transparency from 0-1 |
+| hide_label_overlap | 0 | (boolean) hide labels if they overlap others |
 
 
 

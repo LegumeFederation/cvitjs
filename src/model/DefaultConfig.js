@@ -56,6 +56,7 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'gray30',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
+      'hide_label_overlap' : 0
     },
 
     'position': {
@@ -74,6 +75,7 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'gray30',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
+      'hide_label_overlap' : 0
     },
 
     'range': {
@@ -91,6 +93,7 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'black',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
+      'hide_label_overlap' : 0
     },
 
     'border': {
@@ -106,6 +109,7 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'black',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
+      'hide_label_overlap' : 0
     },
 
     'marker': {
@@ -119,6 +123,7 @@ export function defaultConfig(){
       'label_color': 'black',
       'stroke_width' : 2,
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
+      'hide_label_overlap' : 0
     },
 
     'measure': {
@@ -144,6 +149,7 @@ export function defaultConfig(){
       'font_size': 6,
       'label_offset': 0,
       'label_color': 'black',
+      'hide_label_overlap' : 0,
       'generate_bins' : 0,
       'bin_size':0,
       'bin_count':0,

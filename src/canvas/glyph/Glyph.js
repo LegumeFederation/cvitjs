@@ -83,11 +83,12 @@ export default class Glyph {
     //TODO: Draw labels
     // TODO: Figure out if labels offset from item or from group?
     if(config.draw_label){
+      let name = data.name || data.attribute.id;
       let labelOffset = config['label_offset'];
       let labelY = r.position.y; //position = middle of target
       let label = new paper.PointText({
         point: [r.bounds.right,labelY],
-        content: data.name,
+        content: name,
         strokeSize : 1,
         fontSize: `${config['font_size']}pt`,
         fontFamily: config['font_face'],
@@ -95,7 +96,6 @@ export default class Glyph {
         fillColor: formatColor(config['label_color'])
 
       });
-
 
       labelGroup.addChild(label);
 

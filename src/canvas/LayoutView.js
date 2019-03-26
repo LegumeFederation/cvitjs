@@ -88,7 +88,8 @@ export default function layoutView(data,config,view){
 
           //setup pileup
           view.pileup = false;
-          if(config[key].hasOwnProperty('enable_pileup') && config[key].enable_pileup > 0) {
+          if((config[key].hasOwnProperty('enable_pileup') && config[key].enable_pileup > 0) ||
+            (config[key].draw_label && config[key].hide_label_overlap)){
             keyGroup.rTree = rbush();
             view.pileup = true;
             view.pileupTree = keyGroup.rTree;
@@ -132,10 +133,26 @@ export default function layoutView(data,config,view){
             }
 
             if(feature && feature.group){
+              /** add feature to group */
               keyGroup.addChild(feature.group);
-              if(view.pileup){
-                //update bounds and rTree
-                view.pileupBounds = keyGroup.getStrokeBounds();
+
+              if(view.pileup || (feature.children[0].children.length && config[key].hide_label_overlap)) {
+                /** update bounds */
+                if (view.pileup) view.pileupBounds = keyGroup.getStrokeBounds();
+
+                /** hide label if it might overlap */
+                if (feature.children[0].children.length) {
+                  let test = keyGroup.rTree.collides({
+                    minX: feature.children[0].bounds.left,
+                    maxX: feature.children[0].bounds.right,
+                    minY: feature.children[0].bounds.top,
+                    maxY: feature.children[0].bounds.bottom
+                  });
+
+                  if (test)  feature.children[0].visible = false;
+                }
+
+                /** insert into rTree */
                 keyGroup.rTree.insert({
                   minX: feature.bounds.left,
                   maxX: feature.bounds.right,
