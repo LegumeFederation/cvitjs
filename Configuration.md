@@ -207,7 +207,7 @@ A sequence feature is designated a position if its section sets glyph=position.
 | offset | 0 | number of px to offset glyph from backbone, -0 or less draws on the left |
 | enable_pileup | 1 | (boolean) Offset glyph if it would occupy the same space as another of this type.
 | pileup_gap | 0 | Number of px past edge of overlapped glyph to draw |
-| draw_label | 1 | (boolean) 1 = draw centromere label |dd
+| draw_label | 1 | (boolean) 1 = draw centromere label |
 | font_face | fontDefault |  Font face to use for centromere label |
 | font_size | 6 | Size of label in pt |
 | label_offset | 0 | Start labels this many pixels right of glyph (negative for left) |

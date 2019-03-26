@@ -2,7 +2,7 @@ import {h} from 'preact'; //needed to parse JSX properly
 
 export function popoverContents(data) {
 
-  let attributeContents = data.map((feature, i) => {
+  let attributeContents = data.map(feature => {
     let attributes = [];
     for (let key in feature.attribute) {
       if (feature.attribute.hasOwnProperty(key)) {
