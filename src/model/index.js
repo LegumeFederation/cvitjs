@@ -250,7 +250,6 @@ export default class Index {
         document.dispatchEvent(this._dataLoaded);
       }
     }
-
     this.onChanges.forEach(callBack => callBack());
   }
 

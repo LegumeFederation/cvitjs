@@ -20,13 +20,9 @@ export default class CvitCanvas extends Component{
 
   layoutCanvasView(data,config,view){
     let zoom = 1;
-    if(paper.view === null) {
-      paper.setup(this.base.children[0]);
-    } else {
-      paper.project.clear();
-      zoom = paper.view.zoom;
-    }
-
+    if(paper.view !== null) zoom = paper.view.zoom;
+    if(paper.project) paper.project.remove();
+    paper.setup(this.base.children[0]);
     let layer = new paper.Layer();
     layer.name = 'cvitLayer';
     paper.view.zoom = zoom;
@@ -39,11 +35,9 @@ export default class CvitCanvas extends Component{
     if(paper.view) paper.view.draw();
     if(this.props.dirty) { //only update paper state if there is reason to (changed config or new data)
       this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-      paper.view.draw();
     }
 
   }
-
   componentWillReceiveProps(nextProps, nextContext) {
     if(paper.view) paper.view.draw();
   }
@@ -51,19 +45,14 @@ export default class CvitCanvas extends Component{
   componentWillUpdate(nextProps, nextState, nextContext) {
     if (paper.view) {
       paper.view.draw();
-      if (nextProps.dirty) {
-        this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-        paper.view.draw();
-      }
     }
   }
 
   componentDidUpdate(previousProps, previousState, previousContext) {
     if(paper.view) {
       paper.view.draw();
-      if (this.props.dirty) {
+      if (this.props.dirty) { //redraw layout on same canvas if dirty update
         this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
-        this.props.setDirty(false);
       }
     }
   }
