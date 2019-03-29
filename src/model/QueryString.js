@@ -13,8 +13,9 @@ class QueryString {
   get data(){
     return this._data[0];
   }
-  get view(){
-    return this._data[0].view || 'general';
+
+  get tag(){
+    return this._data[0].data || 'general';
   }
 
   get config(){

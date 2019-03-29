@@ -116,12 +116,12 @@ Priority is similar to the tag  option.
 
 Other `data-` tags are:
 
-| Tag | Description |
-| ---- | ---- |
-| data-tag | select a specific tag |
-| data-gff | (array) one or more gff files to use as base data |
-| data-config | configuration file to use for dataset |
-| data-cvitroot | path prefix if files aren't in the root folder of the page. |
+| Tag | Query Equivalent | Description |
+| ---- | ---- | --- |
+| data-tag | data=<tag> | select a specific tag |
+| data-gff | gff=<file> or gff[]=<file> |(array) one or more gff files to use as base data |
+| data-config | config=<file> | configuration file to use for dataset |
+| data-cvitroot | not used | path prefix if files aren't in the root folder of the page. |
 
 ## PHP
 

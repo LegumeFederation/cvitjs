@@ -41,6 +41,8 @@ export default class Index {
         this._tag = 'data.';
         if(passedConfig.hasOwnProperty('viewTag') && passedConfig.viewTag) {
           this._tag += passedConfig.viewTag;
+        } else if (qs && qs.tag !== 'general'){
+          this._tag += qs.tag;
         } else {
           if(this.baseConfig.general.hasOwnProperty('data_default')){
             this._tag += this.baseConfig.general.data_default;
@@ -48,19 +50,13 @@ export default class Index {
             throw new Error('Default dataset has not been configured.');
           }
         }
-       // if(qs.view ==='general') {
-       //   if(this.baseConfig.general.hasOwnProperty('data_default')){
-       //     this._tag += this.baseConfig.general.data_default;
-       //   } else {
-       //     throw new Error('Default dataset has not been configured.');
-       //   }
-       // } else {
-       //   this._tag += qs.view;
-       // }
+
         let tag = this._tag;
         let viewConfig = passedConfig.viewConf ? passedConfig.viewConf : this.baseConfig[tag].conf;
         let dataSources = passedConfig.gff
           ? passedConfig.gff
+          : qs && qs.gff
+          ? qs.gff
           :  typeof this.baseConfig[tag].defaultData === 'string'
           ?  [this.baseConfig[tag].defaultData]
           :  this.baseConfig[tag].defaultData;

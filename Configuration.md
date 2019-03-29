@@ -63,6 +63,7 @@ The general section can set the following options:
 | width | 80% | Width of canvas, as CViTjs tries to automatically size, it is advised not to edit this option unless needed |
 | canvasColor | white | Fill color of canvas background |
 | displayControls | full | 'full','zoom', 'none' - show draw and navigation menu |
+| disableURL | 0 | disable reading url query |
 
 ### [data.\<tag>] configuration
 
