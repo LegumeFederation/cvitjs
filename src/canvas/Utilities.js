@@ -6,11 +6,11 @@ import paper from 'paper';
  * @returns {paper.Color}
  */
 export function formatColor(color) {
-  let grey = color.match(/gr[ea]y(.*)/);
+  let grey = color.match(/gr[ea]y(\d+)/);
   if (grey) {
     color = 'grey';
     if (grey[1].length !== 0) {
-      color = parseFloat('.' + grey[1]);
+      color = parseFloat(grey[1]/100);
     }
   }
     return new paper.Color(color);
