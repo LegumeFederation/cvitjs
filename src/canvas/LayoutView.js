@@ -360,14 +360,14 @@ function _setMeasure(data,view,config,key,cDataGroup){
             if(cc === 2) measureAttributes['uncategorized'] = val.length - cCount;
           }
 
-          if( !config[key]['bin_max']) {
+          if( !config[key]['bin_min']) {
             mb.min = itemcount < mb.min || mb.min === null ? itemcount : mb.min;
           } else {
             mb.min = config[key]['bin_min'];
           }
 
           if (!config[key]['bin_max']){
-            mb.max = val > mb.max ? itemcount : mb.max;
+            mb.max = itemcount > mb.max ? itemcount : mb.max;
           } else {
             mb.max = config[key]['bin_max'];
           }
