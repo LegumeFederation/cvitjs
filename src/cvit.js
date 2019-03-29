@@ -7,15 +7,6 @@ export default class CVIT {
     this.model = new CvitModel(passedData,()=>{this._inform();});
     this.ui = render( <CvitUI cvitModel={this.model} />, document.querySelector('#cvit-app'));
 
-    let windowResizeTimer;
-    window.onresize = () => {
-      if (windowResizeTimer)
-        clearTimeout(windowResizeTimer);
-      windowResizeTimer = setTimeout(()=>{
-        console.log('resize finished');
-        this.model.setDirty(true);
-      }, 500);
-    };
   }
 
   /**

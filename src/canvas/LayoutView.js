@@ -185,6 +185,14 @@ export default function layoutView(data,config,view){
   const y = baseGroup.position.y;
   paper.view.cvtCenter = new paper.Point(x,y); //store the center-point for resetting the view
   //cvitModel.setDrawn();
+
+  /** set listener for resize event, move right ruler and respread backbone. */
+  paper.view.onResize = (e) => {
+    view.rightEdge += e.delta.width;
+    if(rulers.children['rightRuler']) rulers.children['rightRuler'].translate(new paper.Point(e.delta.width,0));
+    spreadBackbones(config,view);
+  };
+
   paper.view.draw();
 
   //return components;

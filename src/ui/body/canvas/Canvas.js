@@ -119,6 +119,7 @@ export default class CvitCanvas extends Component{
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
           onMouseMove={this.onMouseMove}
+          data-paper-resize
         />
       </div>
     );
