@@ -319,7 +319,8 @@ Currently, measure supports the following three display options:
 | heat | All | Changes the Glyph's color based on value's % of maximum-minimum range |
 | distance | All | Moves Glyph away from backbone based on value's % of maximum-minimum range |
 | histogram | range | Draws range box to take up full space based on value. |
-| stackedbar | range | Like histogram, but can draw based on `[classes]` and `count_classes = <1 or 2>`
+| stackedbar | range | Like `histogram`, but can draw based on `[classes]` and `count_classes = <1 or 2>`
+| ratio | range | like `stackedbar` but with a constant height, as defined by `max_distance` used to show % composition by class. |
 
 Not all options below are available for all display types, these options will be noted. When configuring a distance,
 all the options for the glyph chosen by `draw_as` are also available, and the options defined for that glyph style will 
