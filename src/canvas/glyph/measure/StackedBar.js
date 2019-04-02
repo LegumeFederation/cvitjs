@@ -1,4 +1,4 @@
-import {calculateDistance} from '../../Utilities';
+import {calculateDistance, offsetSign} from '../../Utilities';
 import Glyph from '../Glyph';
 import getDrawFeature from './drawAsHelper';
 
@@ -34,6 +34,10 @@ export default class StackedBar extends Glyph{
         this.group.insertChild(1,bar);
         lastOffset += offset;
       }
+    }
+    /** shift label if the stack grows in direction of label */
+    if(config.draw_label && offsetSign(config.label_offset) === config.offsetDir){
+      this.group.children[0].translate(lastOffset, 0);
     }
   }
 }
