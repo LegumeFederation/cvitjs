@@ -13,6 +13,10 @@ export default class GroupToggle extends Component{
     let group = this.props.groupType;
     let target = this.props.target;
     let active = paper.projects[0].getActiveLayer().children['cvitView'];
+    let rulers = paper.projects[0].layers['rulersLayer'].children['rulers'];
+    let view = this.props.cvitModel.view;
+    view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
+    view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.bounds.width;
     if(group === 'chromosome'){
       active.children[target].visible = vis;
     } else {
