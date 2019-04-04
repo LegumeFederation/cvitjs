@@ -18,7 +18,7 @@ export function parseGff(text,seqNames=[]){
           feature: element[2],
           start: parseInt(element[3]),
           end: parseInt(element[4]),
-          score: parseFloat(element[5]) || '.',
+          score: Number(element[5]) || '.',
           strand: element[6],
           frame: element[7],
           // Break attribute tags into their own sub objects
