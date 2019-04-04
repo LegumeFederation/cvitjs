@@ -36,7 +36,7 @@ export function popoverContents(data) {
             </tr>
             <tr>
               <th> Score:</th>
-              <th> {typeof feature.score === 'number' ? feature.score.toExponential(2):feature.score} </th>
+              <th> {typeof feature.score === 'number' ? feature.score.toExponential():feature.score} </th>
             </tr>
             {attributes}
           </tbody>
