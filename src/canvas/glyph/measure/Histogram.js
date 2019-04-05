@@ -17,7 +17,7 @@ export default class Histogram extends Range{
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     if( val < mc.min) val = mc.min;
     if( val > mc.max) val = mc.max;
-    let offset = calculateDistance(val,{start:config.offset, stop:config.offset+config.max_distance},{start:mc.min,stop:mc.max});
+    let offset = calculateDistance(val,{start:config.offset, stop:config.offset+config.max_distance},{start:mc.min,stop:mc.max},config.invert_value);
     offset = config.offsetDir ? offset : - offset;
     range.bounds.width = offset;
 

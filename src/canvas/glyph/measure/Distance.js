@@ -19,7 +19,7 @@ export default class Distance extends Glyph{
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     if( val < mc.min) val = mc.min;
     if( val > mc.max) val = mc.max;
-    let offset = calculateDistance(val,{start:config.offset, stop:config.offset+config.max_distance},{start:mc.min,stop:mc.max});
+    let offset = calculateDistance(val,{start:config.offset, stop:config.offset+config.max_distance},{start:mc.min,stop:mc.max},config.invert_value);
     this.group.translate(config.offsetDir ? offset : -offset , 0);
 
   }

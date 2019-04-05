@@ -349,6 +349,7 @@ The following options have been added from the legacy format:
 | bin_min | all | 0 | Set a hard minimum, will not be overridden |
 | bin_max | all | 0 | If not zero, set a hard maximum |
 | count_classes | all | 0 | 0,1,2 - Use `class=<class-name>` as a secondary count in a bin. Classes are only counted if they are assigned a color in [classes]. 0 = don't count. 1 = count only items with a class attribute. 2 = count all features with items not defined being treated as "uncategorized" |
+| invert_value | all | 0 | (boolean) Calculate values with min and max swapped (lower is higher)|
 
 #### A Note About `count_classes`
 

@@ -24,8 +24,8 @@ export function formatColor(color) {
  * @param val
  * @returns {paper.Color}
  */
-export function calculateColor(colorArray,min,max,val){
-  val = calculateDistance(val,{start:0,stop:1},{start:min,stop:max});
+export function calculateColor(colorArray,min,max,val,invert = 0){
+  val = calculateDistance(val,{start:0,stop:1},{start:min,stop:max},invert);
   let stop_dist = 1/(colorArray.length-1);
   let cval1 = Math.abs(Math.floor(val/stop_dist));
   let cval2 = Math.abs(Math.ceil(val/stop_dist));
@@ -230,8 +230,9 @@ export function calculateZoomAndPan (current, delta, center, newScale=current) {
  * @returns {number}
  */
 
-export function calculateDistance(point, baseScale, newScale) {
-  return ((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
+export function calculateDistance(point, baseScale, newScale, invert = 0) {
+  let val =((baseScale.stop - baseScale.start) * (point - newScale.start) / (newScale.stop - newScale.start) + baseScale.start) - baseScale.start;
+  return invert ? (baseScale.stop - baseScale.start) - val : val;
 }
 
 /**

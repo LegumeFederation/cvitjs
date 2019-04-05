@@ -18,14 +18,15 @@ export default class Heat extends Glyph{
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     let fc;
     let colorArray = config.heat_colors;
+    let invert = config.invert_value;
     if(colorArray === 'redgreen') colorArray = ['#FF0000','#00FF00'];
     if(colorArray === 'greyscale') colorArray = ['#000000','#ffffff'];
     if( val <= mc.min) {
-      fc = formatColor(colorArray[0]);
+      fc = invert ? formatColor(colorArray[colorArray.length-1]) : formatColor(colorArray[0]);
     } else if( val >= mc.max){
-      fc = formatColor(colorArray[colorArray.length-1]);
+      fc = invert ? formatColor(colorArray[0]) : formatColor(colorArray[colorArray.length-1]);
     } else {
-      fc = calculateColor(colorArray, mc.min, mc.max, val);
+      fc = calculateColor(colorArray, mc.min, mc.max, val, invert);
     }
     if(config.transparent) fc.alpha = 1- config.transparent_percent;
     this.group = this.formatGlyph(data, config, view);
