@@ -353,8 +353,8 @@ The following options have been added from the legacy format:
 | value_distribution | heat,distance,histogram | linear | \[linear,log,exponential] Used to convert non-linear distributions to linear. |
 | value_base | heat,distance,histogram | e | Value to use as base for non-linear distributions. |
 
-'value_distribution' currently does the transform on the measure's min,max and passed value, so if using a non-linear distribution
-with 'bin_min' or 'bin_max' remember to set them as appropriate. 
+`value_distribution` currently does the transform on the measure's min,max and passed value, so if using a non-linear distribution
+with `bin_min` or `bin_max` remember to set them as appropriate. 
 
 #### A Note About `count_classes`
 
