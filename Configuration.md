@@ -350,6 +350,11 @@ The following options have been added from the legacy format:
 | bin_max | all | 0 | If not zero, set a hard maximum |
 | count_classes | all | 0 | 0,1,2 - Use `class=<class-name>` as a secondary count in a bin. Classes are only counted if they are assigned a color in [classes]. 0 = don't count. 1 = count only items with a class attribute. 2 = count all features with items not defined being treated as "uncategorized" |
 | invert_value | all | 0 | (boolean) Calculate values with min and max swapped (lower is higher)|
+| value_distribution | heat,distance,histogram | linear | \[linear,log,exponential] Used to convert non-linear distributions to linear. |
+| value_base | heat,distance,histogram | e | Value to use as base for non-linear distributions. |
+
+'value_distribution' currently does the transform on the measure's min,max and passed value, so if using a non-linear distribution
+with 'bin_min' or 'bin_max' remember to set them as appropriate. 
 
 #### A Note About `count_classes`
 
