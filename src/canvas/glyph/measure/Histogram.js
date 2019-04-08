@@ -1,6 +1,5 @@
 import Range from '../range/Range';
-import {calculateDistance,offsetSign} from '../../Utilities';
-import transformValue from './transformValue';
+import {calculateDistance,offsetSign,transformValue} from '../../Utilities';
 
 /**
  * @file Glyph for drawing a histogram bin, a feature with length and depth
@@ -15,8 +14,8 @@ export default class Histogram extends Range{
     super(data, config, view);
     let range = this.group.children[1];
     let mc = view.measureConfig;
-    let max = config.value_distribution === 'linear' ? mc.max : transformValue(mc.max,config.value_distribution,config.value_base);
-    let min = config.value_distribution === 'linear' ? mc.min : transformValue(mc.min,config.value_distribution,config.value_base);
+    let max = mc.max;
+    let min = mc.min;
     let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
     if(config.value_distribution !== 'linear') val = transformValue(val,config.value_distribution, config.value_base);
     if( val < min) val = min;

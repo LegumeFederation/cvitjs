@@ -243,3 +243,22 @@ export function calculateDistance(point, baseScale, newScale, invert = 0) {
 export function offsetSign(value){
   return 1/value === 1/Math.abs(value);
 }
+
+/**
+ *
+ * @param value
+ * @param transform
+ * @param base
+ * @returns {*}
+ */
+export function transformValue(value,transform,base=Math.E){
+  switch (transform) {
+    case 'exponential' :
+      if(value === 0) value = Number('1e-323'); //as small as you can go
+      return Math.log(value)/Math.log(base);
+    case 'log' :
+      return Math.pow(value,base);
+    default:
+      return value;
+  }
+}

@@ -3,7 +3,7 @@ import rbush from 'rbush';
 
 import glyph from './glyph';
 import layoutRulers from './rulers/Rulers';
-import {formatColor, offsetSign, spreadBackbones, zoomCanvas} from './Utilities';
+import {formatColor, offsetSign, spreadBackbones, zoomCanvas,transformValue} from './Utilities';
 
 /**
  * Configure paper.project's view to reflect the current cvit model
@@ -423,5 +423,19 @@ function _setMeasure(data,view,config,key,cDataGroup){
   if (config[key]['bin_max']) mb.max = config[key]['bin_max'];
   if(mb.min > config[key].min) mb.min = config[key].min;
   if(config[key]['bin_min']) mb.min = config[key]['bin_min'];
+
+  // transform from linear if needed.
+  if(config[key].value_distribution !== 'linear'){
+    mb.min = transformValue(mb.min,config[key].value_distribution, config[key].value_base);
+    mb.max = transformValue(mb.max,config[key].value_distribution, config[key].value_base);
+  }
+
+  // min should always be < max
+  if(mb.min > mb.max){
+    const tmp = mb.max;
+    mb.max = mb.min;
+    mb.min = tmp;
+  }
+
   return mb;
 }
