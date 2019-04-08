@@ -1,6 +1,7 @@
 import {calculateDistance, offsetSign} from '../../Utilities';
 import Glyph from '../Glyph';
 import getDrawFeature from './drawAsHelper';
+import transformValue from './transformValue';
 
 /**
  * @file Glyph for drawing a histogram bin, a feature with length and depth

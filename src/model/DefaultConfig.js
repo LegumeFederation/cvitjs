@@ -129,6 +129,8 @@ export function defaultConfig(){
     'measure': {
       'value_type': 'value_attr',
       'invert_value' : 0,
+      'value_distribution' : 'linear',
+      'value_base' : Math.E,
       'min': 0,
       'max': 0,
       'display': 'heat',
