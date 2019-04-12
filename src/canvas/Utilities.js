@@ -53,7 +53,7 @@ export function calculateColor(colorArray,min,max,val,invert = 0){
  */
 export function collisionOffset(feature,view,offset,offDir, pileupGap) {
   //setup collision search
-  let fBounds = feature.getStrokeBounds();
+  let fBounds = feature.getHandleBounds();
 
   let searchMinX = offDir ? fBounds.left : view.pileupBounds.left;
   let searchMaxX = offDir ? view.pileupBounds.right : fBounds.right;

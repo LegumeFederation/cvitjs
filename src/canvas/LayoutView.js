@@ -142,23 +142,25 @@ export default function layoutView(data,config,view){
 
                 /** hide label if it might overlap */
                 if (feature.children[0].children.length) {
-                  let test = keyGroup.rTree.collides({
-                    minX: feature.children[0].bounds.left,
-                    maxX: feature.children[0].bounds.right,
-                    minY: feature.children[0].bounds.top,
-                    maxY: feature.children[0].bounds.bottom
+                  let tg = feature.group.children[0].getStrokeBounds();
+                  let test = keyGroup.rTree.search({
+                    minX: tg.left+.001, //account for sliiight overlap when there is 0 space between pileup
+                    maxX: tg.right-.001,
+                    minY: tg.top,
+                    maxY: tg.bottom
                   });
-
-                  if (test)  feature.children[0].visible = false;
+                  if (test.length)  feature.children[0].visible = false;
                 }
 
                 /** insert into rTree */
+                let fb = feature.group.bounds; //getStrokeBounds();
+
                 keyGroup.rTree.insert({
-                  minX: feature.bounds.left,
-                  maxX: feature.bounds.right,
-                  minY: feature.bounds.top,
-                  maxY: feature.bounds.bottom,
-                  data: feature
+                  minX: fb.left,
+                  maxX: fb.right,
+                  minY: fb.top,
+                  maxY: fb.bottom,
+                  data: feature.group
                 });
               }
             }
