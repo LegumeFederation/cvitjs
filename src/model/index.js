@@ -302,8 +302,8 @@ export default class Index {
     let chr = dataModel.hasOwnProperty('chromosome') ? dataModel.chromosome : null; //should never return null
     // set up view limits
     let viewSetup = {
-      min: 0,
-      max: 0,
+      min: viewConfig.general.ruler_min,
+      max: viewConfig.general.ruler_max,
       chrMin: chr.features[0].seqName,
       chrMax: chr.features[0].seqName,
       chrOrder: [],
