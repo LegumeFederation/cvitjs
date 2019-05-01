@@ -1,0 +1,19 @@
+test:
+  location: assets/test-soysnp.vcf
+  name: test vcf
+  format: vcf
+
+korean:
+  location: assets/korean1225.vcf
+  name: korean
+  format: vcf
+
+CAD:
+  location: assets/CAD-100.vcf.gz
+  name: CAD
+  format: vcf
+
+snptest:
+  location: assets/Soysnp-test-AW.vcf.gz
+  name: 50k subset
+  format: vcf
