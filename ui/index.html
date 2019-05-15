@@ -3,25 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <title> Cvit Test </title>
-    <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16" />
+    <title> GIT </title>
+    <link rel="icon" type="image/png" href="cvitjs/img/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="cvitjs/img/favicon-16x16.png" sizes="16x16" />
     <!-- link rel="stylesheet" href="css/cvit.css" / -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
     <!-- CViTjs uses requireJS, so all that is needed is this single line   -->
-    <!-- to include the scritps. require-config sets up the environment and -->
+    <!-- to include the scripts. require-config sets up the environment and -->
     <!-- then calls js/main.js, providing a single entry point into CViTjs  -->
-
+    <script src="selector/build/selector.min.js"></script>
     <script src="cvitjs/build/cvit.min.js"></script>
 </head>
 <body>
-<!-- div class="container" id="cvit-app" data-gff='["test1.gff","test2.gff"]' -->
-<div class="container" id="cvit-app" data-cvitroot="cvitjs/">
-    <div class="row">
-        <div class="twelve columns" id="title-div"><h3> CViTjs Test </h3></div>
-    </div>
-    <!-- canvas id="cvit-canvas" style="background-color:#6f6f6f;" resize></canvas> -->
-</div>
+<h1>Genotype Investigation Tool</h1>
+<div class="container" id="selector-app"></div>
+<div class="container" id="cvit-app" data-cvitroot="cvitjs/"></div>
 </body>
 </html>
