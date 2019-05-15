@@ -16,6 +16,7 @@
 
 #cvit-header {
     background: #666;
+    display: none;
 }
 
 #cvit-header .head-item {

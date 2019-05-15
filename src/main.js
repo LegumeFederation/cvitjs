@@ -36,6 +36,7 @@ const main = () => {
       cvitRoot : croot
     };
     let _cvit = new CVIT(configData);
+    window.cvit = _cvit;
     if(dataset.registerGlobal) window.cvit = _cvit;
 
     const postLoadHandler = () => {

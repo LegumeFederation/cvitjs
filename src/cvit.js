@@ -20,6 +20,12 @@ export default class CVIT {
       });
   }
 
+  appendGff(gff){
+    this.model.appendData(gff)
+    .then(()=>{
+      this.model.setDirty(true);
+    });
+  }
   /**
    * overwrite CViT view _viewData post load
    * @param  files

@@ -1,6 +1,6 @@
 /**
  * @file
- * A Javascript version of CViT. cvit.js is the primary module from which most of the work
+ * A Javascript version of CViT. genotypeSelector.js is the primary module from which most of the work
  * is actually done. Calls for loading initial configuration and data, sets up the canvas
  * for display, then transfers data to request glyphs to be drawn. Note that once paperjs is required
  * in one module, it is added to global scope and should not be required in any other module, at risk of
@@ -11,7 +11,7 @@
  */
 
 
-// note here that domReady! means that cvit.js won't be called until after the
+// note here that domReady! means that genotypeSelector.js won't be called until after the
 // dom is ready to be manipulated.
 
 define(["jquery", "paper", "cvit/file/file", "cvit/menu/menus", "draw/general", "draw/glyph/glyph", "text!../../cvit.conf", "tools/zoom/zoom", "mousewheel", "domReady!"],

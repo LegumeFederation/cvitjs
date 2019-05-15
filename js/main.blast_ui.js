@@ -1,6 +1,6 @@
 /**
  * @file
- * A module that serves as a main entry point into cvit.js so it may
+ * A module that serves as a main entry point into genotypeSelector.js so it may
  * be used nicely in conjunction with require.js, with expectation of data
  * being passed from Drupal via Drupal.settings, in conjunction with
  * <pre><code>

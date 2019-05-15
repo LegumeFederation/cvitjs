@@ -2,6 +2,7 @@ import paper from 'paper';
 import Query from './QueryString';
 import {parseFile} from './file';
 import {defaultConfig} from './DefaultConfig';
+import {parseGff} from "./file/ParseGff";
 
 export default class Index {
   /**
@@ -232,6 +233,18 @@ export default class Index {
       })
       .catch(e => console.error(e));
   }
+
+  appendGff(gff){
+    parseGff(gff)
+        .then(response => this._viewData = this._combineObjects(this._viewData,response))
+        .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
+        .then(()=> {
+          this._dirty = true;
+          this._redraw = true;
+        })
+        .catch(e => console.error(e));
+  }
+
 
   /**
    * Private Methods
