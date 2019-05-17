@@ -1,3 +1,4 @@
 import config from './rollup.config';
-config.input = './src/drupalMain.js';
+const infile = 'src/drupalMain.js';
+config.forEach(step => step.input = infile);
 export default config

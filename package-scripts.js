@@ -17,5 +17,16 @@ module.exports = {
             babel: 'babel src -d lib',
             watch: 'babel src -d lib -w',
         },
+        drupal: {
+            description: 'clean dist directory and run all builds',
+            default: series(
+                rimraf('dist'),
+                rimraf('lib'),
+                concurrent.nps('drupal.rollup', 'drupal.babel'),
+                rimraf('lib/__tests__')
+            ),
+            rollup: 'rollup --c drupal.rollup.config.js',
+            babel: 'babel src -d lib',
+        },
     },
 };
