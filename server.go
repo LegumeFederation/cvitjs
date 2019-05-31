@@ -22,10 +22,16 @@ import (
 
 type dataFiles struct {
 	Name      string
+	Key       string
 	Location  string
 	Format    string
 	Gzip      bool
 	Genotypes []string
+}
+
+type expData struct {
+	Value string `json:"value"`
+	Label string `json:"label"`
 }
 
 func main() {
@@ -56,13 +62,16 @@ func main() {
 		content.TypeNegotiator(content.JSON),
 	)
 	api.Get("/experiment", func(c *routing.Context) error {
+
 		if len(experiments) == 0 {
 			populateExperiments(experiments)
 		}
-		opts := make([]string, len(experiments))
+
+		opts := make([]expData, len(experiments))
 		i := 0
 		for key := range experiments {
-			opts[i] = key
+			exp := expData{Value: key, Label: experiments[key].Name}
+			opts[i] = exp
 			i++
 		}
 		return c.Write(opts)
@@ -72,7 +81,11 @@ func main() {
 		if len(experiments) == 0 {
 			populateExperiments(experiments)
 		}
-		return c.Write(experiments[exp].Genotypes)
+		gt := make([]expData, len(experiments[exp].Genotypes))
+		for i, v := range experiments[exp].Genotypes {
+			gt[i] = expData{Value: v, Label: v}
+		}
+		return c.Write(gt)
 	})
 	api.Post("/generateGff", func(c *routing.Context) error {
 		// Parse Request
@@ -143,10 +156,10 @@ func main() {
 		return c.Write(b.String())
 	})
 	// serve index file
-	router.Get("/", file.Content("ui/index.html"))
+	router.Get("/", file.Content("ui/gtux/build/index.html"))
 	// serve experiments under the "ui" subdirectory
 	router.Get("/*", file.Server(file.PathMap{
-		"/": "/ui/",
+		"/": "/ui/gtux/build/",
 	}))
 
 	http.Handle("/", router)
