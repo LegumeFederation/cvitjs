@@ -1,5 +1,7 @@
 #ignore node_modules directory
 node_modules/
+lib/
+build/
 
 #ignore dotfiles in working directories (CSS, Javascript, IMG, Data)
 js/**/.*

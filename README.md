@@ -122,7 +122,7 @@ Other `data-` tags are:
 | data-gff | gff=<file> or gff[]=<file> |(array) one or more gff files to use as base data |
 | data-config | config=<file> | configuration file to use for dataset |
 | data-cvitroot | not used | path prefix if files aren't in the root folder of the page. |
-
+| data-register | true | register CViT as window.cvit |
 ## PHP
 
 PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and 

@@ -1,15 +1,19 @@
 import {parseGff} from './ParseGff';
 import {parseIni} from './ParseIni';
 
-export function parseFile(location,format,strArray=[]) {
+export function parseFile(location,format,fetchParam, strArray=[]) {
   if(typeof location === 'object'){
     return location;
   }
-  return fetch(location)
+
+  console.log('to fetch', location, fetchParam);
+  return fetch(location,fetchParam)
     .then(response =>{
+      const ct = response.headers.get("content-type");
       if(response.status !== 200){
-        throw new Error(location+' was not found.');
-      } else if(format === 'json') {
+         throw new Error(`Problem loading ${location}: status ${response.status}`)
+      } else if(ct === 'application/json') {
+        format = 'json';
         return response.json();
       } else {
         return response.text();

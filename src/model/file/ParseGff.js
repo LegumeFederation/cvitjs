@@ -12,7 +12,6 @@ export function parseGff(text,seqNames=[]){
   gff.forEach((element) => {
       if (element.match(/^[^#]/)) {
         element = element.split('\t');
-        console.log(element);
         gffLine = {
           seqName: element[0],
           source: element[1],

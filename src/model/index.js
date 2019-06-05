@@ -35,7 +35,7 @@ export default class Index {
       data:[]
     };
 
-    parseFile(`${this.cvitRoot}cvit.conf`,'ini')
+    parseFile(`${this.cvitRoot}cvit.conf`,'ini',{})
       .then(response => this.baseConfig = response)
       .then(()=>{
         this._dirty = true;
@@ -62,10 +62,15 @@ export default class Index {
           ?  [this.baseConfig[tag].defaultData]
           :  this.baseConfig[tag].defaultData;
 
+        // set fetch parameters
+        let pcFetchParam = passedConfig.hasOwnProperty('fetchParam') ? passedConfig.fetchParam : {};
+        let genFetchParam = this.baseConfig.general.hasOwnProperty('fetchParam') ? this.baseConfig.general.fetchParam: {};
+        this._fetchParam = this._combineObjects(genFetchParam, pcFetchParam );
+
         // Load configuration for view
-        this.loadViewConfig(viewConfig);
+        this.loadViewConfig(this.cvitRoot+viewConfig);
         // Load _viewData for view
-        this.loadData(dataSources);
+        this.loadInitialData(dataSources);
 
         this._inform();
       })
@@ -166,14 +171,26 @@ export default class Index {
    * Public Methods
    */
 
+  loadInitialData(files){
+    files = files.map(file => this.cvitRoot+file );
+    this.loadData(files)
+  }
   /**
    * Load view _viewData from the passed file locations
    * @param files
+   * @param fetchParam optional
    */
-  loadData(files) {
+  loadData(files, fetchParam = {}) {
     this._viewData = {};
     files.forEach((file, i) => {
-      this.appendData(this.cvitRoot+file)
+
+      let fp = fetchParam.hasOwnProperty(file)
+          ? fetchParam[file]
+          : this._fetchParam.hasOwnProperty(file)
+              ? this._fetchParam[file]
+              : fetchParam;
+
+      this.appendData(file,fp)
         .then(() => {
           if (i === files.length-1) {
             this._dirty = true;
@@ -187,10 +204,16 @@ export default class Index {
   /**
    * Load _viewConfig from the passed file location
    * @param file
+   * @param fetchParam optional
    */
-  loadViewConfig(file){
+  loadViewConfig(file, fetchParam = {}){
     this._viewConfig = {};
-    parseFile(this.cvitRoot+file, 'ini') //get <config.ini/conf>
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : {};
+    parseFile(file, 'ini',fp) //get <config.ini/conf>
       .then(response => this._viewConfig = this._combineObjects(this.defaultViewConf,response)) //overwrite default conf with passed data
       .then(() => { //set configuration info of custom types
         for(let key in this._viewConfig){
@@ -215,16 +238,22 @@ export default class Index {
   /**
    * Append view _viewData from the passed file to existing dataset
    * @param {string} file
+   * @param fetchParam
    * @returns {promise}
    */
-  appendData(file){
-
+  appendData(file,fetchParam = {}){
     if(this._active !== 'status'){
       this._active = 'status';
       this._inform();
     }
 
-    return parseFile(file, 'gff',this._viewLayout.chrOrder)
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : fetchParam;
+
+    return parseFile(file, 'gff',fp,this._viewLayout.chrOrder)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
@@ -234,8 +263,13 @@ export default class Index {
       .catch(e => console.error(e));
   }
 
-  appendGff(gff){
-    parseGff(gff)
+  appendGff(gff,fetchParam = {}){
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : fetchParam;
+    parseFile(gff,'gff',fp)
         .then(response => this._viewData = this._combineObjects(this._viewData,response))
         .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
         .then(()=> {

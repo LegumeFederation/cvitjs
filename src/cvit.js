@@ -12,26 +12,22 @@ export default class CVIT {
   /**
    * Pass file to append to CViT view _viewData post load
    * @param file
+   * @param fetchConfig
    */
-  appendData(file){
-    this.model.appendData(file)
+  appendData(file,fetchConfig = {}){
+    this.model.appendData(file,fetchConfig)
       .then(()=>{
         this.model.setDirty(true);
       });
   }
 
-  appendGff(gff){
-    this.model.appendData(gff)
-    .then(()=>{
-      this.model.setDirty(true);
-    });
-  }
   /**
    * overwrite CViT view _viewData post load
    * @param  files
+   * @param fetchConfig
    */
-  overwriteData(files){
-    this.model.setData(files)
+  overwriteData(files,fetchConfig = {}){
+    this.model.setData(files,fetchConfig)
       .then(()=>{
         this.model.setDirty(true);
       });
@@ -40,9 +36,10 @@ export default class CVIT {
   /**
    * overwrite CViT view configuration post load
    * @param  file
+   * @param fetchConfig
    */
-  overwriteConfig(file){
-    this.model.loadViewConfig(file)
+  overwriteConfig(file,fetchConfig = {}){
+    this.model.loadViewConfig(file,fetchConfig)
       .then( () => this.model.setDirty(true));
   }
 

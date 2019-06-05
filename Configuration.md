@@ -49,7 +49,12 @@ data_default = view1
 
 [data.view1]
 conf = data/view1.conf
+defaultData = data/view1.gff
 
+[data.view2]
+conf = data/view2/view2.conf
+defaultData = [data/medicbackbone.gff, service/v1/features]
+fetchParam = {"service/v1/features",{"method":"POST","body":{"featureSet":"view2"}}
 ```
 
 ### [general] configuration
@@ -64,6 +69,10 @@ The general section can set the following options:
 | canvasColor | white | Fill color of canvas background |
 | displayControls | full | 'full','zoom', 'none' - show draw and navigation menu |
 | disableURL | 0 | disable reading url query |
+| fetchParam | fetchdefault | Parameters for the fetch request for data. When fetching data, pre-formatted JSON is automatically handled if the response MIME type is `application/json`|
+
+
+See [MDN Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)  for more information on configuring fetch parameters.
 
 ### [data.\<tag>] configuration
 
