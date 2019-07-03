@@ -14,9 +14,11 @@ import (
 	"github.com/go-ozzo/ozzo-routing/slash"
 	"github.com/spf13/viper"
 	"log"
+	"math"
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -43,8 +45,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
 	}
-
-	fmt.Println(viper.Get("experiments"))
+	fmt.Println("Starting Server")
 
 	router := routing.New()
 
@@ -88,16 +89,17 @@ func main() {
 		return c.Write(gt)
 	})
 	api.Post("/generateGff", func(c *routing.Context) error {
+
 		// Parse Request
 		req := &struct {
 			Ref     string
 			Variant []string
+			Bin     int
 		}{}
 
 		_ = c.Read(&req)
 
 		ref := strings.Split(req.Ref, ":")
-		fmt.Println(ref, experiments[ref[0]].Location)
 		vnt := make(map[string][]string, len(req.Variant))
 		vntOrder := make(map[int][]string, len(req.Variant))
 		for i := range req.Variant {
@@ -109,50 +111,181 @@ func main() {
 			}
 			vntOrder[i] = []string{vt[0], vt[1]}
 		}
+
 		r, err := readFile(experiments[ref[0]].Location, experiments[ref[0]].Gzip)
 		if err != nil {
 			panic(fmt.Errorf("problem reading reference genotype's file: %s \n", err))
 		}
+
 		var b bytes.Buffer
 		writer, err := gff.NewWriter(&b)
+
 		if err != nil {
 			panic(fmt.Errorf("problem opening gff writer: %s \n", err))
 		}
+
+		ctg := make(map[string]int)
+		for i := range r.Header.Contigs {
+			ctgLen, _ := strconv.Atoi(r.Header.Contigs[i].Optional["length"])
+			ctg[r.Header.Contigs[i].Id] = ctgLen
+		}
+
+		sameCtr := make(map[string]int, len(vnt[ref[0]])+1)
+		diffCtr := make(map[string]int, len(vnt[ref[0]])+1)
+		totalCtr := make(map[string]int, len(vnt[ref[0]])+3)
+		totalCtr[ref[1]] = 0
+		totalCtr["undefined"] = 0
+		totalCtr["value"] = 0
+		sameCtr["value"] = 0
+		diffCtr["value"] = 0
+
+		for i := range vnt[ref[0]] {
+			gt := vnt[ref[0]][i]
+			sameCtr[gt] = 0
+			diffCtr[gt] = 0
+			totalCtr[gt] = 0
+		}
+
 		var feat *vcf.Feature
 		var readErr error
+		var contig string
+		var stepSize int
+		if req.Bin > 0 {
+			stepSize = req.Bin
+		} else {
+			stepSize = 500000
+		}
+		stepCt := 0
+		stepVal := 0
+
 		for readErr == nil {
 			feat, readErr = r.Read()
 			if feat != nil {
 				gt, _ := feat.SingleGenotype(ref[1], r.Header.Genotypes)
 				rt, _ := feat.MultipleGenotypes(vnt[ref[0]], r.Header.Genotypes)
-				for i := range rt {
-					sim := "same"
-					for j := range gt.GT {
-						if rt[i].GT[j] != gt.GT[j] {
-							sim = "diff"
-							break
+				//reset contig based features, assuming that file is sorted by contig and ascending position
+				// when contig changes or you step outside of current bin
+				if feat.Pos > uint64(stepCt*stepVal) || contig != feat.Chrom {
+					if stepCt > 0 {
+						end := uint64(stepCt) * uint64(stepVal)
+						if ctg[contig] > 0 && end > uint64(ctg[contig]) {
+							end = uint64(ctg[contig])
+						}
+						gffLine := gff.Feature{
+							Seqid:      contig,
+							Source:     "soybase",
+							Type:       "same",
+							Start:      uint64((stepCt-1)*stepVal + 1),
+							End:        end,
+							Score:      gff.MissingScoreField,
+							Strand:     "+",
+							Phase:      gff.MissingPhaseField,
+							Attributes: map[string]string{"ID": fmt.Sprintf("%s.%d", "same", stepCt)},
+						}
+						for class, val := range sameCtr {
+							gffLine.Attributes[class] = strconv.Itoa(val)
+						}
+						writer.WriteFeature(&gffLine)
+
+						gffLine.Type = "diff"
+						gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "diff", stepCt)
+						for class, val := range diffCtr {
+							gffLine.Attributes[class] = strconv.Itoa(val)
+						}
+						writer.WriteFeature(&gffLine)
+
+						gffLine.Type = "total"
+						gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "total", stepCt)
+						for class, val := range totalCtr {
+							gffLine.Attributes[class] = strconv.Itoa(val)
+						}
+						writer.WriteFeature(&gffLine)
+
+						//Reset counters
+						for val := range totalCtr {
+							totalCtr[val] = 0
+						}
+						for val := range sameCtr {
+							sameCtr[val] = 0
+						}
+						for val := range diffCtr {
+							diffCtr[val] = 0
+						}
+						stepCt = (int(feat.Pos) / stepSize) + 1
+					}
+
+					if contig != feat.Chrom {
+						contig = feat.Chrom
+						if ctg[contig] > 0 {
+							stepVal = int(float64(ctg[contig]) / math.Ceil(float64(ctg[contig])/float64(stepSize)))
+						} else {
+							stepVal = stepSize
+						}
+						stepCt = 1
+					}
+				}
+				gFields := gt.Fields["GT"]
+				if gFields != "./." && gFields != ".|." {
+					totalCtr["value"]++
+					totalCtr[ref[1]]++
+
+					for i := range rt {
+						rFields := rt[i].Fields["GT"]
+						id := rt[i].Id
+						if rFields == "./." || rFields == ".|." {
+							totalCtr["undefined"]++
+						} else if gFields == rFields {
+							sameCtr[id]++
+							sameCtr["value"]++
+							totalCtr[id]++
+						} else {
+							diffCtr[id]++
+							diffCtr["value"]++
+							totalCtr[id]++
 						}
 					}
-					phase := int8(0)
-					if rt[i].PhasedGT {
-						phase = 1
-					}
-					gffLine := gff.Feature{
-						Seqid:      feat.Chrom,
-						Source:     rt[i].Id,
-						Type:       sim,
-						Start:      feat.Pos,
-						End:        feat.Pos,
-						Score:      feat.Qual,
-						Strand:     "+",
-						Phase:      phase,
-						Attributes: map[string]string{"ID": fmt.Sprintf("%s.%s", feat.Id, rt[i].Id), "class": rt[i].Id},
-					}
-					writer.WriteFeature(&gffLine)
 				}
 			}
 		}
 
+		end := stepCt * stepVal
+
+		if ctg[contig] > 0 && end > ctg[contig] {
+			end = ctg[contig]
+		}
+
+		gffLine := gff.Feature{
+			Seqid:      contig,
+			Source:     "soybase",
+			Type:       "same",
+			Start:      uint64((stepCt-1)*stepVal + 1),
+			End:        uint64(end),
+			Score:      gff.MissingScoreField,
+			Strand:     "+",
+			Phase:      gff.MissingPhaseField,
+			Attributes: map[string]string{"ID": fmt.Sprintf("%s.%d", "same", stepCt)},
+		}
+
+		for class, val := range sameCtr {
+			gffLine.Attributes[class] = strconv.Itoa(val)
+		}
+		writer.WriteFeature(&gffLine)
+
+		gffLine.Type = "diff"
+		gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "diff", stepCt)
+		for class, val := range diffCtr {
+			gffLine.Attributes[class] = strconv.Itoa(val)
+		}
+		writer.WriteFeature(&gffLine)
+
+		gffLine.Type = "total"
+		gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "total", stepCt)
+		for class, val := range totalCtr {
+			gffLine.Attributes[class] = strconv.Itoa(val)
+		}
+		writer.WriteFeature(&gffLine)
+
+		c.SetDataWriter(&content.HTMLDataWriter{})
 		return c.Write(b.String())
 	})
 	// serve index file
