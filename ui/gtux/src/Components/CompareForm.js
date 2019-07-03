@@ -7,13 +7,14 @@ export default class CompareForm extends React.Component {
 
 	state = {
 		options: [],
-		count: 0
+		count: 1
 	};
 
 	removeOption = (rm) => {
 		let options = this.state.options.filter(opt => {
 			return opt.key !== `${rm}`;
 		});
+		this.props.appendDataset(rm,null);
 		this.setState({options});
 	}
 
@@ -21,9 +22,10 @@ export default class CompareForm extends React.Component {
 		let options = this.state.options.concat([
 			<GenotypeSelector
 				key={this.state.count}
-				count={this.state.count}
+				idx={this.state.count}
 				selected={this.props.selected}
-				genotypes={this.props.genotypes}
+				genotypes={this.props.genotypes}A
+				appendDataset={this.props.appendDataset}
 				removeOption={this.removeOption}
 			/>
 		]);
@@ -32,7 +34,7 @@ export default class CompareForm extends React.Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if(this.props.selected !== prevProps.selected){
-			this.setState({'count':0, 'options':[]})
+			this.setState({'count':1, 'options':[]})
 		}
 	}
 

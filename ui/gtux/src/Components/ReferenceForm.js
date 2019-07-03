@@ -7,7 +7,13 @@ export default class ReferenceForm extends React.Component {
 		return (
 			<fieldset className={'genotype-field'}>
 				<legend> Reference Genotype</legend>
-				<GenotypeSelector datasets={this.props.datasets} setDataset={this.props.setDataset} genotypes={this.props.genotypes} />
+				<GenotypeSelector
+					datasets={this.props.datasets}
+					setDataset={this.props.setDataset}
+					appendDataset={this.props.appendDataset}
+					genotypes={this.props.genotypes}
+					idx={0}
+				/>
 			</fieldset>
 		);
 	}

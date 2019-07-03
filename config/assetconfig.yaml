@@ -1,34 +1,34 @@
-test:
-  location: assets/test-soysnp.vcf
-  name: test vcf
-  format: vcf
-
-korean:
-  location: assets/korean1225.vcf
-  name: korean
-  format: vcf
-
-CAD:
-  location: assets/CAD-100.vcf.gz
-  name: CAD
-  format: vcf
+#test:
+#  location: assets/test-soysnp.vcf
+#  name: test vcf
+#  format: vcf
+#
+#korean:
+#  location: assets/korean1225.vcf
+#  name: korean
+#  format: vcf
+#
+#CAD:
+#  location: assets/CAD-100.vcf.gz
+#  name: CAD
+#  format: vcf
 
 snptest:
   location: assets/Soysnp-test-AW.vcf.gz
   name: 50k subset
   format: vcf
 
-full:
-  location: assets/glyma.Wm82.gnm2.div.892R.vcf.gz
-  name: 50k full
-  format: vcf
+#full:
+#  location: assets/glyma.Wm82.gnm2.div.892R.vcf.gz
+#  name: 50k full
+#  format: vcf
 
-large:
-  location: assets/glyma.Wm82.gnm2.div.HVCP.SNPData.vcf.gz
-  name: HCVP
-  format: vcf
-
-largest:
-  location: assets/glyma.Wm82.gnm2.div.G787.USB481.vcf.gz
-  name: USB481
-  format: vcf
+#large:
+#  location: assets/glyma.Wm82.gnm2.div.HVCP.SNPData.vcf.gz
+#  name: HCVP
+#  format: vcf
+#
+#largest:
+#  location: assets/glyma.Wm82.gnm2.div.G787.USB481.vcf.gz
+#  name: USB481
+#  format: vcf

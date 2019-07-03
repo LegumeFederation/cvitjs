@@ -15,9 +15,20 @@
     padding: 0.5em 1em;
 }
 
+
 .select__value-container{
     height: 2rem;
     min-height: 2rem;
+    max-height: 2rem;
+}
+
+.select__input{
+    max-height: 1rem;
+}
+
+.git-option{
+    margin-top:.25rem;
+    margin-bottom: 1.25rem;
 }
 
 .genotype-select {
@@ -28,7 +39,7 @@
 
 legend {
     margin: 0.5em;
-    text-align:right;
+    text-align: left;
 }
 
 .fake-button {

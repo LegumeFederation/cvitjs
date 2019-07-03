@@ -24,15 +24,25 @@ export default class GenotypeSelector extends React.Component {
 		color: '#19741A'
 	}
 
+	formatDatasetValue(){
+		return {
+			dataset: this.state.selectedDataset || null,
+			genotype: this.state.selectedGenotype || null,
+			color: this.state.color || null
+		}
+	}
+
 	datasetChange = (selectedDataset) => {
 		this.setState({ selectedDataset, selectedGenotype: null });
 		this.props.setDataset(selectedDataset);
-		console.log(`Option selected:`, selectedDataset);
+		let append = { dataset: selectedDataset, genotype:null, color: this.state.color||null};
+		this.props.appendDataset(this.props.idx, append)
 	}
 
 	gtChange = (selectedGenotype) => {
 		this.setState({ selectedGenotype });
-		console.log(`Option selected:`, selectedGenotype);
+		let append = { dataset: this.state.selectedDataset, genotype: selectedGenotype, color: this.state.color||null};
+		this.props.appendDataset(this.props.idx, append);
 	}
 
 	colorClick = () => {
@@ -41,6 +51,7 @@ export default class GenotypeSelector extends React.Component {
 
 	colorClose = () => {
 		this.setState({displayColorPicker : false})
+		this.props.appendDataset(this.props.idx, this.formatDatasetValue())
 	}
 
 	colorSet = (color) => {
@@ -53,53 +64,59 @@ export default class GenotypeSelector extends React.Component {
 		}
 	}
 	render() {
-		const { selectedDataset } = this.state;
-		const { selectedGenotype } = this.state;
+		const { selectedDataset, selectedGenotype } = this.state;
+		const { idx } = this.props;
 		const gtOpt = this.props.genotypes !== null ? this.props.genotypes : [];
-		console.log(this.state);
 		return (
+			<div>
 			<div className={'row genotype-select'}>
-				<div className={'one column fake-button'} onClick={this.colorClick} style={{background:this.state.color, zIndex:1 }} />
-				{ this.state.displayColorPicker
-					?<div>
-						<div style={ cover } onClick={this.colorClose} />
-						<div style={ popover }>
-							<SketchPicker color={ this.state.color } onChange={ this.colorSet } />
+				<div className={'one column '}>
+					<span> Color </span>
+					<div className={'fake-button git-option'} onClick={this.colorClick} style={{background:this.state.color, zIndex:1 }} />
+					{ this.state.displayColorPicker
+						?<div>
+							<div style={ cover } onClick={this.colorClose} />
+							<div style={ popover }>
+								<SketchPicker color={ this.state.color } onChange={ this.colorSet } />
+							</div>
 						</div>
-					</div>
-					: null
-				}
+						: null
+					}
+				</div>
 				<div className={'five columns'}>
-					<Fragment>
-						<Select
-							defaultValue={this.props.selected || null}
-							className="basic-single"
-							classNamePrefix="select"
-							value={selectedDataset}
-							isClearable
-							isDisabled={this.props.selected}
-							onChange={this.datasetChange}
-							options={this.props.datasets}
-						/>
-					</Fragment>
+					<span> Dataset </span>
+					<Select
+						defaultValue={this.props.selected || null}
+						label="Dataset"
+						className="basic-single git-option"
+						classNamePrefix="select"
+						value={selectedDataset}
+						isClearable
+						isDisabled={this.props.selected}
+						onChange={this.datasetChange}
+						options={this.props.datasets}
+					/>
 				</div>
 				<div className={'four columns'}>
-					<Fragment>
-						<Select
-							className="basic-single"
-							classNamePrefix="select"
-							value={selectedGenotype}
-							isClearable
-							isDisabled={gtOpt.length === 0}
-							onChange={this.gtChange}
-							options={gtOpt}
-						/>
-					</Fragment>
+					<span> Genotype </span>
+					<Select
+						className="basic-single git-option"
+						classNamePrefix="select"
+						value={selectedGenotype}
+						isClearable
+						isDisabled={gtOpt.length === 0}
+						onChange={this.gtChange}
+						options={gtOpt}
+					/>
 				</div>
 				{this.props.removeOption !== undefined
-					? <div className={'one column fake-button'} onClick={()=> this.props.removeOption(this.props.count)} > X </div>
+					? <div className={'one column'}>
+						<span>Remove</span>
+						<div className={'fake-button git-option'} onClick={()=> this.props.removeOption(idx)} > X </div>
+						</div>
 					: null
 				}
+			</div>
 			</div>
 		);
 	}
