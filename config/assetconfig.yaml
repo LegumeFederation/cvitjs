@@ -13,11 +13,20 @@
 #  name: CAD
 #  format: vcf
 
-snptest:
+snptestLegacy:
   location: assets/Soysnp-test-AW.vcf.gz
-  name: 50k subset
+  name: 50k subset old
   format: vcf
 
+snptest:
+  location: assets/SoySNP50k_TestFile.vcf.gz
+  name: soySNP 50k subset
+  format: vcf
+
+snpnamed:
+  location: assets/SoySNP50k_TestFile_named.vcf.gz
+  name: soySNP 50k subset [named]
+  format: vcf
 #full:
 #  location: assets/glyma.Wm82.gnm2.div.892R.vcf.gz
 #  name: 50k full

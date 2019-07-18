@@ -1,7 +1,10 @@
 import React from 'react';
+import ReactModal from 'react-modal';
+
 import ReferenceForm from './Components/ReferenceForm';
 import CompareForm from './Components/CompareForm';
 import OptionsForm from './Components/OptionsForm';
+import HelpModal from './Components/HelpModal'
 
 export default class App extends React.Component {
     state = {
@@ -30,7 +33,9 @@ export default class App extends React.Component {
             request:'',
             interval:50000,
             response:{}
-        }
+        },
+        hideOptions: false,
+        showModal: ''
     }
 
     loadDatasets = () => {
@@ -83,7 +88,6 @@ export default class App extends React.Component {
             }
         });
         classes['undefined'] = 'black';
-        console.log('request is', requestString);
         // Configure cvit model for new view
         let cvit = window.cvit;
         let model = cvit.model;
@@ -95,6 +99,8 @@ export default class App extends React.Component {
         if( (priorRequest.request !== requestString) ||
             (binSize !== priorRequest.interval )
         ) {
+            document.getElementById('cvit-app').style.visibility = 'visible';
+            this.setState({hideOptions:true});
             model._viewData.same = {};
             model._viewData.diff = {};
             model._viewData.total = {};
@@ -113,7 +119,6 @@ export default class App extends React.Component {
                     console.log('cvit js error: ', e);
                 });
         } else {
-            console.log(options, model, count);
             this.setView(options, model,count);
         }
     }
@@ -140,20 +145,54 @@ export default class App extends React.Component {
         model._inform();
     }
 
+    handleCloseModal = () => this.setState({ showModal: '' })
+
+    handleOpenModal = (showModal) => this.setState({showModal})
+
     componentDidMount() {
+        document.getElementById('cvit-app').style.visibility = 'hidden';
         this.loadDatasets()
     }
 
     render() {
-        const { selected,options } = this.state;
+        const { selected,options,hideOptions,showModal } = this.state;
         let gts = this.state.referenceDataset !== null && this.state.genotypes[this.state.referenceDataset.value] !== undefined
             ? this.state.genotypes[this.state.referenceDataset.value]
             : [];
         return (
             <div>
-                <h3>Genotype Investigation Tool</h3>
-                <div className={'u-full-width fake-button'}> Configure View </div>
-                <form>
+                <ReactModal
+                    isOpen={showModal === 'data'}
+                    onRequestClose={this.handleCloseModal}
+                    shouldCloseOnOverlayClick={true}
+                >
+                    <button onClick={this.handleCloseModal}> Close Data Modal</button>
+                </ReactModal>
+                <ReactModal
+                    isOpen={showModal === 'help'}
+                    onRequestClose={this.handleCloseModal}
+                    shouldCloseOnOverlayClick={true}
+                >
+                    <div className={'modal-contents container'}>
+                        <HelpModal/>
+                        <div className={'row'}>
+                            <button onClick={this.handleCloseModal}> Close Help Modal</button>
+                        </div>
+                    </div>
+                </ReactModal>
+
+                <h3>Genotype Comparison Visualisation Tool</h3>
+                <div
+                    className={'u-full-width fake-button'}
+                    onClick={()=>{this.setState({hideOptions:!hideOptions})}}
+                >
+                    <div className={'row'}>
+                        <div className={'one column'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
+                        <div className={'ten columns'}> Configure View </div>
+                        <div className={'one column'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
+                    </div>
+                </div>
+                <form className={'display-options'} style={{maxHeight: hideOptions ? '0px' : '100%', overflow: hideOptions ? 'hidden' : 'visible'}}>
                     <ReferenceForm datasets={this.state.datasets} setDataset={this.setDataset} appendDataset={this.appendDataset} genotypes={gts} />
                     {this.state.referenceDataset
                         ? <CompareForm selected={this.state.referenceDataset} genotypes={gts} appendDataset={this.appendDataset} />
@@ -164,8 +203,8 @@ export default class App extends React.Component {
                 <div className={'row'}>
                     <button className={'three columns button-primary'} onClick={this.onSubmit}> Display </button>
                     <div className={'three columns'}><br /></div>
-                    <button className={'three columns'}> Download </button>
-                    <button className={'three columns'}> Help </button>
+                    <button className={'three columns'} onClick={()=>this.handleOpenModal('data')}> Download </button>
+                    <button className={'three columns'} onClick={()=>this.handleOpenModal('help')}> Help </button>
                 </div>
             </div>
         );

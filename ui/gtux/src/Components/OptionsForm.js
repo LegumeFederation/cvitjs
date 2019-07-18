@@ -21,6 +21,7 @@ export default class OptionsForm extends React.Component {
 				options.right.bin_size = binSize;
 				break;
 			case 'general':
+			default:
 				binSize = value.binSize;
 				options.general.title = value.title;
 				options.general.tick_interval = value.rulerInterval;
@@ -28,7 +29,6 @@ export default class OptionsForm extends React.Component {
 				options.left.bin_size = binSize;
 				options.right.bin_size = binSize;
 				this.setState({binSize});
-				break;
 		}
 		this.props.setOptions(options);
 	}

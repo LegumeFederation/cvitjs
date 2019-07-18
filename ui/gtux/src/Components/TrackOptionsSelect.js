@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import Select from 'react-select';
 
 const displayFormats = [
@@ -48,12 +48,12 @@ const heatFormat = [
 
 const heatColorFormat = [
     {
-        value: 'black',
-        label: 'Black'
-    },
-    {
         value: 'white',
         label: 'White'
+    },
+    {
+        value: 'black',
+        label: 'Black'
     },
 ];
 
@@ -72,7 +72,7 @@ export default class TrackOptions extends React.Component {
     setConfiguration = (format) => {
         const {compare,filters, maxValue, minValue} = this.state;
         const side = this.props.side === 'Right';
-        let count = 0;
+        let count = 1;
         this.props.genotypes.forEach(gt => {if(gt !== null) count++;});
         switch (format) {
             case 'heat':
@@ -92,10 +92,12 @@ export default class TrackOptions extends React.Component {
                     by_class: 1,
                     class_filter: filters.map( filter => filter.value),
                     class_offset: 2,
+                    class_heat : ['white'],
                     draw_label: 0,
                     max_distance: 5,
                     border: 1,
                     border_width :0,
+                    value_base: 10
                 };
             case 'hist':
                 return {
@@ -114,7 +116,7 @@ export default class TrackOptions extends React.Component {
                     class_offset : 0,
                     class_filter: filters.map( filter => filter.value),
                     draw_label: 0,
-                    max_distance: 75,
+                    max_distance: count*25,
                     border: 1,
                     border_width :0,
                 };
@@ -178,7 +180,8 @@ export default class TrackOptions extends React.Component {
 
     heatColorChange = (heatColor) => {
         let viewConfig = this.state.viewConfig;
-        this.setState({ heatColor });
+        viewConfig.class_heat = [heatColor.value];
+        this.setState({ heatColor, viewConfig });
         this.optionsUpdate(viewConfig);
     }
 
@@ -258,7 +261,7 @@ export default class TrackOptions extends React.Component {
                             options={displayFormats}
                         />
                     </div>
-                    {displayAs.value != 'none' ?
+                    {displayAs.value !== 'none' ?
                         <div className={'two columns'}>
                             <span>Comparison</span>
                             <Select

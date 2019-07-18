@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React  from 'react';
 import Select from 'react-select';
 import {SketchPicker} from 'react-color';
 
