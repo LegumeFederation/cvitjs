@@ -13,6 +13,6 @@ USER appuser
 COPY --from=builder /build/server /app/
 COPY --from=builder /build/ui/gtux/build /app/ui/gtux/build/
 COPY --from=builder /build/config /app/config/
-COPY --from=builder /build/assets/test-soysnp.vcf /app/assets/
+COPY --from=builder /build/assets /app/assets/
 WORKDIR /app
 CMD ["./server"]
