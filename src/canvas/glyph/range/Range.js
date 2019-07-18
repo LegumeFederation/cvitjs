@@ -11,7 +11,7 @@ import Glyph from '../Glyph';
 
 export default class Range extends Glyph{
   drawFeature(data, config, view) {
-    let featureWidth = config.offsetDir ? config.width :  config.width * -1;
+    let featureWidth = config.width;
     let yLoc = ((data.start - view.min) * view.yScale) + view.yOffset.offsetTop + view.yAdjust;
     let xOffset = config.offset;
     let chrEdge =  config.offsetDir ? view.chrBounds.right : view.chrBounds.left-featureWidth;

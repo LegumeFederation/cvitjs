@@ -6,7 +6,6 @@ export function parseFile(location,format,fetchParam, strArray=[]) {
     return location;
   }
 
-  console.log('to fetch', location, fetchParam);
   return fetch(location,fetchParam)
     .then(response =>{
       const ct = response.headers.get("content-type");

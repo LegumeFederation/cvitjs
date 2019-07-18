@@ -132,7 +132,7 @@ export default function layoutView(data,config,view){
               }
             }
 
-            if(feature && feature.group){
+            if(feature && feature.group && feature.children[0]){
               /** add feature to group */
               keyGroup.addChild(feature.group);
 

@@ -21,7 +21,11 @@ export default class Histogram extends Range{
     if( val < min) val = min;
     if( val > max) val = max;
     let offset = calculateDistance(val,{start:config.offset, stop:config.offset+config.max_distance},{start:min,stop:max},config.invert_value);
-    offset = config.offsetDir ? offset : - offset;
+    if(!config.offsetDir){
+      offset = -offset;
+      range.translate(config.width,0);
+    }
+
     range.bounds.width = offset;
 
     /** if labelOffset and offset are same direction, shift label) */

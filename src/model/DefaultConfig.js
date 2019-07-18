@@ -56,7 +56,11 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'gray30',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
-      'hide_label_overlap' : 0
+      'hide_label_overlap' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset': 0,
+      'class_space' : 0
     },
 
     'position': {
@@ -75,7 +79,11 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'gray30',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
-      'hide_label_overlap' : 0
+      'hide_label_overlap' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset':0,
+      'class_space' : 0
     },
 
     'range': {
@@ -93,7 +101,11 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'black',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
-      'hide_label_overlap' : 0
+      'hide_label_overlap' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset' : 0,
+      'class_space' : 0
     },
 
     'border': {
@@ -109,7 +121,11 @@ export function defaultConfig(){
       'label_offset': 0,
       'label_color': 'black',
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
-      'hide_label_overlap' : 0
+      'hide_label_overlap' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset' : 0,
+      'class_space' : 0
     },
 
     'marker': {
@@ -123,7 +139,11 @@ export function defaultConfig(){
       'label_color': 'black',
       'stroke_width' : 2,
       'font_face': 'Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif',
-      'hide_label_overlap' : 0
+      'hide_label_overlap' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset' : 0,
+      'class_space' : 0
     },
 
     'measure': {
@@ -158,7 +178,12 @@ export function defaultConfig(){
       'bin_count':0,
       'bin_min': 0,
       'bin_max' : 0,
-      'count_classes' : 0
+      'count_classes' : 0,
+      'by_class': 0,
+      'class_filter': [],
+      'class_offset' : 0,
+      'class_space' : 0,
+      'class_heat':[]
     }
   };
 }

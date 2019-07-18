@@ -47,7 +47,6 @@ export default class ExportModal extends Component {
 
 
   render(props,state){
-    console.log('proj',paper.project.view.getViewSize());
     return(
       <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
         <h4> Export Image </h4>

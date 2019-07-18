@@ -1,6 +1,7 @@
 import {h, render} from 'preact';
 import CvitUI from './ui';
 import CvitModel from './model';
+import {parseFile} from "./model/file";
 
 export default class CVIT {
   constructor(passedData){
@@ -19,6 +20,10 @@ export default class CVIT {
       .then(()=>{
         this.model.setDirty(true);
       });
+  }
+
+  _parseFile(file, format, fetchConfig={}){
+    return parseFile(file,format,fetchConfig);
   }
 
   /**

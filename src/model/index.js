@@ -258,7 +258,7 @@ export default class Index {
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
         this._dirty = true;
-        this._redraw = true;
+        this._inform();
       })
       .catch(e => console.error(e));
   }
@@ -274,7 +274,7 @@ export default class Index {
         .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
         .then(()=> {
           this._dirty = true;
-          this._redraw = true;
+          this._inform();
         })
         .catch(e => console.error(e));
   }
@@ -384,7 +384,6 @@ export default class Index {
       setPopover: (props)=> this.setPopover(props)
     };
 
-    console.log(viewSetup);
 
     chr.features.forEach(data => {
       let name = data.seqName;
