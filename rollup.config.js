@@ -43,7 +43,7 @@ const resolveOptions = () => {
 
 const babelOptions = () => {
     return {
-        ignore:[ /node_modules\/(?!unfetch)/], //do it this way because this one node_module is in es6
+        ignore:[ 'node_modules/**'], //do it this way because this one node_module is in es6
         babelrc: false,
         presets: [
             ["@babel/preset-env",{ "modules":false}],
@@ -53,6 +53,15 @@ const babelOptions = () => {
             'array-includes'
         ]
     };
+};
+
+const cjsOptions = () => {
+	return{
+		include: 'node_modules/**',
+		namedExports: {
+			'paper' : ['paper'],
+		},
+	};
 };
 
 export default [
@@ -71,8 +80,8 @@ export default [
             postcss(postcssOptions()),
             resolve(resolveOptions()),
             // transpile es6
+            commonjs(cjsOptions()) ,
             babel(babelOptions()),
-            commonjs() ,
             terser(),
         ]
     },
@@ -85,14 +94,17 @@ export default [
  //   sourcemap: true
         },
         plugins: [
+       //     alias({
+	//	    paper: 'paper/dist/paper-core'
+	  //  }),
             builtins(),
             globals(),
             // bundle css
             postcss(postcssOptions()),
             resolve(resolveOptions()),
             // transpile es6
+            commonjs(cjsOptions()) ,
             babel(babelOptions()),
-            commonjs() ,
         ]
     },
     {
@@ -110,8 +122,8 @@ export default [
             postcss(postcssOptions()),
             resolve(resolveOptions()),
             // transpile es6
+            commonjs(cjsOptions()) ,
             babel(babelOptions()),
-            commonjs() ,
             terser(),
         ]
     },
