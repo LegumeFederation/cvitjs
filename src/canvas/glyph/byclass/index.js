@@ -15,7 +15,7 @@ import Centromere from '../centromere/Centromere';
 import Marker from '../marker/Marker';
 import Position from '../position/';
 import Range from '../range/Range';
-import Measure from '../Measure';
+import Measure from '../measure';
 
 export default class ClassGroup {
     constructor(data,config,view, glyph, subglyph) {
@@ -47,7 +47,7 @@ export default class ClassGroup {
                         break;
                     case 'measure':
                         if(config['class_heat'].length > 0){ //update heat colors if requested.
-                            config['heat_colors'] = config['class_heat'].concat([view.colorClasses[ac]])
+                            config['heat_colors'] = config['class_heat'].concat([view.colorClasses[ac]]);
                         }
                         feature = new Measure(data, config, view, subglyph);
                         break;
