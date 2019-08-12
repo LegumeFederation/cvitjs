@@ -97,14 +97,16 @@ export default class TrackOptions extends React.Component {
                     max_distance: 5,
                     border: 1,
                     border_width :0,
-                    value_base: 10
+                    value_base: 10,
+                    generate_bins: 0,
+                    count_classes: 0,
                 };
             case 'hist':
                 return {
                     feature: compare.value,
                     glyph: 'measure',
                     display: 'histogram',
-                    count_classes: 1,
+                    count_classes: 0,
                     enable_pileup: 0,
                     generate_bins: 0,
                     offset: side ? 0 : -0,

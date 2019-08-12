@@ -35,7 +35,8 @@ export default class App extends React.Component {
             response:{}
         },
         hideOptions: false,
-        showModal: ''
+        showModal: '',
+        refMax: 0
     }
 
     loadDatasets = () => {
@@ -112,8 +113,14 @@ export default class App extends React.Component {
             })
                 .then(() =>{
                     model._viewLayout.chrOrder = model._setChrOrder(model._viewData);
+                    let refMax = 0;
+                    let vd = model._viewData;
+                    Object.keys(vd.total).forEach(key => {
+                        let chr = vd.total[key];
+                        if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > refMax) refMax = chr.maxScore.value;
+                    });
+                    this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize, refMax}})
                     this.setView(options, model, count);
-                    this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize}})
                 })
                 .catch(e => {
                     console.log('cvit js error: ', e);
@@ -124,22 +131,23 @@ export default class App extends React.Component {
     }
 
     setView = (options,model,count) =>{
-        let max = 0;
-        let vd = model._viewData;
-        Object.keys(vd.total).forEach(key => {
-            let chr = vd.total[key];
-            if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > max) max = chr.maxScore.value;
-        });
+        const { refMax } = this.state;
+      //  let vd = model._viewData;
+      //  Object.keys(vd.total).forEach(key => {
+      //      let chr = vd.total[key];
+      //      if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > max) max = chr.maxScore.value;
+      //  });
         if(options.left.bin_max === 0){
-            options.left.bin_max = options.left.display === 'heat' ? max : max*count;
+            options.left.bin_max = options.left.display === 'heat' ? refMax : refMax*count;
         }
         if(options.right.bin_max === 0){
-            options.right.bin_max = options.right.display === 'heat' ? max : max*count;
+            options.right.bin_max = options.right.display === 'heat' ? refMax : refMax*count;
         }
+        model._viewConfig.left.class_heat = [];
+        model._viewConfig.right.class_heat = [];
         model._viewConfig.left.class_filter = [];
         model._viewConfig.right.class_filter = [];
         model._viewConfig = model._combineObjects(model._viewConfig, options);
-
         model._redraw = true;
         model.setDirty(true);
         model._inform();
