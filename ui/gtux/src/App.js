@@ -5,6 +5,7 @@ import ReferenceForm from './Components/ReferenceForm';
 import CompareForm from './Components/CompareForm';
 import OptionsForm from './Components/OptionsForm';
 import HelpModal from './Components/HelpModal'
+import DataModal from "./Components/DownloadModal";
 
 export default class App extends React.Component {
     state = {
@@ -174,7 +175,10 @@ export default class App extends React.Component {
                     onRequestClose={this.handleCloseModal}
                     shouldCloseOnOverlayClick={true}
                 >
-                    <button onClick={this.handleCloseModal}> Close Data Modal</button>
+                    <DataModal />
+                    <div className={'row'}>
+                        <button onClick={this.handleCloseModal}> Close Data Modal</button>
+                    </div>
                 </ReactModal>
                 <ReactModal
                     isOpen={showModal === 'help'}
