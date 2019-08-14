@@ -13,7 +13,7 @@ export default class DisplayHeat extends React.Component {
                     >
                         <div className={'row'}>
                             <div className={'one column'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
-                            <div className={'ten columns'}> Display Type: Histogram </div>
+                            <div className={'ten columns'}> Display Type: Heatmap </div>
                             <div className={'one column'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
                         </div>
                     </div>

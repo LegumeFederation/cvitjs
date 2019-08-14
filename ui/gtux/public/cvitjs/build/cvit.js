@@ -24748,6 +24748,8 @@
       super();
       this.drawFeature = getDrawFeature(config.draw_as, config.shape);
       let mc = view.measureConfig;
+      if (config.bin_max !== 0 && mc.max !== config.maxScore) mc.max = config.bin_max;
+      if (config.bin_min !== 0 && mc.min !== config.minScore) mc.min = config.bin_min;
       let max = mc.max;
       let min = mc.min;
       let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
@@ -27859,6 +27861,7 @@
         },
         data: []
       };
+      this._paperContext = paperFull;
       parseFile(`${this.cvitRoot}cvit.conf`, 'ini', {}).then(response => this.baseConfig = response).then(() => {
         this._dirty = true;
         this._tag = 'data.';
@@ -27925,6 +27928,10 @@
 
     set mouseTool(tool) {
       this._mouseTool = tool;
+    }
+
+    get paper() {
+      return this._paperContext;
     }
 
     get view() {

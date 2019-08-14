@@ -45,17 +45,23 @@ export default class DataModal extends React.Component {
                         let line = `${feature.seqName}\t${feature.source}\t${feature.feature}\t${feature.start}\t${feature.end}\t${feature.score}\t${feature.strand}\t${feature.frame}`;
                         let attributes = '';
                         for (let key in feature.attribute) {
-                            console.log(key);
                             if (feature.attribute.hasOwnProperty(key)) {
                                 attributes += `${key}=${feature.attribute[key]};`
                             }
                         }
-                        console.log(`\n${line}\t${attributes}`);
-                        gff += `\n${line}\t${attributes}`;
+                        gff +=`\n${line}\t${attributes}`;
                     });
                 }
             }
         }
+        let url = 'data:text/plain;utf8,' +
+            encodeURIComponent(gff);
+        let win = window.open();
+       win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+       win.download('gcvit.gff');
+        // link.href = url;
+        // document.body.appendChild(link);
+        // link.click();
     }
 
     onInput = (evt) =>{

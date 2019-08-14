@@ -120,8 +120,9 @@ export default class App extends React.Component {
                         let chr = vd.total[key];
                         if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > refMax) refMax = chr.maxScore.value;
                     });
-                    this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize, refMax}})
-                    this.setView(options, model, count);
+                    console.log("refMax", refMax);
+                    this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize, refMax}});
+                    this.setView(options, model, count,refMax);
                 })
                 .catch(e => {
                     console.log('cvit js error: ', e);
@@ -131,8 +132,7 @@ export default class App extends React.Component {
         }
     }
 
-    setView = (options,model,count) =>{
-        const { refMax } = this.state;
+    setView = (options,model,count,refMax) =>{
       //  let vd = model._viewData;
       //  Object.keys(vd.total).forEach(key => {
       //      let chr = vd.total[key];

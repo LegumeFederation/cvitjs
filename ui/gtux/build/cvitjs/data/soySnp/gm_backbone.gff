@@ -1,20 +1,21 @@
-Gm01	RefGen_v2	chromosome	1	56831624	56831624	.	.	.	name=Gm01;ID=Gm01
-Gm02	RefGen_v2	chromosome	1   48577505	48577505	.	.	.	name=Gm02;ID=Gm02
-Gm03	RefGen_v2	chromosome	1   45779781	45779781	.	.	.	name=Gm03;ID=Gm03
-Gm04	RefGen_v2	chromosome	1   52389146	52389146	.	.	.	name=Gm04;ID=Gm04
-Gm05	RefGen_v2	chromosome	1   42234498	42234498	.	.	.	name=Gm05;ID=Gm05
-Gm06	RefGen_v2	chromosome	1   51416486	51416486	.	.	.	name=Gm06;ID=Gm06
-Gm07	RefGen_v2	chromosome	1   44630646	44630646	.	.	.	name=Gm07;ID=Gm07
-Gm08	RefGen_v2	chromosome	1   47837940	47837940	.	.	.	name=Gm08;ID=Gm08
-Gm09	RefGen_v2	chromosome	1   50189764	50189764	.	.	.	name=Gm09;ID=Gm09
-Gm10	RefGen_v2	chromosome	1   51566898	51566898	.	.	.	name=Gm10;ID=Gm10
-Gm11	RefGen_v2	chromosome	1   34766867	34766867	.	.	.	name=Gm11;ID=Gm11
-Gm12	RefGen_v2	chromosome	1   40091314	40091314	.	.	.	name=Gm12;ID=Gm12
-Gm13	RefGen_v2	chromosome	1   45874162	45874162	.	.	.	name=Gm13;ID=Gm13
-Gm14	RefGen_v2	chromosome	1   49042192	49042192	.	.	.	name=Gm14;ID=Gm14
-Gm15	RefGen_v2	chromosome	1   51756343	51756343	.	.	.	name=Gm15;ID=Gm15
-Gm16	RefGen_v2	chromosome	1   37887014	37887014	.	.	.	name=Gm16;ID=Gm16
-Gm17	RefGen_v2	chromosome	1   41641366	41641366	.	.	.	name=Gm17;ID=Gm17
-Gm18	RefGen_v2	chromosome	1   58018742	58018742	.	.	.	name=Gm18;ID=Gm18
-Gm19	RefGen_v2	chromosome	1   50746916	50746916	.	.	.	name=Gm19;ID=Gm19
-Gm20	RefGen_v2	chromosome	1   47904181	47904181	.	.	.	name=Gm20;ID=Gm20
+##gff-version 3.2.1
+Gm01	RefGen_v2	chromosome	1	56831624	.	.	.	name=Gm01;ID=Gm01
+Gm02	RefGen_v2	chromosome	1	48577505	.	.	.	name=Gm02;ID=Gm02
+Gm03	RefGen_v2	chromosome	1	45779781	.	.	.	name=Gm03;ID=Gm03
+Gm04	RefGen_v2	chromosome	1	52389146	.	.	.	name=Gm04;ID=Gm04
+Gm05	RefGen_v2	chromosome	1	42234498	.	.	.	name=Gm05;ID=Gm05
+Gm06	RefGen_v2	chromosome	1	51416486	.	.	.	name=Gm06;ID=Gm06
+Gm07	RefGen_v2	chromosome	1	44630646	.	.	.	name=Gm07;ID=Gm07
+Gm08	RefGen_v2	chromosome	1	47837940	.	.	.	name=Gm08;ID=Gm08
+Gm09	RefGen_v2	chromosome	1	50189764	.	.	.	name=Gm09;ID=Gm09
+Gm10	RefGen_v2	chromosome	1	51566898	.	.	.	name=Gm10;ID=Gm10
+Gm11	RefGen_v2	chromosome	1	34766867	.	.	.	name=Gm11;ID=Gm11
+Gm12	RefGen_v2	chromosome	1	40091314	.	.	.	name=Gm12;ID=Gm12
+Gm13	RefGen_v2	chromosome	1	45874162	.	.	.	name=Gm13;ID=Gm13
+Gm14	RefGen_v2	chromosome	1	49042192	.	.	.	name=Gm14;ID=Gm14
+Gm15	RefGen_v2	chromosome	1	51756343	.	.	.	name=Gm15;ID=Gm15
+Gm16	RefGen_v2	chromosome	1	37887014	.	.	.	name=Gm16;ID=Gm16
+Gm17	RefGen_v2	chromosome	1	41641366	.	.	.	name=Gm17;ID=Gm17
+Gm18	RefGen_v2	chromosome	1	58018742	.	.	.	name=Gm18;ID=Gm18
+Gm19	RefGen_v2	chromosome	1	50746916	.	.	.	name=Gm19;ID=Gm19
+Gm20	RefGen_v2	chromosome	1	47904181	.	.	.	name=Gm20;ID=Gm20

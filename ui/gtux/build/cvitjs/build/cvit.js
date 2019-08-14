@@ -23134,6 +23134,7 @@
   return paper;
   }.call(commonjsGlobal, typeof self === 'object' ? self : null);
   });
+  var paperFull_1 = paperFull.paper;
 
   /**
    *
@@ -24747,6 +24748,8 @@
       super();
       this.drawFeature = getDrawFeature(config.draw_as, config.shape);
       let mc = view.measureConfig;
+      if (config.bin_max !== 0 && mc.max !== config.maxScore) mc.max = config.bin_max;
+      if (config.bin_min !== 0 && mc.min !== config.minScore) mc.min = config.bin_min;
       let max = mc.max;
       let min = mc.min;
       let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
@@ -24762,6 +24765,7 @@
       } else if (val >= max) {
         fc = invert ? formatColor(colorArray[0]) : formatColor(colorArray[colorArray.length - 1]);
       } else {
+        console.log(min, max, val);
         fc = calculateColor(colorArray, min, max, val, invert);
       }
 
@@ -24889,238 +24893,6 @@
   }
 
   /**
-   * @file Glyph for drawing a histogram bin, a feature with length and depth
-   * placed beside the chromosome.
-   * @author awilkey
-   * @module draw/glyph/distance
-   *
-   */
-
-  class Histogram$1 extends Range {
-    constructor(data, config, view) {
-      super(data, config, view);
-      let range = this.group.children[1];
-      let mc = view.measureConfig;
-      let max = mc.max;
-      let min = mc.min;
-      let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
-      if (config.value_distribution !== 'linear') val = transformValue(val, config.value_distribution, config.value_base);
-      if (val < min) val = min;
-      if (val > max) val = max;
-      let offset = calculateDistance(val, {
-        start: config.offset,
-        stop: config.offset + config.max_distance
-      }, {
-        start: min,
-        stop: max
-      }, config.invert_value);
-
-      if (!config.offsetDir) {
-        offset = -offset;
-        range.translate(config.width, 0);
-      }
-
-      range.bounds.width = offset;
-      /** if labelOffset and offset are same direction, shift label) */
-
-      if (offsetSign(config.label_offset) === config.offsetDir) {
-        this.group.children[0].translate(offset, 0);
-      }
-    }
-
-  }
-
-  function getDrawFeature$1(glyph, subglyph = glyph) {
-    let drawAs;
-    /* disable pileup to speed up */
-
-    switch (glyph) {
-      case 'border':
-        drawAs = new Border();
-        break;
-
-      case 'centromere':
-        drawAs = new Centromere();
-        break;
-
-      case 'chromosome':
-        drawAs = new Chromosome();
-        break;
-
-      case 'marker':
-        drawAs = new Marker();
-        break;
-
-      case 'position':
-        drawAs = new Position$1(null, null, null, subglyph);
-        break;
-
-      case 'range':
-        drawAs = new Range();
-    }
-
-    if (drawAs) {
-      return drawAs.drawFeature;
-    }
-
-    return null;
-  }
-
-  /**
-   * @file Glyph for drawing a histogram bin, a feature with length and depth
-   * placed beside the chromosome.
-   * @author awilkey
-   * @module draw/glyph/distance
-   *
-   */
-
-  class Heat$1 extends Glyph {
-    constructor(data, config, view) {
-      super();
-      this.drawFeature = getDrawFeature$1(config.draw_as, config.shape);
-      let mc = view.measureConfig;
-      let max = mc.max;
-      let min = mc.min;
-      let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
-      if (config.value_distribution !== 'linear') val = transformValue(val, config.value_distribution, config.value_base);
-      let fc;
-      let colorArray = config.heat_colors;
-      let invert = config.invert_value;
-      if (colorArray === 'redgreen') colorArray = ['#FF0000', '#00FF00'];
-      if (colorArray === 'greyscale') colorArray = ['#000000', '#ffffff'];
-
-      if (val <= min) {
-        fc = invert ? formatColor(colorArray[colorArray.length - 1]) : formatColor(colorArray[0]);
-      } else if (val >= max) {
-        fc = invert ? formatColor(colorArray[0]) : formatColor(colorArray[colorArray.length - 1]);
-      } else {
-        fc = calculateColor(colorArray, min, max, val, invert);
-      }
-
-      if (config.transparent) fc.alpha = 1 - config.transparent_percent;
-      this.group = this.formatGlyph(data, config, view);
-      config.draw_as === 'marker' ? this.group.children[1].strokeColor = fc : this.group.children[1].fillColor = fc;
-    }
-
-  }
-
-  /**
-   * @file Glyph for drawing a histogram bin, a feature with length and depth
-   * placed beside the chromosome.
-   * @author awilkey
-   * @module draw/glyph/distance
-   *
-   */
-
-  class Distance$1 extends Glyph {
-    constructor(data, config, view) {
-      super();
-      this.drawFeature = getDrawFeature$1(config.draw_as, config.shape);
-      let mc = view.measureConfig;
-      this.group = this.formatGlyph(data, config, view);
-      let max = mc.max;
-      let min = mc.min;
-      let val = config.value_type === 'value_attr' ? data.attribute.value : data.score;
-      if (config.value_distribution !== 'linear') val = transformValue(val, config.value_distribution, config.value_base);
-      if (val < min) val = min;
-      if (val > max) val = max;
-      let offset = calculateDistance(val, {
-        start: config.offset,
-        stop: config.offset + config.max_distance
-      }, {
-        start: min,
-        stop: max
-      }, config.invert_value);
-      this.group.translate(config.offsetDir ? offset : -offset, 0);
-    }
-
-  }
-
-  /**
-   * @file Glyph for drawing a histogram bin, a feature with length and depth
-   * placed beside the chromosome.
-   * @author awilkey
-   * @module draw/glyph/distance
-   *
-   */
-
-  class StackedBar$1 extends Glyph {
-    constructor(data, config, view) {
-      super();
-      this.drawFeature = getDrawFeature$1('range');
-      let mc = view.measureConfig;
-      let lastOffset = 0;
-      this.group = this.formatGlyph(data, config, view);
-      this.group.children[1].remove();
-
-      for (let key in view.colorClasses) {
-        if (view.colorClasses.hasOwnProperty(key) && (data.attribute.hasOwnProperty(key) || data.attribute.hasOwnProperty(key.toLowerCase()))) {
-          let val = data.attribute[key] || data.attribute[key.toLowerCase()];
-          let offset = calculateDistance(val, {
-            start: config.offset,
-            stop: config.offset + config.max_distance
-          }, {
-            start: mc.min,
-            stop: mc.max
-          });
-          offset = config.offsetDir ? offset : -offset;
-          config.color = view.colorClasses[key];
-          let bar = this.formatGlyph(data, config, view);
-          bar.bounds.width = offset;
-          bar.translate(lastOffset, 0);
-          this.group.insertChild(1, bar);
-          lastOffset += offset;
-        }
-      }
-      /** shift label if the stack grows in direction of label */
-
-
-      if (config.draw_label && offsetSign(config.label_offset) === config.offsetDir) {
-        this.group.children[0].translate(lastOffset, 0);
-      }
-    }
-
-  }
-
-  /**
-   * @file Glyph for drawing a histogram bin, a feature with length and depth
-   * placed beside the chromosome.
-   * @author awilkey
-   * @module draw/glyph/distance
-   *
-   */
-
-  class Ratio$1 extends StackedBar$1 {
-    constructor(data, config, view) {
-      view.measureConfig.max = data.attribute.value;
-      super(data, config, view);
-    }
-
-  }
-
-  function Measure$1(data, config, view, subglyph) {
-    switch (subglyph) {
-      case 'histogram':
-        return new Histogram$1(data, config, view);
-
-      case 'heat':
-        return new Heat$1(data, config, view);
-
-      case 'distance':
-        return new Distance$1(data, config, view);
-
-      case 'stackedbar':
-        return new StackedBar$1(data, config, view);
-
-      case 'ratio':
-        return new Ratio$1(data, config, view);
-
-      default:
-        console.log(`${subglyph} is not supported yet`);
-    }
-  }
-
-  /**
    * Meta glyph to draw a collection of glyphs broken up by categories in [classes]
    * @param data
    * @param config
@@ -25165,7 +24937,12 @@
               break;
 
             case 'measure':
-              feature = new Measure$1(data, config, view, subglyph);
+              if (config['class_heat'].length > 0) {
+                //update heat colors if requested.
+                config['heat_colors'] = config['class_heat'].concat([view.colorClasses[ac]]);
+              }
+
+              feature = new Measure(data, config, view, subglyph);
               break;
 
             default:
@@ -28049,7 +27826,8 @@
         'by_class': 0,
         'class_filter': [],
         'class_offset': 0,
-        'class_space': 0
+        'class_space': 0,
+        'class_heat': []
       }
     };
   }
@@ -28084,6 +27862,7 @@
         },
         data: []
       };
+      this._paperContext = paperFull;
       parseFile(`${this.cvitRoot}cvit.conf`, 'ini', {}).then(response => this.baseConfig = response).then(() => {
         this._dirty = true;
         this._tag = 'data.';
@@ -28150,6 +27929,10 @@
 
     set mouseTool(tool) {
       this._mouseTool = tool;
+    }
+
+    get paper() {
+      return this._paperContext;
     }
 
     get view() {
