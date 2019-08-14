@@ -38,7 +38,7 @@ export function calculateColor(colorArray,min,max,val,invert = 0){
  return new paper.Color(
     (color2[0]*weight + color1[0]*invWeight) ,
     (color2[1]*weight + color1[1]*invWeight) ,
-    (color2[2]*weight + color1[2]*invWeight)
+    (color2[2]*weight + color1[2]*invWeight) ,
  );
 }
 

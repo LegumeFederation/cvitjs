@@ -35,6 +35,8 @@ export default class Index {
       data:[]
     };
 
+    this._paperContext = paper;
+
     parseFile(`${this.cvitRoot}cvit.conf`,'ini',{})
       .then(response => this.baseConfig = response)
       .then(()=>{
@@ -110,6 +112,10 @@ export default class Index {
 
   set mouseTool(tool){
     this._mouseTool = tool;
+  }
+
+  get paper(){
+    return this._paperContext;
   }
 
   get view(){
