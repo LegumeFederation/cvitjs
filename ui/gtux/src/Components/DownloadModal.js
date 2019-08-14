@@ -4,7 +4,13 @@ export default class DataModal extends React.Component {
     state = {
         name: 'cvit',
         format: 'svg',
-        quality: .95
+        quality: .95,
+        gffOptions: {
+            'chromosome':true,
+            'diff':true,
+            'same':true,
+            'total':true
+        }
     }
 
     exportImage = (blob) => {
@@ -37,8 +43,9 @@ export default class DataModal extends React.Component {
     onClickData = () => {
         let gff = '##gff-version 3.2.1';
         let data = window.cvit.model.data;
+        let gffOpts = this.state.gffOptions;
         for (let group in data) {
-            if(data.hasOwnProperty(group)) {
+            if(data.hasOwnProperty(group) && gffOpts[group]) {
                 let dataGroup = data[group];
                 if( dataGroup.hasOwnProperty('features')) {
                     dataGroup.features.forEach(feature => {
@@ -72,8 +79,13 @@ export default class DataModal extends React.Component {
         this.setState({format:evt.target.value});
     }
 
+    onChecked = (evt) => {
+        let gffOptions = this.state.gffOptions;
+        gffOptions[evt.target.value] = !gffOptions[evt.target.value];
+        this.setState( {gffOptions});
+    }
     render(props,state){
-        let {name,format} = this.state;
+        let {name,format,gffOptions} = this.state;
         return(
             <div>
                 <h5> Downloads </h5>
@@ -134,6 +146,68 @@ export default class DataModal extends React.Component {
                     <hr />
                     <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
                         <h5> Download Data </h5>
+                        <p> Download data as a gff </p>
+
+                        <form style={{width:'100%'}}>
+                            <h6> GFF Settings: </h6>
+                            <tbody>
+                            <tr>
+                                <td> <span> Include: </span> </td>
+                                <td>
+                                    <label>
+                                        <input
+                                            id={'opt-chr'}
+                                            type={'checkbox'}
+                                            value={'chromosome'}
+                                            onChange={(evt)=>this.onChecked(evt)}
+                                            checked={gffOptions.chromosome}
+                                        />
+                                        <span> chromosome </span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label>
+                                        <input
+                                            id={'opt-diff'}
+                                            type={'checkbox'}
+                                            value={'diff'}
+                                            onChange={(evt)=>this.onChecked(evt)}
+                                            checked={gffOptions.diff}
+                                        />
+                                        <span> different </span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>  </td>
+                                <td>
+                                    <label>
+                                        <input
+                                            id={'opt-same'}
+                                            type={'checkbox'}
+                                            value={'same'}
+                                            onChange={(evt)=>this.onChecked(evt)}
+                                            checked={gffOptions.same}
+                                        />
+                                        <span> same </span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label>
+                                        <input
+                                            id={'opt-total'}
+                                            type={'checkbox'}
+                                            value={'total'}
+                                            onChange={(evt)=>this.onChecked(evt)}
+                                            checked={gffOptions.total}
+                                        />
+                                        <span> total </span>
+                                    </label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </form>
+
                         <button className={'modal-confirm'}
                                 onClick={()=>this.onClickData()}
                         > Download Data </button>

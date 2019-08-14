@@ -120,7 +120,6 @@ export default class App extends React.Component {
                         let chr = vd.total[key];
                         if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > refMax) refMax = chr.maxScore.value;
                     });
-                    console.log("refMax", refMax);
                     this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize, refMax}});
                     this.setView(options, model, count,refMax);
                 })
