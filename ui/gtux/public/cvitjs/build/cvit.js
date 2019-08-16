@@ -26662,13 +26662,44 @@
 
       for (let key in feature.attribute) {
         if (feature.attribute.hasOwnProperty(key)) {
-          attributes.push(h("tr", null, h("th", null, key), h("th", null, feature.attribute[key])));
+          attributes.push(h("tr", null, h("th", null, `${key}:`), h("td", null, feature.attribute[key])));
+
+          if (['name', 'id', 'value'].indexOf(key) === -1) {
+            let reg = /([Pp][Ii])([0-9]*).*/;
+            let res = key.match(reg);
+
+            if (res.length === 3) {
+              key = `${res[1]} ${res[2]}`;
+            }
+
+            attributes.push(h("tr", null, h("td", {
+              colSpan: 2,
+              style: {
+                textAlign: 'center'
+              }
+            }, " ", h("a", {
+              href: `https://www.ars-grin.gov/cgi-bin/npgsold/swish/accboth?query=${key.toUpperCase()}&si=0&si=1`
+            }, " Search Accession at GRIN "))));
+          }
         }
       }
 
       return h("div", {
         className: 'popover-contents'
-      }, h("table", null, h("thead", null, h("tr", null, h("th", null, " Name:"), h("th", null, " ", feature.name || feature.attribute.id, " "))), h("tbody", null, h("tr", null, h("th", null, " Start:"), h("th", null, " ", feature.start, " ")), h("tr", null, h("th", null, " End:"), h("th", null, " ", feature.end, " ")), h("tr", null, h("th", null, " Strand:"), h("th", null, " ", feature.strand, " ")), h("tr", null, h("th", null, " Score:"), h("th", null, " ", typeof feature.score === 'number' ? feature.score.toExponential() : feature.score, " ")), attributes)));
+      }, h("table", {
+        style: {
+          margin: 'auto'
+        }
+      }, h("thead", null, h("tr", null, h("th", {
+        colSpan: 2,
+        style: {
+          textAlign: 'center'
+        }
+      }, " Feature Information "))), h("tbody", null, h("tr", null, h("th", null, " Name: "), h("td", null, " ", feature.name || feature.attribute.id, " ")), h("tr", null, h("th", null, " Chromosome: "), h("td", null, " ", feature.seqName, " ")), h("tr", null, h("th", null, " Start:"), h("td", null, " ", feature.start, " ")), h("tr", null, h("th", null, " End:"), h("td", null, " ", feature.end, " ")), attributes)), h("br", null), h("a", {
+        href: `https://soybase.org/gb2/gbrowse/gmax2.0/?name=${feature.seqName}%3A${feature.start}..${feature.end}`
+      }, " View Region in Soybase GBrowse "), h("br", null), h("a", {
+        href: `https://legumeinfo.org/lis_context_viewer/search/lis/glyma.${feature.seqName}/${feature.start}-${feature.end}`
+      }, " View Region in LIS Context Viewer "));
     });
     return h("div", {
       id: 'popover-contents'

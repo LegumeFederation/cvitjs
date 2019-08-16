@@ -87,7 +87,7 @@ export default class DataModal extends React.Component {
     render(props,state){
         let {name,format,gffOptions} = this.state;
         return(
-            <div>
+            <div className={"modal-content"}>
                 <h5> Downloads </h5>
                 <hr />
                 <div className={'row'}>
