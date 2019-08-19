@@ -14,11 +14,7 @@
     z-index: 1000;
 }
 
-#help-contents {
-    height: 80%;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-}
+
 
 .help-text {
     transition: max-height .1s ease-in-out;
@@ -110,10 +106,10 @@ legend {
 .filter-drop{
 }
 
-.modal-contents {
-    max-width: 95%;
-    width: 95%;
-}
+/*.modal-contents {*/
+/*    max-width: 95%;*/
+/*    width: 95%;*/
+/*}*/
 
 .modal-Section {
     height: 90%;
@@ -122,4 +118,32 @@ legend {
 h6 {
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.modal-area{
+    height: 100%;
+    overflow: hidden;
+}
+
+.modal-content{
+    overflow: hidden;
+    position: fixed;
+    top: 4em;
+    left: 4em;
+    right: 4em;
+    bottom: 9em;
+}
+
+.modal-contents {
+    overflow-y: auto;
+    position: fixed;
+    top: 11em;
+    left: 4em;
+    right: 4em;
+    bottom: 9em;
+}
+
+.modal-close {
+    position: fixed;
+    bottom: 4em;
 }

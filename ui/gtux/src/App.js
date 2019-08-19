@@ -174,22 +174,14 @@ export default class App extends React.Component {
                     onRequestClose={this.handleCloseModal}
                     shouldCloseOnOverlayClick={true}
                 >
-                    <DataModal />
-                    <div className={'row'}>
-                        <button onClick={this.handleCloseModal}> Close Data Modal</button>
-                    </div>
+                    <DataModal closeAction={()=>this.handleOpenModal()} />
                 </ReactModal>
                 <ReactModal
                     isOpen={showModal === 'help'}
                     onRequestClose={this.handleCloseModal}
                     shouldCloseOnOverlayClick={true}
                 >
-                    <div className={'modal-contents container'}>
-                        <HelpModal/>
-                        <div className={'row'}>
-                            <button onClick={this.handleCloseModal}> Close Help Modal</button>
-                        </div>
-                    </div>
+                        <HelpModal closeAction={()=>this.handleOpenModal()} />
                 </ReactModal>
 
                 <h3>Genotype Comparison Visualisation Tool</h3>

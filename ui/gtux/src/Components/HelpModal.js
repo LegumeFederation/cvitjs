@@ -10,22 +10,28 @@ import DisplayHeat from "./HelpTopics/DisplayHeat";
 
 export default class HelpModal extends React.Component {
     render () {
-        return (
-            <div>
-                <div className={'row'}>
-                    <h5> GCViT - Genotype Comparison Visualisation Tool</h5>
+        return(
+            <div className={"modal-area"}>
+                <div className={"modal-content"} >
+                    <h5> GCViT - Genotype Comparison Visualisation Tool </h5>
+                    <hr />
+                    <div className={'modal-contents'}>
+                        <About/>
+                        <h6> Genotypes </h6>
+                        <ReferenceGenotype/>
+                        <ComparisonGenotype/>
+                        <h6> Options </h6>
+                        <GeneralOptions/>
+                        <DisplayNone/>
+                        <DisplayHistogram/>
+                        <DisplayHeat/>
+                        <DisplayHaplotype/>
+                    </div>
                 </div>
-                <div id={'help-contents'}>
-                    <About/>
-                    <h6> Genotypes </h6>
-                    <ReferenceGenotype/>
-                    <ComparisonGenotype/>
-                    <h6> Options </h6>
-                    <GeneralOptions/>
-                    <DisplayNone/>
-                    <DisplayHistogram/>
-                    <DisplayHeat/>
-                    <DisplayHaplotype/>
+                <div className={'modal-close'}>
+                    <button className={'modal-confirm'}
+                            onClick={()=>this.props.closeAction()}
+                    > Close </button>
                 </div>
             </div>
         );

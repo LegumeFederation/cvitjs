@@ -64,8 +64,8 @@ export default class DataModal extends React.Component {
         let url = 'data:text/plain;utf8,' +
             encodeURIComponent(gff);
         let win = window.open();
-       win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-       win.download('gcvit.gff');
+        win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+        win.download('gcvit.gff');
         // link.href = url;
         // document.body.appendChild(link);
         // link.click();
@@ -87,131 +87,140 @@ export default class DataModal extends React.Component {
     render(props,state){
         let {name,format,gffOptions} = this.state;
         return(
-            <div className={"modal-content"}>
-                <h5> Downloads </h5>
-                <hr />
-                <div className={'row'}>
-                    <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
-                        <h5> Download Image </h5>
-                        <p> Download the current view as an image.</p>
+            <div className={"modal-area"}>
+                <div className={"modal-content"} >
+                    <h5> Downloads </h5>
+                    <hr />
+                    <div className={'modal-contents'}>
+                        <div className={'row'}>
+                            <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+                                <h5> Download Image </h5>
+                                <p> Download the current view as an image.</p>
 
-                        <form style={{width:'100%'}}>
-                            <h6> Image Settings: </h6>
-                            <tbody>
-                            <tr>
-                                <td><span>File Name: </span></td>
-                                <td>
-                                    <input
-                                        type={'text'}
-                                        value={name}
-                                        onInput={(evt)=>this.onInput(evt)}
-                                        placeholder={'cvit'}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <span> File Type: </span> </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-svg'}
-                                            type={'radio'}
-                                            value={'svg'}
-                                            onChange={(evt)=>this.onSelect(evt)}
-                                            checked={format === 'svg'} />
-                                        <span> svg </span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-png'}
-                                            type={'radio'}
-                                            value={'png'}
-                                            onChange={(evt)=>this.onSelect(evt)}
-                                            checked={format === 'png'}
-                                        />
-                                        <span> png </span>
-                                    </label>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </form>
-                        <button className={'modal-confirm'}
-                                onClick={()=>this.onClickImage()}
-                        > Export Image </button>
+                                <form style={{width:'100%'}}>
+                                    <h6> Image Settings: </h6>
+                                    <tbody>
+                                    <tr>
+                                        <td><span>File Name: </span></td>
+                                        <td>
+                                            <input
+                                                type={'text'}
+                                                value={name}
+                                                onInput={(evt)=>this.onInput(evt)}
+                                                placeholder={'cvit'}
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <span> File Type: </span> </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-svg'}
+                                                    type={'radio'}
+                                                    value={'svg'}
+                                                    onChange={(evt)=>this.onSelect(evt)}
+                                                    checked={format === 'svg'} />
+                                                <span> svg </span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-png'}
+                                                    type={'radio'}
+                                                    value={'png'}
+                                                    onChange={(evt)=>this.onSelect(evt)}
+                                                    checked={format === 'png'}
+                                                />
+                                                <span> png </span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </form>
+                                <button className={'modal-confirm'}
+                                        onClick={()=>this.onClickImage()}
+                                > Export Image </button>
+                            </div>
+                        </div>
+                        <div className={'row'}>
+                            <hr />
+                            <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+                                <h5> Download Data </h5>
+                                <p> Download data as a gff </p>
+
+                                <form style={{width:'100%'}}>
+                                    <h6> GFF Settings: </h6>
+                                    <tbody>
+                                    <tr>
+                                        <td> <span> Include: </span> </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-chr'}
+                                                    type={'checkbox'}
+                                                    value={'chromosome'}
+                                                    onChange={(evt)=>this.onChecked(evt)}
+                                                    checked={gffOptions.chromosome}
+                                                />
+                                                <span> chromosome </span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-diff'}
+                                                    type={'checkbox'}
+                                                    value={'diff'}
+                                                    onChange={(evt)=>this.onChecked(evt)}
+                                                    checked={gffOptions.diff}
+                                                />
+                                                <span> different </span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>  </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-same'}
+                                                    type={'checkbox'}
+                                                    value={'same'}
+                                                    onChange={(evt)=>this.onChecked(evt)}
+                                                    checked={gffOptions.same}
+                                                />
+                                                <span> same </span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input
+                                                    id={'opt-total'}
+                                                    type={'checkbox'}
+                                                    value={'total'}
+                                                    onChange={(evt)=>this.onChecked(evt)}
+                                                    checked={gffOptions.total}
+                                                />
+                                                <span> total </span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </form>
+
+                                <button className={'modal-confirm'}
+                                        onClick={()=>this.onClickData()}
+                                > Download Data </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className={'row'}>
-                    <hr />
-                    <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
-                        <h5> Download Data </h5>
-                        <p> Download data as a gff </p>
-
-                        <form style={{width:'100%'}}>
-                            <h6> GFF Settings: </h6>
-                            <tbody>
-                            <tr>
-                                <td> <span> Include: </span> </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-chr'}
-                                            type={'checkbox'}
-                                            value={'chromosome'}
-                                            onChange={(evt)=>this.onChecked(evt)}
-                                            checked={gffOptions.chromosome}
-                                        />
-                                        <span> chromosome </span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-diff'}
-                                            type={'checkbox'}
-                                            value={'diff'}
-                                            onChange={(evt)=>this.onChecked(evt)}
-                                            checked={gffOptions.diff}
-                                        />
-                                        <span> different </span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>  </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-same'}
-                                            type={'checkbox'}
-                                            value={'same'}
-                                            onChange={(evt)=>this.onChecked(evt)}
-                                            checked={gffOptions.same}
-                                        />
-                                        <span> same </span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input
-                                            id={'opt-total'}
-                                            type={'checkbox'}
-                                            value={'total'}
-                                            onChange={(evt)=>this.onChecked(evt)}
-                                            checked={gffOptions.total}
-                                        />
-                                        <span> total </span>
-                                    </label>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </form>
-
-                        <button className={'modal-confirm'}
-                                onClick={()=>this.onClickData()}
-                        > Download Data </button>
-                    </div>
+                <div className={'modal-close'}>
+                    <button className={'modal-confirm'}
+                            onClick={()=>this.props.closeAction()}
+                    > Close </button>
                 </div>
             </div>
         );
