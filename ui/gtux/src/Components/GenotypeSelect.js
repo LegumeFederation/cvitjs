@@ -1,5 +1,5 @@
 import React  from 'react';
-import Select from 'react-select';
+import Select, {createFilter, components} from 'react-select';
 import {SketchPicker} from 'react-color';
 
 const popover = {
@@ -94,7 +94,9 @@ export default class GenotypeSelector extends React.Component {
 						isClearable
 						isDisabled={this.props.selected}
 						onChange={this.datasetChange}
+						filterOption={createFilter({ignoreAccents: false})}
 						options={this.props.datasets}
+						components={{Option: CustomOption}}
 					/>
 				</div>
 				<div className={'four columns'}>
@@ -106,7 +108,9 @@ export default class GenotypeSelector extends React.Component {
 						isClearable
 						isDisabled={gtOpt.length === 0}
 						onChange={this.gtChange}
+						filterOption={createFilter({ignoreAccents: false})}
 						options={gtOpt}
+						components={{Option: CustomOption}}
 					/>
 				</div>
 				{this.props.removeOption !== undefined
@@ -118,6 +122,22 @@ export default class GenotypeSelector extends React.Component {
 				}
 			</div>
 			</div>
+		);
+	}
+}
+
+class CustomOption extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		const {innerProps, isFocused, ...otherProps} = this.props;
+		const {onMouseMove, onMouseOver, ...otherInnerProps} = innerProps;
+		const newProps = {innerProps: {...otherInnerProps}, ...otherProps};
+		return (
+			<components.Option {...newProps} className="git-option-component">{this.props.children}
+			</components.Option>
 		);
 	}
 }

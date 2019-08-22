@@ -67,6 +67,10 @@ p{
     margin-bottom: 1.25rem;
 }
 
+.git-option-component:hover{
+    background-color: #2684ff;
+}
+
 .genotype-select {
     width: 100%;
     padding-bottom: 0.5rem;
