@@ -231,7 +231,7 @@ export default class TrackOptions extends React.Component {
         });
 
         let filter = displayAs.value !== 'none'
-            ? (<div className={'four columns'}>
+            ? (<div className={'pure-u-1-3 l-box'}>
                     <span>Filter Genotypes</span>
                     <Select
                         defaultValue={null}
@@ -251,8 +251,8 @@ export default class TrackOptions extends React.Component {
         return (
             <fieldset className={'genotype-field'}>
                 <legend> {`${side} Options`} </legend>
-                <div className={'row genotype-select'}>
-                    <div className={'two columns'}>
+                <div className={'pure-g genotype-select'}>
+                    <div className={'pure-u-1-6 l-box'}>
                         <span>Display Type</span>
                         <Select
                             defaultValue={displayFormats[0]}
@@ -265,7 +265,7 @@ export default class TrackOptions extends React.Component {
                         />
                     </div>
                     {displayAs.value !== 'none' ?
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span>Comparison</span>
                             <Select
                                 defaultValue={comparisonFormats[0]}
@@ -283,17 +283,17 @@ export default class TrackOptions extends React.Component {
                     {displayAs.value === 'none'
                         ? null
                         :
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span>{displayAs.value === 'heat' || displayAs.value === 'hist' ? 'Max Value' : 'Threshold' }</span>
-                            <input type={'text'} value={maxValue} className={'u-full-width git-option'} id={`max-${side}`} placeholder={'0'} onInput={(e) => this.maxChange(e)}/>
+                            <input type={'text'} value={maxValue} className={'pure-u-1-1 l-box git-option'} id={`max-${side}`} placeholder={'0'} onInput={(e) => this.maxChange(e)}/>
 
                         </div>
                     }
                     {displayAs.value !== 'none' && displayAs.value !== 'haplo'
                         ?
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span>Min Value</span>
-                            <input type={'text'} value={minValue} className={'u-full-width git-option'} id={`min-${side}`} placeholder={'0'} onInput={(e) => this.minChange(e)}/>
+                            <input type={'text'} value={minValue} className={'pure-u-1-1 l-box git-option'} id={`min-${side}`} placeholder={'0'} onInput={(e) => this.minChange(e)}/>
                         </div>
                         :
                         null
@@ -301,11 +301,11 @@ export default class TrackOptions extends React.Component {
                 </div>
                 {displayAs.value === 'heat'
                     ?
-                    <div className={'row genotype-select'}>
-                        <div className={'two columns'}>
-                            <div className={'u-full-width'}> <br/> </div>
+                    <div className={'pure-g genotype-select'}>
+                        <div className={'pure-u-1-6 l-box'}>
+                            <div className={'pure-u-1-1 l-box'}> <br/> </div>
                         </div>
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span>Heat Base Color</span>
                             <Select
                                 defaultValue={heatColorFormat[0]}
@@ -316,7 +316,7 @@ export default class TrackOptions extends React.Component {
                                 options={heatColorFormat}
                             />
                         </div>
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span>Heat Direction</span>
                             <Select
                                 defaultValue={heatFormat[0]}

@@ -186,13 +186,13 @@ export default class App extends React.Component {
 
                 <h3>Genotype Comparison Visualisation Tool</h3>
                 <div
-                    className={'u-full-width fake-button'}
+                    className={'pure-u-1-1 l-box fake-button'}
                     onClick={()=>{this.setState({hideOptions:!hideOptions})}}
                 >
-                    <div className={'row'}>
-                        <div className={'one column'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
-                        <div className={'ten columns'}> Configure View </div>
-                        <div className={'one column'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
+                    <div className={'pure-g'}>
+                        <div className={'pure-u-1-12 l-box'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
+                        <div className={'pure-u-5-6 l-box'}> Configure View </div>
+                        <div className={'pure-u-1-12 l-box'} > <div className={hideOptions ? 'arrow-down rotate':'arrow-down'}/> </div>
                     </div>
                 </div>
                 <form className={'display-options'} style={{maxHeight: hideOptions ? '0px' : '100%', overflow: hideOptions ? 'hidden' : 'visible'}}>
@@ -203,11 +203,12 @@ export default class App extends React.Component {
                     }
                     <OptionsForm setOptions ={this.setOptions} genotypes={selected} options={options}/>
                 </form>
-                <div className={'row'}>
-                    <button className={'three columns button-primary'} onClick={this.onSubmit}> Display </button>
-                    <div className={'three columns'}><br /></div>
-                    <button className={'three columns'} onClick={()=>this.handleOpenModal('data')}> Download </button>
-                    <button className={'three columns'} onClick={()=>this.handleOpenModal('help')}> Help </button>
+                <div className={'pure-g'}>
+                    <button className={'pure-u-1-4 pure-button-primary button-action pure-button'} onClick={this.onSubmit}> Display </button>
+                    <div className={'pure-u-5-24 '}><br /></div>
+                    <button className={'pure-u-1-4  pure-button button-display'} onClick={()=>this.handleOpenModal('data')}> Download </button>
+                    <div className={'pure-u-1-24'} />
+                    <button className={'pure-u-1-4  pure-button button-display'} onClick={()=>this.handleOpenModal('help')}> Help </button>
                 </div>
             </div>
         );

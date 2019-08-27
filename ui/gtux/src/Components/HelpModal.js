@@ -29,7 +29,7 @@ export default class HelpModal extends React.Component {
                     </div>
                 </div>
                 <div className={'modal-close'}>
-                    <button className={'modal-confirm'}
+                    <button className={'pure-button  button-display modal-confirm'}
                             onClick={()=>this.props.closeAction()}
                     > Close </button>
                 </div>

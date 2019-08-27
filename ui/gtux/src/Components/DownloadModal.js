@@ -92,8 +92,8 @@ export default class DataModal extends React.Component {
                     <h5> Downloads </h5>
                     <hr />
                     <div className={'modal-contents'}>
-                        <div className={'row'}>
-                            <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+                        <div className={'pure-g'}>
+                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-modal'} >
                                 <h5> Download Image </h5>
                                 <p> Download the current view as an image.</p>
 
@@ -139,14 +139,14 @@ export default class DataModal extends React.Component {
                                     </tr>
                                     </tbody>
                                 </form>
-                                <button className={'modal-confirm'}
+                                <button className={'pure-button button-display modal-confirm'}
                                         onClick={()=>this.onClickImage()}
                                 > Export Image </button>
                             </div>
                         </div>
-                        <div className={'row'}>
+                        <div className={'pure-g'}>
                             <hr />
-                            <div className={'twelve columns cvit cvit-modal'} id={'export-modal'} >
+                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-modal'} >
                                 <h5> Download Data </h5>
                                 <p> Download data as a gff </p>
 
@@ -210,7 +210,7 @@ export default class DataModal extends React.Component {
                                     </tbody>
                                 </form>
 
-                                <button className={'modal-confirm'}
+                                <button className={'pure-button button-display modal-confirm'}
                                         onClick={()=>this.onClickData()}
                                 > Download Data </button>
                             </div>

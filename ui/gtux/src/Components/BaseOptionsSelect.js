@@ -68,16 +68,16 @@ export default class BaseOptions extends React.Component {
         return (
             <fieldset className={'genotype-field'}>
                 <legend> General Options </legend>
-                <div className={'row genotype-select'}>
-                    <div className={'six columns'}>
+                <div className={'pure-g genotype-select'}>
+                    <div className={'pure-u-1-2 l-box'}>
                         <span> Title </span>
-                        <input type={'text'} value={title} className={'u-full-width git-option'} id={`title-gen`} placeholder={''} onInput={e=>this.titleChange(e)} />
+                        <input type={'text'} value={title} className={'pure-u-1-1 l-box git-option'} id={`title-gen`} placeholder={''} onInput={e=>this.titleChange(e)} />
                     </div>
-                    <div className={'two columns'}>
+                    <div className={'pure-u-1-6 l-box'}>
                         <span> Bin Size </span>
-                        <input type={'text'} value={binSize} className={'u-full-width git-option'} id={`binsize-gen`} placeholder={'500000'} onInput={e=>this.binChange(e)}/>
+                        <input type={'text'} value={binSize} className={'pure-u-1-1 l-box git-option'} id={`binsize-gen`} placeholder={'500000'} onInput={e=>this.binChange(e)}/>
                     </div>
-                    <div className={'two columns'}>
+                    <div className={'pure-u-1-6 l-box'}>
                         <span> Ruler Display </span>
                         <Select
                             defaultValue={rulerDisplayOptions[0]}
@@ -91,9 +91,9 @@ export default class BaseOptions extends React.Component {
                     </div>
                     {rulerDisplay.value !== '0'
                         ?
-                        <div className={'two columns'}>
+                        <div className={'pure-u-1-6 l-box'}>
                             <span> Ruler Interval </span>
-                            <input type={'text'} value={rulerInterval} className={'u-full-width git-option'} id={`rulertic-gen`}
+                            <input type={'text'} value={rulerInterval} className={'pure-u-1-1 l-box git-option'} id={`rulertic-gen`}
                                    placeholder={'5000000'} onInput={e=> this.intervalChange(e)}/>
                         </div>
                         : null

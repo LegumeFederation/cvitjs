@@ -69,8 +69,8 @@ export default class GenotypeSelector extends React.Component {
 		const gtOpt = this.props.genotypes !== null ? this.props.genotypes : [];
 		return (
 			<div>
-			<div className={'row genotype-select'}>
-				<div className={'one column '}>
+			<div className={'pure-g genotype-select'}>
+				<div className={'pure-u-1-12 l-box '}>
 					<span> Color </span>
 					<div className={'fake-button git-option'} onClick={this.colorClick} style={{background:this.state.color, zIndex:1 }} />
 					{ this.state.displayColorPicker
@@ -83,7 +83,7 @@ export default class GenotypeSelector extends React.Component {
 						: null
 					}
 				</div>
-				<div className={'five columns'}>
+				<div className={'pure-u-5-12 l-box'}>
 					<span> Dataset </span>
 					<Select
 						defaultValue={this.props.selected || null}
@@ -99,7 +99,7 @@ export default class GenotypeSelector extends React.Component {
 						components={{Option: CustomOption}}
 					/>
 				</div>
-				<div className={'four columns'}>
+				<div className={'pure-u-1-3 l-box'}>
 					<span> Genotype </span>
 					<Select
 						className="basic-single git-option"
@@ -114,7 +114,7 @@ export default class GenotypeSelector extends React.Component {
 					/>
 				</div>
 				{this.props.removeOption !== undefined
-					? <div className={'one column'}>
+					? <div className={'pure-u-1-12 l-box'}>
 						<span>Remove</span>
 						<div className={'fake-button git-option'} onClick={()=> this.props.removeOption(idx)} > X </div>
 						</div>

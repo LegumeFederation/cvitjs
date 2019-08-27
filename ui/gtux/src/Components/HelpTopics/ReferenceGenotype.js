@@ -6,21 +6,21 @@ export default class ReferenceGenotype extends React.Component {
         const {hideInfo} = this.state;
         return (
             <div>
-                <div className={'row'}>
+                <div className={'pure-g'}>
                     <div
-                        className={'u-full-width fake-button'}
+                        className={'pure-u-1-1 l-box fake-button'}
                         onClick={()=>{this.setState({hideInfo:!hideInfo})}}
                     >
-                        <div className={'row'}>
-                            <div className={'one column'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
-                            <div className={'ten columns'}> Reference Genotype </div>
-                            <div className={'one column'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
+                        <div className={'pure-g'}>
+                            <div className={'pure-u-1-12 l-box'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
+                            <div className={'pure-u-5-6 l-box'}> Reference Genotype </div>
+                            <div className={'pure-u-1-12 l-box'} > <div className={hideInfo ? 'arrow-down rotate':'arrow-down'}/> </div>
                         </div>
                     </div>
                 </div>
-                <div className={'row'}>
-                    <div className={'help-text row'} style={{maxHeight: hideInfo ? '0px' : '50%'}}>
-                        <div className={'u-full-width modal-section'}>
+                <div className={'pure-g'}>
+                    <div className={'help-text pure-g'} style={{maxHeight: hideInfo ? '0px' : '50%'}}>
+                        <div className={'pure-u-1-1 l-box modal-section'}>
                             <p>
                                 <ul>
                                     <li> Pick a Color that will represent the reference genome. Please note that this color will only show up when “total” is indicated in the display options. </li>

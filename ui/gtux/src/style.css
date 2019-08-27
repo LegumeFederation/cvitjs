@@ -1,6 +1,10 @@
-html, body {
+#container {
 	font: 14px/1.21 'Helvetica Neue', arial, sans-serif;
 	font-weight: 400;
+}
+
+html, button, input, select, textarea, .pure-g [class *= "pure-u"] {
+	font-family: 'Helvetica Neue', arial, sans-serif;
 }
 
 h1 {

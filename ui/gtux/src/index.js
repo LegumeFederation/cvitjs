@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+//import '../node_modules/skeleton.css/skeleton.css';
+import 'purecss/build/grids.css';
+import 'purecss/build/buttons.css';
 import './index.css';
-import '../node_modules/skeleton.css/skeleton.css';
 import './selector.css';
 import './style.css';
 import App from './App';
