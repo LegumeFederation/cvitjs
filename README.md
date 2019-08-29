@@ -26,9 +26,17 @@ Running through go as a test server:
 
 `go run server.go`
 
-Building through go:
+By default this will listen on port 8080, but you can
+change this in the configuration file.
+
+Building through Go:
 
 `go build -o server .`
+
+This builds a binary that has statically linked libraries, making it portable.
+
+If running on a server without Go support the language has support built-in for cross compiling built in. See [HERE](https://golangcookbook.com/chapters/running/cross-compiling/)
+for details.
 
 Running through docker:
 ```
