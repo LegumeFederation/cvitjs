@@ -12,7 +12,9 @@
 #  location: assets/CAD-100.vcf.gz
 #  name: CAD
 #  format: vcf
-port: 8833
+server:
+  port: 8080
+  apiOnly: True
 
 snptestLegacy:
   location: assets/Soysnp-test-AW.vcf.gz

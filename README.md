@@ -1,6 +1,4 @@
-# snp-viewer-demo
-
-API:
+# snp-viewer-demo API:
 
 | path | verb | returns |
 | ---- | ---- | ---- |
@@ -53,3 +51,31 @@ gcvit:0.1
 Directory used as source to the /app/assets mount point is the default location for data, and /app/config for the configuration files. 
 Once the app has been build, updating data should be as easy as stopping and starting the container after updating the data on disk.
 
+## Configuration
+The assetsconfig.yaml file has the following format:
+```yaml
+server:
+  port: 8080
+  apiOnly: False
+
+snptestLegacy:
+  location: assets/Soysnp-test-AW.vcf.gz
+  name: 50k subset old
+  format: vcf
+```
+
+The server section's options are:
+
+| Option | Default | Use |
+| ----- | ----- | ----- |
+| port | 8080 | Changes the port gcvit listens on. |
+| apiOnly | False | If True, only serves the api routes. |
+
+Otherwise, a data track has the following format:
+
+```yaml
+key:
+  location: relative to root of server directory
+  name: display name for dropdowns
+  format: vcf (only option for now, automatically checks if gzipped)
+```

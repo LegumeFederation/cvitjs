@@ -44,7 +44,7 @@ func main() {
 	viper.SetConfigName("assetconfig")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
-	viper.SetDefault("port","8080")
+	viper.SetDefault("server", map[string]string{"port": "8080", "apiOnly": "false"})
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
@@ -54,7 +54,7 @@ func main() {
 		populateExperiments(experiments)
 	})
 
-	fmt.Println("Starting Server on port ", viper.Get("port"))
+	fmt.Println("Starting Server on port ", viper.Sub("server").GetString("port"))
 	// configure router defaults
 	router := routing.New()
 	router.Use(
@@ -299,16 +299,22 @@ func main() {
 		c.SetDataWriter(&content.HTMLDataWriter{})
 		return c.Write(b.String())
 	})
-	// serve index file
-	router.Get("/", file.Content("ui/gtux/build/index.html"))
-	// serve experiments under the "ui" subdirectory
-	router.Get("/*", file.Server(file.PathMap{
-		"/": "/ui/gtux/build/",
-	}))
+
+	var serverSettings = viper.Sub("server")
+
+	if !serverSettings.GetBool("apiOnly") {
+
+		// serve index file
+		router.Get("/", file.Content("ui/gtux/build/index.html"))
+		// serve experiments under the "ui" subdirectory
+		router.Get("/*", file.Server(file.PathMap{
+			"/": "/ui/gtux/build/",
+		}))
+	}
 
 	//setup default path and open port
 	http.Handle("/", router)
-	s := []string{":",viper.GetString("port")}
+	s := []string{":",serverSettings.GetString("port")}
 	var port = strings.Join(s,"")
 
 	_ = http.ListenAndServe(port, nil)
@@ -318,7 +324,7 @@ func populateExperiments(files map[string]dataFiles) {
 	var C map[string]interface{}
 	_ = viper.Unmarshal(&C)
 	for key := range C {
-		if key != "port" {
+		if key != "server" {
 			filecfg := viper.Sub(key)
 			gz := strings.Contains(filecfg.GetString("location"), ".gz")
 			files[key] = dataFiles{
