@@ -166,6 +166,7 @@
   input-imports = [
     "github.com/awilkey/bio-format-tools-go/gff",
     "github.com/awilkey/bio-format-tools-go/vcf",
+    "github.com/fsnotify/fsnotify",
     "github.com/go-ozzo/ozzo-routing",
     "github.com/go-ozzo/ozzo-routing/access",
     "github.com/go-ozzo/ozzo-routing/content",
