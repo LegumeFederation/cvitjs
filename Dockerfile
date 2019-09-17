@@ -14,9 +14,9 @@ RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm python build-
  	cd cvitjs  && \
 	npm install  && \
 	npm run build && \
-	cp -r build ../ui/gtux/public/cvitjs/build && \
+	cp -r build ../ui/public/cvitjs/build && \
 	echo Built cvitjs ; fi
-RUN if [ "$apionly" = "false" ] ; then cd ui/gtux && \
+RUN if [ "$apionly" = "false" ] ; then cd ui && \
 	npm install && \
 	npm run build && \
 	echo Built UI components ; else echo Skipping UI components ; fi
@@ -29,7 +29,7 @@ RUN mkdir /app
 RUN adduser -S -D -H -h /app appuser
 USER appuser
 COPY --from=builder /go/src/build/server /app/
-COPY --from=builder /go/src/build/ui/gtux/build /app/ui/gtux/build/
+COPY --from=builder /go/src/build/ui/build /app/ui/build/
 #add mount points for config and assets
 VOLUME ["/app/config","/app/assets"]
 #Comment above and uncomment below if you would rather have assets built into container
