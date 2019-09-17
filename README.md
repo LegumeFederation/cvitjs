@@ -1,6 +1,4 @@
-# snp-viewer-demo
-
-API:
+# snp-viewer-demo API:
 
 | path | verb | returns |
 | ---- | ---- | ---- |
@@ -26,9 +24,17 @@ Running through go as a test server:
 
 `go run server.go`
 
-Building through go:
+By default this will listen on port 8080, but you can
+change this in the configuration file.
+
+Building through Go:
 
 `go build -o server .`
+
+This builds a binary that has statically linked libraries, making it portable.
+
+If running on a server without Go support the language has support built-in for cross compiling built in. See [HERE](https://golangcookbook.com/chapters/running/cross-compiling/)
+for details.
 
 Running through docker:
 ```
@@ -45,3 +51,31 @@ gcvit:0.1
 Directory used as source to the /app/assets mount point is the default location for data, and /app/config for the configuration files. 
 Once the app has been build, updating data should be as easy as stopping and starting the container after updating the data on disk.
 
+## Configuration
+The assetsconfig.yaml file has the following format:
+```yaml
+server:
+  port: 8080
+  apiOnly: False
+
+snptestLegacy:
+  location: assets/Soysnp-test-AW.vcf.gz
+  name: 50k subset old
+  format: vcf
+```
+
+The server section's options are:
+
+| Option | Default | Use |
+| ----- | ----- | ----- |
+| port | 8080 | Changes the port gcvit listens on. |
+| apiOnly | False | If True, only serves the api routes. |
+
+Otherwise, a data track has the following format:
+
+```yaml
+key:
+  location: relative to root of server directory
+  name: display name for dropdowns
+  format: vcf (only option for now, automatically checks if gzipped)
+```

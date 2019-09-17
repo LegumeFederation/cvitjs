@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"github.com/awilkey/bio-format-tools-go/gff"
-	"github.com/awilkey/bio-format-tools-go/vcf"
-	"github.com/go-ozzo/ozzo-routing"
+	"github.com/awilkey/bio-format-tools-go/gff"	// Gff3 read/write
+	"github.com/awilkey/bio-format-tools-go/vcf"	// vcf read/write
+	"github.com/fsnotify/fsnotify"
+	"github.com/go-ozzo/ozzo-routing"				// service router
 	"github.com/go-ozzo/ozzo-routing/access"
 	"github.com/go-ozzo/ozzo-routing/content"
 	"github.com/go-ozzo/ozzo-routing/fault"
 	"github.com/go-ozzo/ozzo-routing/file"
 	"github.com/go-ozzo/ozzo-routing/slash"
-	"github.com/spf13/viper"
+	"github.com/spf13/viper"						// configuration reader
 	"log"
 	"math"
 	"net/http"
@@ -22,6 +23,7 @@ import (
 	"strings"
 )
 
+// Data structure for reading in data source object
 type dataFiles struct {
 	Name      string
 	Key       string
@@ -37,18 +39,24 @@ type expData struct {
 }
 
 func main() {
-	experiments := make(map[string]dataFiles)
+	experiments := make(map[string]dataFiles) //load initial experiment kv store
+	// configure and read in yaml
 	viper.SetConfigName("assetconfig")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
+	viper.SetDefault("server", map[string]string{"port": "8080", "apiOnly": "false"})
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
 	}
-	fmt.Println("Starting Server")
+	viper.WatchConfig() // watch for changes so server doesn't need to reset when changed
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		populateExperiments(experiments)
+	})
 
+	fmt.Println("Starting Server on port ", viper.Sub("server").GetString("port"))
+	// configure router defaults
 	router := routing.New()
-
 	router.Use(
 		// all these handlers are shared by every route
 		access.Logger(log.Printf),
@@ -62,6 +70,7 @@ func main() {
 		// these handlers are shared by the routes in the api group only
 		content.TypeNegotiator(content.JSON),
 	)
+	// list the available experimental datasets
 	api.Get("/experiment", func(c *routing.Context) error {
 
 		if len(experiments) == 0 {
@@ -77,6 +86,7 @@ func main() {
 		}
 		return c.Write(opts)
 	})
+	//list the available samples from the VCF header
 	api.Get("/experiment/<exp>", func(c *routing.Context) error {
 		exp := c.Param("exp")
 		if len(experiments) == 0 {
@@ -88,6 +98,7 @@ func main() {
 		}
 		return c.Write(gt)
 	})
+	//vcf -> gff
 	api.Post("/generateGff", func(c *routing.Context) error {
 
 		// Parse Request
@@ -288,29 +299,41 @@ func main() {
 		c.SetDataWriter(&content.HTMLDataWriter{})
 		return c.Write(b.String())
 	})
-	// serve index file
-	router.Get("/", file.Content("ui/gtux/build/index.html"))
-	// serve experiments under the "ui" subdirectory
-	router.Get("/*", file.Server(file.PathMap{
-		"/": "/ui/gtux/build/",
-	}))
 
+	var serverSettings = viper.Sub("server")
+
+	if !serverSettings.GetBool("apiOnly") {
+
+		// serve index file
+		router.Get("/", file.Content("ui/build/index.html"))
+		// serve experiments under the "ui" subdirectory
+		router.Get("/*", file.Server(file.PathMap{
+			"/": "/ui/build/",
+		}))
+	}
+
+	//setup default path and open port
 	http.Handle("/", router)
-	_ = http.ListenAndServe(":8080", nil)
+	s := []string{":",serverSettings.GetString("port")}
+	var port = strings.Join(s,"")
+
+	_ = http.ListenAndServe(port, nil)
 }
 
 func populateExperiments(files map[string]dataFiles) {
 	var C map[string]interface{}
 	_ = viper.Unmarshal(&C)
 	for key := range C {
-		filecfg := viper.Sub(key)
-		gz := strings.Contains(filecfg.GetString("location"), ".gz")
-		files[key] = dataFiles{
-			Name:      filecfg.GetString("name"),
-			Location:  filecfg.GetString("location"),
-			Format:    filecfg.GetString("format"),
-			Gzip:      gz,
-			Genotypes: populateGenotype(filecfg.GetString("location"), gz),
+		if key != "server" {
+			filecfg := viper.Sub(key)
+			gz := strings.Contains(filecfg.GetString("location"), ".gz")
+			files[key] = dataFiles{
+				Name:      filecfg.GetString("name"),
+				Location:  filecfg.GetString("location"),
+				Format:    filecfg.GetString("format"),
+				Gzip:      gz,
+				Genotypes: populateGenotype(filecfg.GetString("location"), gz),
+			}
 		}
 	}
 }
