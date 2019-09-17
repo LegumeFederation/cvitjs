@@ -305,10 +305,10 @@ func main() {
 	if !serverSettings.GetBool("apiOnly") {
 
 		// serve index file
-		router.Get("/", file.Content("ui/gtux/build/index.html"))
+		router.Get("/", file.Content("ui/build/index.html"))
 		// serve experiments under the "ui" subdirectory
 		router.Get("/*", file.Server(file.PathMap{
-			"/": "/ui/gtux/build/",
+			"/": "/ui/build/",
 		}))
 	}
 

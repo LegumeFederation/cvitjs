@@ -11,7 +11,7 @@ import DisplayHeat from "./HelpTopics/DisplayHeat";
 export default class HelpModal extends React.Component {
     render () {
         return(
-            <div className={"modal-area"}>
+            <div className={"modal-area selector-container"}>
                 <div className={"modal-content"} >
                     <h5> GCViT - Genotype Comparison Visualisation Tool </h5>
                     <hr />

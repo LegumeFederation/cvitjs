@@ -14,7 +14,7 @@
 #  format: vcf
 server:
   port: 8080
-  apiOnly: True
+  apiOnly: False
 
 snptestLegacy:
   location: assets/Soysnp-test-AW.vcf.gz

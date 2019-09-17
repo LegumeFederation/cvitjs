@@ -41,7 +41,7 @@ export default class App extends React.Component {
     }
 
     loadDatasets = () => {
-        fetch('/api/experiment')
+        fetch('api/experiment')
             .then( response => response.json())
             .then( datasets => {
                 this.setState({datasets});
@@ -57,7 +57,7 @@ export default class App extends React.Component {
     setDataset = (referenceDataset) => {
         let val = referenceDataset.value;
         if( !this.state.genotypes[val]){
-            fetch(`/api/experiment/${val}`)
+            fetch(`api/experiment/${val}`)
                 .then(result => result.json())
                 .then( genotype => {
                     let genotypes = JSON.parse(JSON.stringify(this.state.genotypes));
@@ -168,7 +168,7 @@ export default class App extends React.Component {
             ? this.state.genotypes[this.state.referenceDataset.value]
             : [];
         return (
-            <div>
+            <div className={'selector-container'}>
                 <ReactModal
                     isOpen={showModal === 'data'}
                     onRequestClose={this.handleCloseModal}
@@ -184,7 +184,6 @@ export default class App extends React.Component {
                         <HelpModal closeAction={()=>this.handleOpenModal()} />
                 </ReactModal>
 
-                <h3>Genotype Comparison Visualisation Tool</h3>
                 <div
                     className={'pure-u-1-1 l-box fake-button'}
                     onClick={()=>{this.setState({hideOptions:!hideOptions})}}

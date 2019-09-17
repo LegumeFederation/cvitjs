@@ -28,11 +28,14 @@
     }
   }
 
-  var css = ".container{position:relative;max-width:960px;margin:0 auto;padding:0 20px}.column,.columns,.container{width:100%;box-sizing:border-box}.column,.columns{float:left}@media (min-width:400px){.container{width:85%;padding:0}}@media (min-width:550px){.container{width:80%}.column,.columns{margin-left:4%}.column:first-child,.columns:first-child{margin-left:0}.one.column,.one.columns{width:4.66666666667%}.two.columns{width:13.3333333333%}.three.columns{width:22%}.four.columns{width:30.6666666667%}.five.columns{width:39.3333333333%}.six.columns{width:48%}.seven.columns{width:56.6666666667%}.eight.columns{width:65.3333333333%}.nine.columns{width:74%}.ten.columns{width:82.6666666667%}.eleven.columns{width:91.3333333333%}.twelve.columns{width:100%;margin-left:0}.one-third.column{width:30.6666666667%}.two-thirds.column{width:65.3333333333%}.one-half.column{width:48%}.offset-by-one.column,.offset-by-one.columns{margin-left:8.66666666667%}.offset-by-two.column,.offset-by-two.columns{margin-left:17.3333333333%}.offset-by-three.column,.offset-by-three.columns{margin-left:26%}.offset-by-four.column,.offset-by-four.columns{margin-left:34.6666666667%}.offset-by-five.column,.offset-by-five.columns{margin-left:43.3333333333%}.offset-by-six.column,.offset-by-six.columns{margin-left:52%}.offset-by-seven.column,.offset-by-seven.columns{margin-left:60.6666666667%}.offset-by-eight.column,.offset-by-eight.columns{margin-left:69.3333333333%}.offset-by-nine.column,.offset-by-nine.columns{margin-left:78%}.offset-by-ten.column,.offset-by-ten.columns{margin-left:86.6666666667%}.offset-by-eleven.column,.offset-by-eleven.columns{margin-left:95.3333333333%}.offset-by-one-third.column,.offset-by-one-third.columns{margin-left:34.6666666667%}.offset-by-two-thirds.column,.offset-by-two-thirds.columns{margin-left:69.3333333333%}.offset-by-one-half.column,.offset-by-one-half.columns{margin-left:52%}}html{font-size:62.5%}body{font-size:1.5em;line-height:1.6;font-weight:400;font-family:Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif;color:#222}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:2rem;font-weight:300}h1{font-size:4rem;line-height:1.2}h1,h2{letter-spacing:-.1rem}h2{font-size:3.6rem;line-height:1.25}h3{font-size:3rem;line-height:1.3;letter-spacing:-.1rem}h4{font-size:2.4rem;line-height:1.35;letter-spacing:-.08rem}h5{font-size:1.8rem;line-height:1.5;letter-spacing:-.05rem}h6{font-size:1.5rem;line-height:1.6;letter-spacing:0}@media (min-width:550px){h1{font-size:5rem}h2{font-size:4.2rem}h3{font-size:3.6rem}h4{font-size:3rem}h5{font-size:2.4rem}h6{font-size:1.5rem}}p{margin-top:0}a{color:#1eaedb}a:hover{color:#0fa0ce}.button,button,input[type=button],input[type=reset],input[type=submit]{display:inline-block;height:38px;padding:0 30px;color:#555;text-align:center;font-size:11px;font-weight:600;line-height:38px;letter-spacing:.1rem;text-transform:uppercase;text-decoration:none;white-space:nowrap;background-color:initial;border-radius:4px;border:1px solid #bbb;cursor:pointer;box-sizing:border-box}.button:focus,.button:hover,button:focus,button:hover,input[type=button]:focus,input[type=button]:hover,input[type=reset]:focus,input[type=reset]:hover,input[type=submit]:focus,input[type=submit]:hover{color:#333;border-color:#888;outline:0}.button.button-primary,button.button-primary,input[type=button].button-primary,input[type=reset].button-primary,input[type=submit].button-primary{color:#fff;background-color:#33c3f0;border-color:#33c3f0}.button.button-primary:focus,.button.button-primary:hover,button.button-primary:focus,button.button-primary:hover,input[type=button].button-primary:focus,input[type=button].button-primary:hover,input[type=reset].button-primary:focus,input[type=reset].button-primary:hover,input[type=submit].button-primary:focus,input[type=submit].button-primary:hover{color:#fff;background-color:#1eaedb;border-color:#1eaedb}input[type=email],input[type=number],input[type=password],input[type=search],input[type=tel],input[type=text],input[type=url],select,textarea{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}input[type=email],input[type=number],input[type=password],input[type=search],input[type=tel],input[type=text],input[type=url],textarea{-webkit-appearance:none;-moz-appearance:none;appearance:none}textarea{min-height:65px;padding-top:6px;padding-bottom:6px}input[type=email]:focus,input[type=number]:focus,input[type=password]:focus,input[type=search]:focus,input[type=tel]:focus,input[type=text]:focus,input[type=url]:focus,select:focus,textarea:focus{border:1px solid #33c3f0;outline:0}label,legend{display:block;margin-bottom:.5rem;font-weight:600}fieldset{padding:0;border-width:0}input[type=checkbox],input[type=radio]{display:inline}label>.label-body{display:inline-block;margin-left:.5rem;font-weight:400}ul{list-style:circle inside}ol{list-style:decimal inside}ol,ul{padding-left:0;margin-top:0}ol ol,ol ul,ul ol,ul ul{margin:1.5rem 0 1.5rem 3rem;font-size:90%}li{margin-bottom:1rem}code{padding:.2rem .5rem;margin:0 .2rem;font-size:90%;white-space:nowrap;background:#f1f1f1;border:1px solid #e1e1e1;border-radius:4px}pre>code{display:block;padding:1rem 1.5rem;white-space:pre}td,th{padding:12px 15px;text-align:left;border-bottom:1px solid #e1e1e1}td:first-child,th:first-child{padding-left:0}td:last-child,th:last-child{padding-right:0}.button,button{margin-bottom:1rem}fieldset,input,select,textarea{margin-bottom:1.5rem}blockquote,dl,figure,form,ol,p,pre,table,ul{margin-bottom:2.5rem}.u-full-width{width:100%;box-sizing:border-box}.u-max-full-width{max-width:100%;box-sizing:border-box}.u-pull-right{float:right}.u-pull-left{float:left}hr{margin-top:3rem;margin-bottom:3.5rem;border-width:0;border-top:1px solid #e1e1e1}.container:after,.row:after,.u-cf{content:\"\";display:table;clear:both}";
+  var css = "/*!\nPure v1.0.1\nCopyright 2013 Yahoo!\nLicensed under the BSD License.\nhttps://github.com/pure-css/pure/blob/master/LICENSE.md\n*/.pure-button{display:inline-block;zoom:1;line-height:normal;white-space:nowrap;vertical-align:middle;text-align:center;cursor:pointer;-webkit-user-drag:none;-moz-user-select:none;user-select:none;box-sizing:border-box}.pure-button::-moz-focus-inner{padding:0;border:0}.pure-button-group{letter-spacing:-.31em;*letter-spacing:normal;*word-spacing:-.43em;text-rendering:optimizespeed}.opera-only :-o-prefocus,.pure-button-group{word-spacing:-.43em}.pure-button-group .pure-button{letter-spacing:normal;word-spacing:normal;vertical-align:top;text-rendering:auto}.pure-button{font-family:inherit;font-size:100%;padding:.5em 1em;color:#444;color:rgba(0,0,0,.8);border:transparent;background-color:#e6e6e6;text-decoration:none;border-radius:2px}.pure-button-hover,.pure-button:focus,.pure-button:hover{background-image:linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1))}.pure-button:focus{outline:0}.pure-button-active,.pure-button:active{box-shadow:inset 0 0 0 1px rgba(0,0,0,.15),inset 0 0 6px rgba(0,0,0,.2);border-color:#000}.pure-button-disabled,.pure-button-disabled:active,.pure-button-disabled:focus,.pure-button-disabled:hover,.pure-button[disabled]{border:none;background-image:none;filter:alpha(opacity=40);opacity:.4;cursor:not-allowed;box-shadow:none;pointer-events:none}.pure-button-hidden{display:none}.pure-button-primary,.pure-button-selected,a.pure-button-primary,a.pure-button-selected{background-color:#0078e7;color:#fff}.pure-button-group .pure-button{margin:0;border-radius:0;border-right:1px solid #111;border-right:1px solid rgba(0,0,0,.2)}.pure-button-group .pure-button:first-child{border-top-left-radius:2px;border-bottom-left-radius:2px}.pure-button-group .pure-button:last-child{border-top-right-radius:2px;border-bottom-right-radius:2px;border-right:none}";
   styleInject(css);
 
-  var css$1 = "#cvit-app{max-width:85%}#cvit-header{background:#666;display:none}#cvit-header .head-item{padding:1rem 0;text-align:center;color:#fff}#cvit-header .head-item:hover{background-color:#111}#cvit-header .active{background-color:#8fbc8f}#cvit-main{margin-top:1rem;margin-bottom:1rem;overflow-x:auto;overflow-y:hidden}#cvit-display{overflow-x:auto;max-width:91%}#cvit-controls hr{margin:.5rem 0 1rem}#cvit-controls .control-label{font-size:.75em;color:#666;text-align:center}#cvit-controls .cvit-button{padding:0;margin:0;border-radius:0}#cvit-controls .cvit-button:disabled{background:#8fbc8f;color:#fff}#cvit-controls .cvit-button i{position:relative;top:.5rem}.cvit-modal{overflow:hidden}.cvit-modal input{width:auto}.cvit-modal td{border:none}.cvit-modal .modal-confirm{margin:auto}.cvit-modal p{width:50%}#cvit-popover{position:absolute;display:inline-block;background:#fff;padding:1em;border:1px solid #666;border-radius:8px;overflow:hidden;height:40rem;width:20rem}#popover-contents{display:inline-block;position:relative;max-height:100%;width:100%;text-align:center;overflow-y:scroll}#cvit-footer{background:#666;text-align:center;font-size:1.5rem;color:#fff}#cvit-footer #toggle-title i{font-size:1.5rem;margin:0 2rem;color:#fff;position:relative;top:.25rem;transition:all .2s ease}#cvit-footer .collapsible{transition:max-height .2s ease-in-out;overflow:hidden}#cvit-footer .content{background:#fff;overflow-y:auto;transition:max-height .2s ease-in-out;color:#000}#cvit-footer .content td{border:none;width:7rem;padding:1rem 0 1rem 1rem}#cvit-footer .control-head{text-align:center}#cvit-footer .content table{margin-left:auto;margin-right:auto}.group-toggle{position:relative;width:80px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}.group-toggle-label{display:block;overflow:hidden;cursor:pointer;border:2px solid #999;border-radius:0}.group-toggle-inner{display:block;width:200%;margin-left:-100%;transition:margin .3s ease-in 0s}.group-toggle-inner:after,.group-toggle-inner:before{display:block;float:left;width:50%;height:20px;padding:0;line-height:16px;font-size:1rem;color:#fff;box-sizing:border-box;border:2px solid transparent;background-clip:padding-box}.group-toggle-inner:before{content:\"ON\";padding-left:10px;background-color:#d4d4d4;color:#fff}.group-toggle-inner:after{content:\"OFF\";padding-right:10px;background-color:#d4d4d4;text-align:right}.group-toggle-switch{display:block;width:30px;margin:0;background:#a1a1a1;position:absolute;top:0;bottom:0;right:50px;transition:all .3s ease-in 0s}.group-toggle-checkbox:checked+.group-toggle-label .group-toggle-inner{margin-left:0}.group-toggle-checkbox:checked+.group-toggle-label .group-toggle-switch{right:0;background-color:#8fbc8f}.container input[type=checkbox],.group-toggle-checkbox{display:none}";
+  var css$1 = "/*!\nPure v1.0.1\nCopyright 2013 Yahoo!\nLicensed under the BSD License.\nhttps://github.com/pure-css/pure/blob/master/LICENSE.md\n*/.pure-g{letter-spacing:-.31em;*letter-spacing:normal;*word-spacing:-.43em;text-rendering:optimizespeed;font-family:FreeSans,Arimo,Droid Sans,Helvetica,Arial,sans-serif;display:flex;flex-flow:row wrap;align-content:flex-start}@media (-ms-high-contrast:active),(-ms-high-contrast:none){table .pure-g{display:block}}.opera-only :-o-prefocus,.pure-g{word-spacing:-.43em}.pure-u{display:inline-block;*display:inline;zoom:1;letter-spacing:normal;word-spacing:normal;vertical-align:top;text-rendering:auto}.pure-g [class*=pure-u]{font-family:sans-serif}.pure-u-1,.pure-u-1-1,.pure-u-1-2,.pure-u-1-3,.pure-u-1-4,.pure-u-1-5,.pure-u-1-6,.pure-u-1-8,.pure-u-1-12,.pure-u-1-24,.pure-u-2-3,.pure-u-2-5,.pure-u-2-24,.pure-u-3-4,.pure-u-3-5,.pure-u-3-8,.pure-u-3-24,.pure-u-4-5,.pure-u-4-24,.pure-u-5-5,.pure-u-5-6,.pure-u-5-8,.pure-u-5-12,.pure-u-5-24,.pure-u-6-24,.pure-u-7-8,.pure-u-7-12,.pure-u-7-24,.pure-u-8-24,.pure-u-9-24,.pure-u-10-24,.pure-u-11-12,.pure-u-11-24,.pure-u-12-24,.pure-u-13-24,.pure-u-14-24,.pure-u-15-24,.pure-u-16-24,.pure-u-17-24,.pure-u-18-24,.pure-u-19-24,.pure-u-20-24,.pure-u-21-24,.pure-u-22-24,.pure-u-23-24,.pure-u-24-24{display:inline-block;*display:inline;zoom:1;letter-spacing:normal;word-spacing:normal;vertical-align:top;text-rendering:auto}.pure-u-1-24{width:4.1667%;*width:4.1357%}.pure-u-1-12,.pure-u-2-24{width:8.3333%;*width:8.3023%}.pure-u-1-8,.pure-u-3-24{width:12.5%;*width:12.469%}.pure-u-1-6,.pure-u-4-24{width:16.6667%;*width:16.6357%}.pure-u-1-5{width:20%;*width:19.969%}.pure-u-5-24{width:20.8333%;*width:20.8023%}.pure-u-1-4,.pure-u-6-24{width:25%;*width:24.969%}.pure-u-7-24{width:29.1667%;*width:29.1357%}.pure-u-1-3,.pure-u-8-24{width:33.3333%;*width:33.3023%}.pure-u-3-8,.pure-u-9-24{width:37.5%;*width:37.469%}.pure-u-2-5{width:40%;*width:39.969%}.pure-u-5-12,.pure-u-10-24{width:41.6667%;*width:41.6357%}.pure-u-11-24{width:45.8333%;*width:45.8023%}.pure-u-1-2,.pure-u-12-24{width:50%;*width:49.969%}.pure-u-13-24{width:54.1667%;*width:54.1357%}.pure-u-7-12,.pure-u-14-24{width:58.3333%;*width:58.3023%}.pure-u-3-5{width:60%;*width:59.969%}.pure-u-5-8,.pure-u-15-24{width:62.5%;*width:62.469%}.pure-u-2-3,.pure-u-16-24{width:66.6667%;*width:66.6357%}.pure-u-17-24{width:70.8333%;*width:70.8023%}.pure-u-3-4,.pure-u-18-24{width:75%;*width:74.969%}.pure-u-19-24{width:79.1667%;*width:79.1357%}.pure-u-4-5{width:80%;*width:79.969%}.pure-u-5-6,.pure-u-20-24{width:83.3333%;*width:83.3023%}.pure-u-7-8,.pure-u-21-24{width:87.5%;*width:87.469%}.pure-u-11-12,.pure-u-22-24{width:91.6667%;*width:91.6357%}.pure-u-23-24{width:95.8333%;*width:95.8023%}.pure-u-1,.pure-u-1-1,.pure-u-5-5,.pure-u-24-24{width:100%}";
   styleInject(css$1);
+
+  var css$2 = "html .container{font-size:62.5%}body .cvit-app{font-size:1.5em;line-height:1.6;font-weight:400;font-family:Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif;color:#222}.container{margin:0 auto;max-width:100%}.cvit-app,.cvit-app .pure-g [class*=pure-u],.cvit-app button,.cvit-app html,.cvit-app input,.cvit-app select,.cvit-app textarea{font-family:Raleway,HelveticaNeue,Helvetica Neue,Helvetica,Arial,sans-serif}.selector-container .pure-g>div{box-sizing:border-box}#cvit-header{background:#666;display:none}#cvit-header .head-item{padding:1rem 0;text-align:center;color:#fff}#cvit-header .head-item:hover{background-color:#111}#cvit-header .active{background-color:#8fbc8f}#cvit-main{margin-top:1rem;margin-bottom:1rem;overflow-x:auto;overflow-y:hidden}#cvit-display{overflow-x:auto;max-width:91%}#cvit-controls hr{margin:.5rem 0 1rem}#cvit-controls .control-label{font-size:.75em;color:#666;text-align:center}#cvit-controls .cvit-button{padding:0;margin:0;border-radius:0;background:#fff;border:1px solid #bbb}#cvit-controls .cvit-button:disabled{background:#8fbc8f;color:#fff}#cvit-controls .cvit-button i{position:relative;top:.25rem}.button-confirm,.button-cvit{display:inline-block;height:38px;padding:0 30px;color:#555;text-align:center;font-size:11px;font-weight:600;line-height:38px;letter-spacing:.1rem;text-transform:uppercase;text-decoration:none;white-space:nowrap;background-color:initial;border-radius:4px;border:1px solid #bbb;cursor:pointer;box-sizing:border-box}.cvit-modal{overflow:hidden}.cvit-modal input{width:auto}.cvit-modal td{border:none}.cvit-modal .modal-confirm{margin:auto}.cvit-modal p{width:50%}#cvit-popover{position:absolute;display:inline-block;background:#fff;padding:1em;border:1px solid #666;border-radius:8px;overflow:hidden;height:40rem;width:20rem}#popover-contents{display:inline-block;position:relative;max-height:100%;width:100%;text-align:center;overflow-y:scroll}#cvit-footer{background:#666;text-align:center;font-size:1rem;color:#fff}#cvit-footer #toggle-title i{font-size:1rem;margin:0 2rem;color:#fff;position:relative;top:.25rem;transition:all .2s ease}#cvit-footer .collapsible{transition:max-height .2s ease-in-out;overflow:hidden}#cvit-footer .content{background:#fff;overflow-y:auto;transition:max-height .2s ease-in-out;color:#000}#cvit-footer .content td{border:none;width:7rem;padding:1rem 0 1rem 1rem}#cvit-footer .control-head{text-align:center}#cvit-footer .content table{margin-left:auto;margin-right:auto}.group-toggle{position:relative;width:80px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}.group-toggle-label{display:block;overflow:hidden;cursor:pointer;border:2px solid #999;border-radius:0}.group-toggle-inner{display:block;width:200%;margin-left:-100%;transition:margin .3s ease-in 0s}.group-toggle-inner:after,.group-toggle-inner:before{display:block;float:left;width:50%;height:20px;padding:0;line-height:16px;font-size:1rem;color:#fff;box-sizing:border-box;border:2px solid transparent;background-clip:padding-box}.group-toggle-inner:before{content:\"ON\";padding-left:1em;background-color:#d4d4d4;color:#fff}.group-toggle-inner:after{content:\"OFF\";padding-right:1em;background-color:#d4d4d4;text-align:right}.group-toggle-switch{display:block;width:30px;margin:0;background:#a1a1a1;position:absolute;top:0;bottom:0;right:50px;transition:all .3s ease-in 0s}.group-toggle-checkbox:checked+.group-toggle-label .group-toggle-inner{margin-left:0}.group-toggle-checkbox:checked+.group-toggle-label .group-toggle-switch{right:0;background-color:#8fbc8f}.container input[type=checkbox],.group-toggle-checkbox{display:none}.cvit-app input[type=text],.cvit-app select,.cvit-app textarea{height:38px;padding:6px 10px;background-color:#fff;border:1px solid #d1d1d1;border-radius:4px;box-shadow:none;box-sizing:border-box}.cvit-app input[type=text],.cvit-app textarea{-webkit-appearance:none;-moz-appearance:none;appearance:none}.cvit-app textarea{min-height:65px;padding-top:6px;padding-bottom:6px}.cvit-app input[type=text]:focus,.cvit-app select:focus,.cvit-app textarea:focus{border:1px solid #33c3f0;outline:0}.cvit-app label,.cvit-app legend{display:block;margin-bottom:.5rem;font-weight:600}.cvit-app fieldset{padding:0;border-width:0}.cvit-app label>.label-body{display:inline-block;margin-left:.5rem;font-weight:400}.cvit-app td,.cvit-app th{padding:12px 15px;text-align:left;border-bottom:1px solid #e1e1e1}.cvit-app td:first-child,.cvit-app th:first-child{padding-left:0}.cvit-app td:last-child,.cvit-app th:last-child{padding-right:0}.cvit-app h1,.cvit-app h2,.cvit-app h3,.cvit-app h4,.cvit-app h5,.cvit-app h6{margin-top:0;margin-bottom:2rem;font-weight:300}.cvit-app h1{font-size:4rem;line-height:1.2;letter-spacing:-.1rem}.cvit-app h2{font-size:3.6rem;line-height:1.25;letter-spacing:-.1rem}.cvit-app h3{font-size:3rem;line-height:1.3;letter-spacing:-.1rem}.cvit-app h4{font-size:2.4rem;line-height:1.35;letter-spacing:-.08rem}.cvit-app h5{font-size:1.8rem;line-height:1.5;letter-spacing:-.05rem}.cvit-app h6{font-size:1.5rem;line-height:1.6;letter-spacing:0}";
+  styleInject(css$2);
 
   var VNode = function VNode() {};
 
@@ -743,7 +746,7 @@
     }
 
     render(props, state) {
-      let compClass = 'three columns head-item';
+      let compClass = 'three pure-u-1-4 head-item';
       if (props.cvitModel.active === props.option) compClass += ' active';
       return h("div", {
         className: compClass,
@@ -756,7 +759,7 @@
   class CvitHeader extends Component {
     render(props, state) {
       return h("header", {
-        className: 'row cvit',
+        className: 'pure-g cvit',
         id: 'cvit-header'
       }, h(HeaderOption, {
         cvitModel: this.props.cvitModel,
@@ -23549,9 +23552,9 @@
         className: 'cvit',
         id: 'cvit-footer'
       }, h("div", {
-        className: 'row'
+        className: 'pure-g'
       }, h("div", {
-        className: 'twelve columns',
+        className: 'twelve pure-u-1-1',
         id: 'footer-toggle',
         onClick: () => this.onClick()
       }, h("div", {
@@ -23561,13 +23564,13 @@
       }, " ", state.visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down'), h("span", null, "View Control"), h("i", {
         className: 'material-icons'
       }, " ", state.visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down')))), h("div", {
-        className: 'row collapsible',
+        className: 'pure-g collapsible',
         id: 'cvit-toggle',
         style: {
           maxHeight: state.visible ? 200 : 0
         }
       }, h("div", {
-        className: 'twelve columns content',
+        className: 'twelve pure-u-1-1 content',
         style: {
           maxHeight: state.visible ? 200 : 0
         }
@@ -25757,7 +25760,7 @@
         width: canvas.width ? canvas.width : '100%'
       };
       return h("div", {
-        className: props.displayControls === 'none' ? 'twelve columns' : 'eleven columns',
+        className: props.displayControls === 'none' ? 'pure-u-1-1' : 'pure-u-11-12',
         style: props.displayControls === 'none' ? {
           maxWidth: '100%'
         } : {},
@@ -25826,7 +25829,7 @@
 
     render(props, state) {
       return h("div", {
-        className: 'twelve columns cvit cvit-modal',
+        className: 'twelve pure-u-1-1 cvit cvit-modal',
         id: 'export-modal'
       }, h("h4", null, " Export Image "), h("p", null, " Export the current view as an image."), h("hr", null), h("form", {
         style: {
@@ -25850,7 +25853,7 @@
         onChange: evt => this.onSelect(evt),
         checked: state.format === 'png'
       }), h("span", null, " png ")))))), h("button", {
-        className: 'modal-confirm',
+        className: 'modal-confirm pure-button button-confirm',
         onClick: () => this.onClick()
       }, " Export Image "));
     }
@@ -25869,7 +25872,7 @@
 
     render(props, state) {
       return h("div", {
-        className: 'twelve columns cvit cvit-modal',
+        className: 'twelve pure-u-1-1 cvit cvit-modal',
         id: 'export-modal'
       }, h("h4", null, " Import Data "), h("p", null, " Import your data locally to view it alongside the current image."), h("hr", null), h("h4", null, " This Feature Is Under Development "));
     }
@@ -25883,7 +25886,7 @@
 
     render(props, state) {
       return h("div", {
-        className: 'twelve columns cvit cvit-modal',
+        className: 'twelve pure-u-1-1 cvit cvit-modal',
         id: 'export-modal'
       }, h("h4", null, " Help and About "), h("hr", null), h("h5", null, "About"), h("p", null, h("strong", null, "CViTjs"), " - Chromosome Viewing Tool"), h("p", null, "Enabling quick visualizations of features on linkage groups, pseudochromosomes or cytogenic maps. Intended to be used for whole-genome visualisations."), h("p", null, "Development supported by the USDA-ARS, Corn Insects and Crop Genomics Research Unit."), h("h5", null, "Additional Help"), h("p", null, "Additional help and source may be found ", h("a", {
         href: 'https://github.com/LegumeFederation/cvitjs'
@@ -26147,17 +26150,17 @@
 
     render(props, state) {
       return h("div", {
-        className: 'eleven columns cvit cvit-modal',
+        className: 'pure-u-11-12 cvit cvit-modal',
         id: 'export-modal'
       }, h("h4", null, " Color Select "), props.target === 'color1' ? h("p", null, " Change the stroke color and width of the freedraw and rectangle tools.") : h("p", null, " Change the fill color of the rectangle tool."), h("hr", null), h("div", null, h("canvas", {
         id: 'select-canvas',
         width: 500,
         height: 200
       })), h("div", null, h("button", {
-        className: 'modal-confirm',
+        className: 'modal-confirm pure-button button-confirm',
         onClick: this.onConfirm
       }, "Select Color"), h("button", {
-        className: 'modal-confirm',
+        className: 'modal-confirm pure-button button-confirm',
         onClick: this.onCancel
       }, "Reset")));
     }
@@ -26218,7 +26221,7 @@
       return h("span", {
         title: props.zoomDir === 1 ? 'Zoom In' : 'Zoom Out'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick
       }, h("i", {
         className: 'material-icons'
@@ -26247,7 +26250,7 @@
       return h("span", {
         title: 'Reset Zoom and Pan'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: e => this.onClick(e)
       }, h("i", {
         className: 'material-icons'
@@ -26305,7 +26308,7 @@
       return h("span", {
         title: 'Pan View'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick,
         disabled: props.active === 'pan'
       }, h("i", {
@@ -26374,7 +26377,7 @@
       return h("span", {
         title: 'Free Draw'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick,
         disabled: props.active === 'free'
       }, h("i", {
@@ -26431,7 +26434,7 @@
       return h("span", {
         title: 'Eraser'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick,
         disabled: props.active === 'erase'
       }, h("i", {
@@ -26517,7 +26520,7 @@
       return h("span", {
         title: 'Draw Rectangle'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick,
         disabled: props.active === 'rect'
       }, h("i", {
@@ -26546,7 +26549,7 @@
       return h("span", {
         title: props.target === 'color1' ? 'Select Line Color' : 'Select Fill Color'
       }, h("button", {
-        className: 'u-full-width cvit-button',
+        className: 'pure-u-1-1 cvit-button pure-button button-cvit',
         onClick: this.onClick
       }, h("i", {
         className: 'material-icons',
@@ -26561,7 +26564,7 @@
   class CvitControls extends Component {
     render(props, state) {
       return h("div", {
-        className: 'one column',
+        className: 'one pure-u-1-12',
         id: 'cvit-controls'
       }, h("div", {
         className: 'control-label'
@@ -26613,7 +26616,7 @@
       let active = props.cvitModel.active;
       let ctrl = props.cvitModel.view.displayControls;
       return h("div", {
-        className: 'row cvit',
+        className: 'pure-g cvit',
         id: 'cvit-main'
       }, (active === 'canvas' || /color.*/.test(active)) && ctrl !== 'none' ? h(CvitControls, {
         mouseTool: props.cvitModel.mouseTool,
@@ -26642,7 +26645,7 @@
         popover: props.cvitModel.popoverConfig,
         displayControls: ctrl
       }) : active === 'status' ? h("div", {
-        className: 'twelve columns',
+        className: 'twelve pure-u-1-1',
         id: 'loading-div'
       }, " \"Loading Cvit Canvas\" ") : h(CvitModal, {
         active: active,
@@ -26727,7 +26730,9 @@
 
   class CvitUI extends Component {
     render(props, state) {
-      return h("div", null, h(CvitHeader, {
+      return h("div", {
+        className: 'cvit-app'
+      }, h(CvitHeader, {
         cvitModel: props.cvitModel
       }), h(CvitHeader$1, {
         cvitModel: props.cvitModel

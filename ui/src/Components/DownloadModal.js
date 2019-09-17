@@ -87,7 +87,7 @@ export default class DataModal extends React.Component {
     render(props,state){
         let {name,format,gffOptions} = this.state;
         return(
-            <div className={"modal-area"}>
+            <div className={"modal-area selector-container"}>
                 <div className={"modal-content"} >
                     <h5> Downloads </h5>
                     <hr />
@@ -218,7 +218,7 @@ export default class DataModal extends React.Component {
                     </div>
                 </div>
                 <div className={'modal-close'}>
-                    <button className={'modal-confirm'}
+                    <button className={'pure-button  button-display modal-confirm'}
                             onClick={()=>this.props.closeAction()}
                     > Close </button>
                 </div>
