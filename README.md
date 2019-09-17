@@ -48,6 +48,13 @@ docker run -d \
 gcvit:0.1
 ```
 
+The docker build has one build-arg:
+```
+--build-arg apionly=false
+```
+If you intend to use this container to only ever serve the API and not the UX component, setting this to true
+will skip the build steps for cvitjs and the ux. This doesn't save much space in the final container, as the built components combined are < 500k, but it does save quite a bit of time making the image.
+
 Directory used as source to the /app/assets mount point is the default location for data, and /app/config for the configuration files. 
 Once the app has been build, updating data should be as easy as stopping and starting the container after updating the data on disk.
 
