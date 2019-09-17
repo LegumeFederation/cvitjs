@@ -20,6 +20,8 @@ github.com/spf13/viper
 github.com/golang/gddo/httputil/header
 ```
 
+It is reccommended to use [dep](https://golang.github.io/dep/) to manage dependendencies, as running `dep ensure` will make sure the project has all the right requirements on hand.
+
 Running through go as a test server:
 
 `go run server.go`
