@@ -1,4 +1,6 @@
-# snp-viewer-demo API:
+#gcvit
+
+## gcvit API:
 
 | path | verb | returns |
 | ---- | ---- | ---- |
