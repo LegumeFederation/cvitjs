@@ -1,4 +1,4 @@
-#gcvit
+# gcvit
 
 ## gcvit API:
 
@@ -62,6 +62,8 @@ will skip the build steps for cvitjs and the ux. This doesn't save much space in
 Directory used as source to the /app/assets mount point is the default location for data, and /app/config for the configuration files. 
 Once the app has been build, updating data should be as easy as stopping and starting the container after updating the data on disk.
 
+When building through docker, you can reconfigure the popup information when clicking on features by editing ui/templates/popover.js.
+
 ## Configuration
 The assetsconfig.yaml file has the following format:
 ```yaml
@@ -90,3 +92,4 @@ key:
   name: display name for dropdowns
   format: vcf (only option for now, automatically checks if gzipped)
 ```
+
