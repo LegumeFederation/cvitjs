@@ -11,7 +11,7 @@ WORKDIR /go/src/build
 #if not planning on running UI from container, don't bother wasting time to build
 RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm python build-base && \
 	git clone --single-branch --branch preact/buildalt https://github.com/LegumeFederation/cvitjs.git && \
-	cp -r ui/templates cvitjs/src/templates && \
+	cp -r ui/cvit_assets/src cvitjs/src && \
  	cd cvitjs  && \
 	npm install  && \
 	npm run build && \
@@ -19,6 +19,8 @@ RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm python build-
 	echo Built cvitjs ; fi
 RUN if [ "$apionly" = "false" ] ; then cd ui && \
 	npm install && \
+	cp -r cvit_assets/* public/cvitjs && \
+	rm -rf public/cvitjs/src && \
 	npm run build && \
 	echo Built UI components ; else echo Skipping UI components ; fi
 #grab dependencies for golang
