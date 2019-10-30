@@ -37,8 +37,24 @@ export function parseGff(text,seqNames=[]){
               return parsedAttributes;
             }())
         };
+
         /** attempt to match with existing sequences if data already loaded */
-        let seqName = gffLine.seqName;
+        if (gffLine.feature === 'chromosome'){ // build alias dictionary
+          let seqName = gffLine.seqName;
+          if(! parsed.hasOwnProperty('alias')) {
+            parsed.alias = {}
+          }
+          parsed.alias[seqName] = seqName;
+          if(gffLine.attribute.hasOwnProperty('alias')) {
+            let aliases = gffLine.attribute.alias.split(',');
+            aliases.forEach(alias => {
+              parsed.alias[alias] = seqName;
+            });
+          }
+        }
+
+        let seqName = parsed.alias[gffLine.seqName];
+
         if(seqNames.length > 0){
           seqNames.some(seq => {
             let re = new RegExp('.*'+seq).test(seqName);
