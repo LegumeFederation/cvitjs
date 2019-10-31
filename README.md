@@ -44,12 +44,7 @@ Running through docker:
 ```
 docker build -t gcvit:0.1 . -f Dockerfile
 
-docker run -d \
---name gcvit \ 
---mount type=bind,source="$(pwd)"/config,target=/app/config \
---mount type=bind,source="$(pwd)"/assets,target=/app/assets \ 
--p 8080:8080 \
-gcvit:0.1
+docker run -d --name gcvit --mount type=bind,source="$(pwd)"/config,target=/app/config --mount type=bind,source="$(pwd)"/assets,target=/app/assets -p 8080:8080 gcvit:0.2
 ```
 
 The docker build has one build-arg:
