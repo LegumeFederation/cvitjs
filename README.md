@@ -44,7 +44,12 @@ Running through docker:
 ```
 docker build -t gcvit:0.1 . -f Dockerfile
 
-docker run -d --name gcvit --mount type=bind,source="$(pwd)"/config,target=/app/config --mount type=bind,source="$(pwd)"/assets,target=/app/assets -p 8080:8080 gcvit:0.2
+docker run -d \
+--name gcvit \ 
+--mount type=bind,source="$(pwd)"/config,target=/app/config \
+--mount type=bind,source="$(pwd)"/assets,target=/app/assets \ 
+-p 8080:8080 \
+gcvit:0.1
 ```
 
 The docker build has one build-arg:
@@ -57,7 +62,8 @@ will skip the build steps for cvitjs and the ux. This doesn't save much space in
 Directory used as source to the /app/assets mount point is the default location for data, and /app/config for the configuration files. 
 Once the app has been build, updating data should be as easy as stopping and starting the container after updating the data on disk.
 
-When building through docker, you can reconfigure the popup information when clicking on features by editing ui/templates/popover.js.
+When building through docker, you can inject changes into cvit by adding the proper files to `ui/cvit_assets`. For example
+you can reconfigure the popup information displayed when clicking on features by editing `ui/cvit_assets/src/templates/popover.js`.
 
 ## Configuration
 The assetsconfig.yaml file has the following format:
