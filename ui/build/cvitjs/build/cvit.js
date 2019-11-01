@@ -27457,7 +27457,7 @@
   const instance = new QueryString();
   Object.freeze(instance);
 
-  function parseGff(text, seqNames = []) {
+  function parseGff(text, seqNames = [], aliases = {}) {
     let parsed = {};
     let gffLine = {}; // Break up gff by line, then test if line is not a comment (starts with #)
     // if it is, do nothing, otherwise break up current line by tabs and
@@ -27494,14 +27494,13 @@
         };
         /** attempt to match with existing sequences if data already loaded */
 
+        if (!parsed.hasOwnProperty("alias")) {
+          parsed.alias = aliases;
+        }
+
         if (gffLine.feature === 'chromosome') {
           // build alias dictionary
           let seqName = gffLine.seqName;
-
-          if (!parsed.hasOwnProperty('alias')) {
-            parsed.alias = {};
-          }
-
           parsed.alias[seqName] = seqName;
 
           if (gffLine.attribute.hasOwnProperty('alias')) {
@@ -27512,7 +27511,8 @@
           }
         }
 
-        let seqName = parsed.alias[gffLine.seqName];
+        let seqName = parsed.alias[gffLine.seqName] || gffLine.seqName;
+        console.log(seqName);
 
         if (seqNames.length > 0) {
           seqNames.some(seq => {
@@ -27632,7 +27632,7 @@
     return parsed;
   }
 
-  function parseFile(location, format, fetchParam, strArray = []) {
+  function parseFile(location, format, fetchParam, strArray = [], aliasArray = {}) {
     if (typeof location === 'object') {
       return location;
     }
@@ -27655,7 +27655,7 @@
           return parseIni(responseText);
 
         case 'gff':
-          return parseGff(responseText, strArray);
+          return parseGff(responseText, strArray, aliasArray);
 
         case 'json':
           return responseText;
@@ -28083,7 +28083,8 @@
       }
 
       let fp = fetchParam.hasOwnProperty(file) ? fetchParam[file] : this._fetchParam.hasOwnProperty(file) ? this._fetchParam[file] : fetchParam;
-      return parseFile(file, 'gff', fp, this._viewLayout.chrOrder).then(response => this._viewData = this._combineObjects(this._viewData, response)).then(() => this._viewLayout.chrOrder = this._setChrOrder(this._viewData)).then(() => {
+      let aliases = this.data.hasOwnProperty('alias') ? this.data.alias : {};
+      return parseFile(file, 'gff', fp, this._viewLayout.chrOrder, aliases).then(response => this._viewData = this._combineObjects(this._viewData, response)).then(() => this._viewLayout.chrOrder = this._setChrOrder(this._viewData)).then(() => {
         this._dirty = true;
 
         this._inform();
