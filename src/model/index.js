@@ -258,8 +258,8 @@ export default class Index {
         : this._fetchParam.hasOwnProperty(file)
             ? this._fetchParam[file]
             : fetchParam;
-
-    return parseFile(file, 'gff',fp,this._viewLayout.chrOrder)
+    let aliases = this.data.hasOwnProperty('alias') ? this.data.alias : {};
+    return parseFile(file, 'gff',fp,this._viewLayout.chrOrder,aliases)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {

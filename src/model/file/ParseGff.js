@@ -1,6 +1,6 @@
 import rbush from 'rbush';
 
-export function parseGff(text,seqNames=[]){
+export function parseGff(text,seqNames=[],aliases={}){
   let parsed = {};
   let gffLine = {};
 
@@ -39,11 +39,12 @@ export function parseGff(text,seqNames=[]){
         };
 
         /** attempt to match with existing sequences if data already loaded */
+        if(! parsed.hasOwnProperty("alias")){
+          parsed.alias = aliases;
+        }
+
         if (gffLine.feature === 'chromosome'){ // build alias dictionary
           let seqName = gffLine.seqName;
-          if(! parsed.hasOwnProperty('alias')) {
-            parsed.alias = {}
-          }
           parsed.alias[seqName] = seqName;
           if(gffLine.attribute.hasOwnProperty('alias')) {
             let aliases = gffLine.attribute.alias.split(',');
@@ -53,7 +54,7 @@ export function parseGff(text,seqNames=[]){
           }
         }
 
-        let seqName = parsed.alias[gffLine.seqName];
+        let seqName = parsed.alias[gffLine.seqName] || gffLine.seqName; //gffLine.seqName is a fallover if chromosomes don't come first in file
 
         if(seqNames.length > 0){
           seqNames.some(seq => {
