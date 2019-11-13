@@ -95,8 +95,9 @@ export default class App extends React.Component {
         let model = cvit.model;
         model._viewConfig.classes = classes;
 
-        const binSize = options.left.hasOwnProperty('binSize') ? options.left.binSize :
-            options.right.binSize;
+        const binSize = options.left.hasOwnProperty('bin_size') ? options.left.bin_size :
+            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : 500000;
+        requestString = requestString + "&Bin=" + encodeURIComponent(binSize)
         //fetch new data
         if( (priorRequest.request !== requestString) ||
             (binSize !== priorRequest.interval )
