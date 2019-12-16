@@ -16,11 +16,6 @@ export function popoverContents(data) {
                     if(res.length === 3){
                         key = `${res[1]} ${res[2]}`
                     }
-                    attributes.push((
-                        <tr>
-                            <td colSpan={2} style={{textAlign: 'center'}}> <a href={`https://www.ars-grin.gov/cgi-bin/npgsold/swish/accboth?query=${key.toUpperCase()}&si=0&si=1`}> Search Accession at GRIN </a></td>
-                        </tr>
-                    ))
                 }
             }
         }
