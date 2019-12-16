@@ -9,7 +9,7 @@ RUN mkdir /go/src/build
 ADD . /go/src/build
 WORKDIR /go/src/build
 #if not planning on running UI from container, don't bother wasting time to build
-RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm python build-base && \
+RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm && \
 	git clone --single-branch --branch preact/buildalt https://github.com/LegumeFederation/cvitjs.git && \
 	cp -r ui/cvit_assets/src cvitjs && \
  	cd cvitjs  && \
