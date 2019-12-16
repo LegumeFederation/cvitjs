@@ -1,5 +1,14 @@
+/**
+ * Options configuration for rulers, bins and other general display.
+ */
+
 import React from 'react';
 import Select from 'react-select';
+
+/**
+ * Quick setup for defining ruler options
+ * @type {*[]}
+ */
 
 const rulerDisplayOptions = [
     {
@@ -22,12 +31,16 @@ const rulerDisplayOptions = [
 
 export default class BaseOptions extends React.Component {
     state = {
-        rulerDisplay : rulerDisplayOptions[0],
-        binSize : 500000,
-        rulerInterval: 5000000,
-        title: '',
+        rulerDisplay : rulerDisplayOptions[0], // Display ruler on LHS
+        binSize : 500000,   // Default binsize of 500000 bp
+        rulerInterval: 5000000, // Default interval of 5000000 bp
+        title: '',  // Blank default title
     }
 
+    /**
+     * Pass updated options back to model
+     * @param value
+     */
     optionsUpdate = (value) => {
         this.props.optionsUpdate('general',value);
     }

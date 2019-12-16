@@ -11,12 +11,12 @@ export default class DataModal extends React.Component {
             'same':true,
             'total':true
         }
-    }
+    };
 
     exportImage = (blob) => {
         let url = URL.createObjectURL(blob);
         this.saveImage(url);
-    }
+    };
 
     saveImage = (url) => {
         let name = this.state.name !== '' ? this.state.name : 'cvit';
@@ -26,7 +26,7 @@ export default class DataModal extends React.Component {
         link.href = url;
         document.body.appendChild(link);
         link.click();
-    }
+    };
 
     onClickImage = () => {
         let paper = window.cvit.model.paper;
@@ -38,7 +38,7 @@ export default class DataModal extends React.Component {
         } else {
             paper.project.view.element.toBlob((blob) => this.exportImage(blob));
         }
-    }
+    };
 
     onClickData = () => {
         let gff = '##gff-version 3.2.1';
@@ -64,26 +64,28 @@ export default class DataModal extends React.Component {
         let url = 'data:text/plain;utf8,' +
             encodeURIComponent(gff);
         let win = window.open();
-        win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+        // noinspection HtmlDeprecatedAttribute
+        win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>');
         win.download('gcvit.gff');
         // link.href = url;
         // document.body.appendChild(link);
         // link.click();
-    }
+    };
 
     onInput = (evt) =>{
         this.setState({name:evt.target.value});
-    }
+    };
 
     onSelect = (evt) => {
         this.setState({format:evt.target.value});
-    }
+    };
 
     onChecked = (evt) => {
         let gffOptions = this.state.gffOptions;
         gffOptions[evt.target.value] = !gffOptions[evt.target.value];
         this.setState( {gffOptions});
-    }
+    };
+
     render(props,state){
         let {name,format,gffOptions} = this.state;
         return(

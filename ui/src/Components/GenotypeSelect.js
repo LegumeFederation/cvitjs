@@ -5,7 +5,7 @@ import {SketchPicker} from 'react-color';
 const popover = {
 	position: 'absolute',
 	zIndex: '2'
-}
+};
 
 const cover = {
 	position: 'fixed',
@@ -13,8 +13,11 @@ const cover = {
 	right: '0px',
 	bottom: '0px',
 	left: '0px',
-}
+};
 
+/**
+ * Selector dropdown for a new genotype option
+ */
 export default class GenotypeSelector extends React.Component {
 
 	state = {
@@ -22,7 +25,7 @@ export default class GenotypeSelector extends React.Component {
 		selectedGenotype: null,
 		displayColorPicker: false,
 		color: '#19741A'
-	}
+	};
 
 	formatDatasetValue(){
 		return {
@@ -30,39 +33,40 @@ export default class GenotypeSelector extends React.Component {
 			genotype: this.state.selectedGenotype || null,
 			color: this.state.color || null
 		}
-	}
+	};
 
 	datasetChange = (selectedDataset) => {
 		this.setState({ selectedDataset, selectedGenotype: null });
 		this.props.setDataset(selectedDataset);
 		let append = { dataset: selectedDataset, genotype:null, color: this.state.color||null};
 		this.props.appendDataset(this.props.idx, append)
-	}
+	};
 
 	gtChange = (selectedGenotype) => {
 		this.setState({ selectedGenotype });
 		let append = { dataset: this.state.selectedDataset, genotype: selectedGenotype, color: this.state.color||null};
 		this.props.appendDataset(this.props.idx, append);
-	}
+	};
 
 	colorClick = () => {
 		this.setState({displayColorPicker : true})
-	}
+	};
 
 	colorClose = () => {
-		this.setState({displayColorPicker : false})
+		this.setState({displayColorPicker : false});
 		this.props.appendDataset(this.props.idx, this.formatDatasetValue())
-	}
+	};
 
 	colorSet = (color) => {
 		this.setState({color: color.hex})
-	}
+	};
 
 	componentDidMount() {
 		if(this.props.selected){
 			this.setState({'selectedDataset':this.props.selected})
 		}
-	}
+	};
+
 	render() {
 		const { selectedDataset, selectedGenotype } = this.state;
 		const { idx } = this.props;
@@ -126,11 +130,10 @@ export default class GenotypeSelector extends React.Component {
 	}
 }
 
+/**
+ * custom rendering options for react-select component
+ */
 class CustomOption extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const {innerProps, isFocused, ...otherProps} = this.props;
 		const {onMouseMove, onMouseOver, ...otherInnerProps} = innerProps;

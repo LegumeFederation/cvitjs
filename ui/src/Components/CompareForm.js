@@ -1,7 +1,8 @@
 import React from 'react';
 import GenotypeSelector from './GenotypeSelect';
+
 /**
- * A counter button: tap the button to increase the count.
+ * Select comparison genotypes
  */
 export default class CompareForm extends React.Component {
 

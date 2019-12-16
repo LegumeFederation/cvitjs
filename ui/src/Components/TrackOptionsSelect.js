@@ -176,7 +176,7 @@ export default class TrackOptions extends React.Component {
 
     filterChange = (filters) => {
         let viewConfig = this.state.viewConfig;
-        viewConfig.class_filter = filters.map(filter => {if(filter!== null) return filter.value});
+        viewConfig.class_filter = filters.map(filter => {if(filter!== null) return filter.value; return false;});
         this.setState({ filters, viewConfig });
         this.optionsUpdate(viewConfig);
     }

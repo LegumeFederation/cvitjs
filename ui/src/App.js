@@ -6,14 +6,15 @@ import CompareForm from './Components/CompareForm';
 import OptionsForm from './Components/OptionsForm';
 import HelpModal from './Components/HelpModal'
 import DataModal from "./Components/DownloadModal";
+import DisplayButton from "./Components/DisplayButton";
 
 export default class App extends React.Component {
     state = {
-        datasets:[],
-        genotypes: {},
-        referenceDataset: null,
-        selected:[],
-        options: {
+        datasets:[], //Datasets available from service
+        genotypes: {}, //All genotypes available in selected dataset
+        referenceDataset: null, //Dataset reference was chosen from
+        selected:[], //All selected datasets+genotypes for comparison
+        options: { //General configuration for selected data options
             left:{
                 feature : 'none',
                 offset : -0,
@@ -30,29 +31,36 @@ export default class App extends React.Component {
                 tick_interval: 5000000,
             },
         },
-        priorRequest:{
-            request:'',
-            interval:50000,
-            response:{}
-        },
-        hideOptions: false,
-        showModal: '',
-        refMax: 0
-    }
+        hideOptions: false, //show/hide the gcvit configuration UI
+        showModal: '', //show/hide overlay modals (dl/help)
+    };
 
+    /**
+     * GET request to API to fetch the available datasets to populate options
+     **/
     loadDatasets = () => {
         fetch('api/experiment')
             .then( response => response.json())
             .then( datasets => {
                 this.setState({datasets});
             })
-    }
+    };
 
+    /**
+     * Append a new comparison set to the display array
+     * @param idx  index to add value to array
+     * @param value color+dataset+genotype object to append
+     */
     appendDataset = (idx,value) => {
         let selected = this.state.selected.slice();
         selected[idx]=value;
         this.setState({selected});
-    }
+    };
+
+    /**
+     * GET request to populate the genotype array
+     * @param referenceDataset dataset to draw genotypes from
+     */
 
     setDataset = (referenceDataset) => {
         let val = referenceDataset.value;
@@ -67,101 +75,35 @@ export default class App extends React.Component {
         } else {
             this.setState({referenceDataset,selected:[]})
         }
-    }
+    };
 
+    /**
+     * Edit display options
+     * @param options display options
+     */
     setOptions = (options) => {
         this.setState(options);
-    }
+    };
 
-    onSubmit = () => {
-        const { selected, options, priorRequest } = this.state;
-        let requestString = '';
-        let classes = {};
-        let count = 0;
-        selected.forEach((query, i) => {
-            if (query !== null && query.hasOwnProperty('dataset') && query.hasOwnProperty('genotype')
-                && query.dataset != null && query.genotype != null){
-                count++;
-                requestString =  i === 0 ? requestString+'Ref=' : requestString+'&Variant=';
-                requestString = requestString+encodeURIComponent(`${query.dataset.value}:${query.genotype.value}`);
-                classes[query.genotype.value] = query.color;
-            } else if(i === 0){
-                throw new Error('Reference must be selected.')
-            }
-        });
-        classes['undefined'] = 'black';
-        // Configure cvit model for new view
-        let cvit = window.cvit;
-        let model = cvit.model;
-        model._viewConfig.classes = classes;
+    /**
+     * Hide help/download modal at close
+     */
+    handleCloseModal = () => this.setState({ showModal: '' });
 
-        const binSize = options.left.hasOwnProperty('bin_size') ? options.left.bin_size :
-            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : 500000;
-        requestString = requestString + "&Bin=" + encodeURIComponent(binSize)
-        //fetch new data
-        if( (priorRequest.request !== requestString) ||
-            (binSize !== priorRequest.interval )
-        ) {
-            document.getElementById('cvit-app').style.visibility = 'visible';
-            this.setState({hideOptions:true});
-            model._viewData.same = {};
-            model._viewData.diff = {};
-            model._viewData.total = {};
+    /**
+     * Display help/download modal at open
+     * @param showModal
+     */
+    handleOpenModal = (showModal) => this.setState({showModal});
 
-            model.appendData('api/generateGff', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: requestString,
-            })
-                .then(() =>{
-                    model._viewLayout.chrOrder = model._setChrOrder(model._viewData);
-                    let refMax = 0;
-                    let vd = model._viewData;
-                    Object.keys(vd.total).forEach(key => {
-                        let chr = vd.total[key];
-                        if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > refMax) refMax = chr.maxScore.value;
-                    });
-                    this.setState({priorRequest:{response: model._viewData, request:requestString, interval:binSize, refMax}});
-                    this.setView(options, model, count,refMax);
-                })
-                .catch(e => {
-                    console.log('cvit js error: ', e);
-                });
-        } else {
-            this.setView(options, model,count);
-        }
-    }
-
-    setView = (options,model,count,refMax) =>{
-      //  let vd = model._viewData;
-      //  Object.keys(vd.total).forEach(key => {
-      //      let chr = vd.total[key];
-      //      if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > max) max = chr.maxScore.value;
-      //  });
-        if(options.left.bin_max === 0){
-            options.left.bin_max = options.left.display === 'heat' ? refMax : refMax*count;
-        }
-        if(options.right.bin_max === 0){
-            options.right.bin_max = options.right.display === 'heat' ? refMax : refMax*count;
-        }
-        model._viewConfig.left.class_heat = [];
-        model._viewConfig.right.class_heat = [];
-        model._viewConfig.left.class_filter = [];
-        model._viewConfig.right.class_filter = [];
-        model._viewConfig = model._combineObjects(model._viewConfig, options);
-        model._redraw = true;
-        model.setDirty(true);
-        model._inform();
-    }
-
-    handleCloseModal = () => this.setState({ showModal: '' })
-
-    handleOpenModal = (showModal) => this.setState({showModal})
-
+    /**
+     * After UI mounts, hide cvit-app until first comparison request is made, and populate
+     * list of available datasets
+     */
     componentDidMount() {
         document.getElementById('cvit-app').style.visibility = 'hidden';
         this.loadDatasets()
-    }
+    };
 
     render() {
         const { selected,options,hideOptions,showModal } = this.state;
@@ -204,7 +146,7 @@ export default class App extends React.Component {
                     <OptionsForm setOptions ={this.setOptions} genotypes={selected} options={options}/>
                 </form>
                 <div className={'pure-g'}>
-                    <button className={'pure-u-1-4 pure-button-primary button-action pure-button'} onClick={this.onSubmit}> Display </button>
+                    <DisplayButton selected={selected} options={options} hide={()=>{this.setState({hideOptions:true});}}/>
                     <div className={'pure-u-5-24 '}><br /></div>
                     <button className={'pure-u-1-4  pure-button button-display'} onClick={()=>this.handleOpenModal('data')}> Download </button>
                     <div className={'pure-u-1-24'} />
@@ -212,5 +154,5 @@ export default class App extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }

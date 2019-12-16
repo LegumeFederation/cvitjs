@@ -2,6 +2,9 @@ import React from 'react';
 import TrackOptions from "./TrackOptionsSelect";
 import BaseOptions from "./BaseOptionsSelect";
 
+/**
+ * Form for controlling LHS/RHS display options
+ */
 export default class OptionsForm extends React.Component {
 	state = {
 		'binSize': 500000,

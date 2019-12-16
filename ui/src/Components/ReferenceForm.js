@@ -1,6 +1,9 @@
 import React from 'react';
 import GenotypeSelector from './GenotypeSelect';
 
+/**
+ * Select reference genotype
+ */
 export default class ReferenceForm extends React.Component {
 	render() {
 

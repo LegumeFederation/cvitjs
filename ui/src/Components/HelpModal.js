@@ -8,6 +8,9 @@ import DisplayHaplotype from "./HelpTopics/DisplayHaplotype";
 import DisplayHistogram from "./HelpTopics/DisplayHistogram";
 import DisplayHeat from "./HelpTopics/DisplayHeat";
 
+/**
+ * Container for managing help documentation
+ */
 export default class HelpModal extends React.Component {
     render () {
         return(
