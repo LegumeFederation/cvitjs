@@ -1,4 +1,4 @@
-#GCViT
+# GCViT
 ![CViTjs](assets/readme_images/logo.svg?raw=true)
 
 ## Table of Contents
