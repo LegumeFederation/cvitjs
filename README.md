@@ -1,5 +1,5 @@
-#GCViT
-![CViTjs](assets/readme_images/logo.png?raw=true)
+# GCViT
+![GCViT](assets/readme_images/logo.svg?raw=true)
 
 ## Table of Contents
 + [About](#about) 
