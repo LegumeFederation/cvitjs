@@ -25,6 +25,9 @@ In either case, there are two main approaches to running GCViT, in a Docker cont
 A stand-alone electron desktop app is in the process of being developed.
  
 ### General Setup
+No matter which approach you take for deploying GCViT, the configuration of the backend service and the UI stays mostly the same.
+
+#### Configuring the Service
 No matter which method you intend to run GCViT, configuration of the Go backend service is the same.
 By default the configuration sits in `config/assetsconfig.yaml` and it has the following format:
 
@@ -57,11 +60,17 @@ key: #internal key for API requests
 
 While it is recommended, data does not have to be in the `assets` folder to be read by GCViT.
 
+#### Configuring the UI
+
 In addition to the vcf file, a gff "backbone" file will need to be provided for the UI component to display the results.
 The format for this file can be viewed at `ui/cvit_assets/data/soySnp/gm_backbone.gff`. In addition, cvit configuration files
 will need to be provided as well, examples as `ui/cvit_assets/cvit.conf` and `ui/cvit_assets/soySnp/soySnp.conf`.
 
 For more information on configuring the CViTjs component of GCViT, please see the documentation [HERE](https://github.com/LegumeFederation/cvitjs/wiki)
+
+The three glyph configurations used by GCViT *Haplotype Block*, *Heatmap* and *Histogram* may be edited from the default settings
+by changing values in `ui/src/Components/[HaploConfig.js|HeatConfig.js|HistConfig.js]` respectively. Once changes are made, the UI will have to be rebuilt by
+rebuilding the docker container, or by triggering a manual build through node, as described in the following sections.
 
 ### Docker Setup
 For general use, it is probably easiest to get started with GCViT using [Docker](https://www.docker.com/)
@@ -88,9 +97,9 @@ When it is time to start the container, there are two mount points exposed to ad
 An example of starting an instance of GCViT: 
 ```
 docker run -d \
---name gcvit \ 
+--name gcvit \
 --mount type=bind,source="$(pwd)"/config,target=/app/config \
---mount type=bind,source="$(pwd)"/assets,target=/app/assets \ 
+--mount type=bind,source="$(pwd)"/assets,target=/app/assets \
 -p 8080:8080 \
 gcvit:1.0
 ```

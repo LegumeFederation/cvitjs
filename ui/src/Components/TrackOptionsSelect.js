@@ -1,5 +1,8 @@
 import React from 'react';
 import Select from 'react-select';
+import {heatConfig} from './HeatConfig';
+import {histConfig} from './HistConfig';
+import {haploConfig} from './HaploConfig';
 
 const displayFormats = [
     {
@@ -76,75 +79,11 @@ export default class TrackOptions extends React.Component {
         this.props.genotypes.forEach(gt => {if(gt !== null) count++;});
         switch (format) {
             case 'heat':
-                return {
-                    feature: compare.value,
-                    glyph: 'measure',
-                    display: 'heat',
-                    draw_as: 'range',
-                    invert_value: 0,
-                    min: 0,
-                    max: 0,
-                    width: 10,
-                    offset:  side ? 0 : -0,
-                    bin_size: 500000,
-                    bin_min: minValue,
-                    bin_max: maxValue,
-                    by_class: 1,
-                    class_filter: filters.map( filter => filter.value),
-                    class_offset: 2,
-                    class_heat : ['#fff'],
-                    draw_label: 0,
-                    max_distance: 5,
-                    border: 0,
-                    value_base: 10,
-                    generate_bins: 0,
-                    count_classes: 0,
-                    transparent: 0,
-                    transparent_percent: 0.0
-                };
+               return heatConfig(compare,side,minValue,maxValue,filters);
             case 'hist':
-                return {
-                    feature: compare.value,
-                    glyph: 'measure',
-                    display: 'histogram',
-                    count_classes: 0,
-                    enable_pileup: 0,
-                    generate_bins: 0,
-                    offset: side ? 0 : -0,
-                    width: 3,
-                    bin_min: minValue,
-                    bin_max: maxValue,
-                    bin_size: 500000,
-                    by_class: 1,
-                    class_offset : 0,
-                    class_filter: filters.map( filter => filter.value),
-                    draw_label: 0,
-                    max_distance: count*25,
-                    border: 1,
-                    border_width :0,
-                };
+               return histConfig(compare,side,minValue,maxValue,filters,count);
             case 'haplo':
-                return {
-                    feature : compare.value,
-                    glyph: 'measure',
-                    display: 'histogram',
-                    count_classes: 0,
-                    class_offset: 0,
-                    class_space : 1,
-                    enable_pileup: 0,
-                    generate_bins: 0,
-                    offset: side ? 0 : -0,
-                    width: 3,
-                    bin_min: maxValue -1 > 0 ? maxValue - 1 : 0 ,
-                    bin_max: maxValue > 0 ?  maxValue : 1,
-                    bin_size: 500000,
-                    by_class: 1,
-                    class_filter: filters.map( filter => filter.value),
-                    draw_label: 0,
-                    max_distance: 5,
-                    border: 1,
-                    border_width: 0,
-                };
+                return haploConfig(compare,side,minValue,maxValue,filters,count);
             case 'none':
             default:
                 return {'feature':'none'};
