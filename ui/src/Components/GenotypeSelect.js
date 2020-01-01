@@ -1,6 +1,7 @@
 import React  from 'react';
 import Select, {createFilter, components} from 'react-select';
 import {SketchPicker} from 'react-color';
+import {colorDefault} from './DefaultConfiguration';
 
 const popover = {
 	position: 'absolute',
@@ -24,7 +25,7 @@ export default class GenotypeSelector extends React.Component {
 		selectedDataset: null,
 		selectedGenotype: null,
 		displayColorPicker: false,
-		color: '#19741A'
+		color: colorDefault()
 	};
 
 	formatDatasetValue(){

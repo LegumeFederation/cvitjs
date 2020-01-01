@@ -1,4 +1,4 @@
-# GCViT
+ # GCViT
 ![GCViT](assets/readme_images/logo.png?raw=true)
 
 ## Table of Contents
@@ -69,8 +69,10 @@ will need to be provided as well, examples as `ui/cvit_assets/cvit.conf` and `ui
 For more information on configuring the CViTjs component of GCViT, please see the documentation [HERE](https://github.com/LegumeFederation/cvitjs/wiki)
 
 The three glyph configurations used by GCViT *Haplotype Block*, *Heatmap* and *Histogram* may be edited from the default settings
-by changing values in `ui/src/Components/[HaploConfig.js|HeatConfig.js|HistConfig.js]` respectively. Once changes are made, the UI will have to be rebuilt by
-rebuilding the docker container, or by triggering a manual build through node, as described in the following sections.
+by changing values in `ui/src/Components/[HaploConfig.js|HeatConfig.js|HistConfig.js]` respectively.
+
+ Other default options (title, bin size, title, ruler tic distance) can be changed through editing the values in 
+ `ui/src/Components/DefaultConfiguration.js`. Once changes are made, the UI will have to be rebuilt by rebuilding the docker container, or by triggering a manual build through node, as described in the following sections.
 
 ### Docker Setup
 For general use, it is probably easiest to get started with GCViT using [Docker](https://www.docker.com/)

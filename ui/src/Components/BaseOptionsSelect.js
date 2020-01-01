@@ -4,6 +4,7 @@
 
 import React from 'react';
 import Select from 'react-select';
+import {rulerDisplayDefault, binSizeDefault,rulerIntervalDefault,titleDefault} from './DefaultConfiguration';
 
 /**
  * Quick setup for defining ruler options
@@ -31,10 +32,10 @@ const rulerDisplayOptions = [
 
 export default class BaseOptions extends React.Component {
     state = {
-        rulerDisplay : rulerDisplayOptions[0], // Display ruler on LHS
-        binSize : 500000,   // Default binsize of 500000 bp
-        rulerInterval: 5000000, // Default interval of 5000000 bp
-        title: '',  // Blank default title
+        rulerDisplay : rulerDisplayDefault(), // Display ruler on LHS
+        binSize : binSizeDefault(),   // Default binsize of 500000 bp
+        rulerInterval: rulerIntervalDefault(), // Default interval of 5000000 bp
+        title: titleDefault(),  // Blank default title
     }
 
     /**
