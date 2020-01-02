@@ -32,7 +32,7 @@ const rulerDisplayOptions = [
 
 export default class BaseOptions extends React.Component {
     state = {
-        rulerDisplay : rulerDisplayDefault(), // Display ruler on LHS
+        rulerDisplay : rulerDisplayDefault(rulerDisplayOptions), // Display ruler on LHS
         binSize : binSizeDefault(),   // Default binsize of 500000 bp
         rulerInterval: rulerIntervalDefault(), // Default interval of 5000000 bp
         title: titleDefault(),  // Blank default title
@@ -85,16 +85,16 @@ export default class BaseOptions extends React.Component {
                 <div className={'pure-g genotype-select'}>
                     <div className={'pure-u-1-2 l-box'}>
                         <span> Title </span>
-                        <input type={'text'} value={title} className={'pure-u-1-1 l-box git-option'} id={`title-gen`} placeholder={''} onInput={e=>this.titleChange(e)} />
+                        <input type={'text'} value={title} className={'pure-u-1-1 l-box git-option'} id={`title-gen`} placeholder={titleDefault()} onInput={e=>this.titleChange(e)} />
                     </div>
                     <div className={'pure-u-1-6 l-box'}>
                         <span> Bin Size </span>
-                        <input type={'text'} value={binSize} className={'pure-u-1-1 l-box git-option'} id={`binsize-gen`} placeholder={'500000'} onInput={e=>this.binChange(e)}/>
+                        <input type={'text'} value={binSize} className={'pure-u-1-1 l-box git-option'} id={`binsize-gen`} placeholder={binSizeDefault()} onInput={e=>this.binChange(e)}/>
                     </div>
                     <div className={'pure-u-1-6 l-box'}>
                         <span> Ruler Display </span>
                         <Select
-                            defaultValue={rulerDisplayOptions[0]}
+                            defaultValue={rulerDisplayDefault(rulerDisplayOptions)}
                             className="basic-single git-option"
                             classNamePrefix="select"
                             value={rulerDisplay}
@@ -108,7 +108,7 @@ export default class BaseOptions extends React.Component {
                         <div className={'pure-u-1-6 l-box'}>
                             <span> Ruler Interval </span>
                             <input type={'text'} value={rulerInterval} className={'pure-u-1-1 l-box git-option'} id={`rulertic-gen`}
-                                   placeholder={'5000000'} onInput={e=> this.intervalChange(e)}/>
+                                   placeholder={rulerIntervalDefault()} onInput={e=> this.intervalChange(e)}/>
                         </div>
                         : null
                     }
