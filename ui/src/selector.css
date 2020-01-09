@@ -54,6 +54,10 @@ body .selector-container {
     margin: 0 1rem 0 1rem;
 }
 
+.modal-content {
+    font-size: 1.4rem;
+}
+
 p {
     margin-top: 1rem;
 }
