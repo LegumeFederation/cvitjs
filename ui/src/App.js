@@ -110,6 +110,7 @@ export default class App extends React.Component {
         let gts = this.state.referenceDataset !== null && this.state.genotypes[this.state.referenceDataset.value] !== undefined
             ? this.state.genotypes[this.state.referenceDataset.value]
             : [];
+
         return (
             <div className={'selector-container'}>
                 <ReactModal
@@ -139,7 +140,7 @@ export default class App extends React.Component {
                 </div>
                 <form className={'display-options'} style={{maxHeight: hideOptions ? '0px' : '100%', overflow: hideOptions ? 'hidden' : 'visible'}}>
                     <ReferenceForm datasets={this.state.datasets} setDataset={this.setDataset} appendDataset={this.appendDataset} genotypes={gts} />
-                    {this.state.referenceDataset
+                    { selected.length > 0 && selected[0].genotype !== null
                         ? <CompareForm selected={this.state.referenceDataset} genotypes={gts} appendDataset={this.appendDataset} />
                         : null
                     }
