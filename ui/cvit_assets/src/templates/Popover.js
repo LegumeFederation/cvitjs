@@ -10,13 +10,6 @@ export function popoverContents(data) {
                     <th>{`${key}:`}</th>
                     <td>{feature.attribute[key]}</td>
                 </tr>));
-                if(['name','id','value'].indexOf(key) === -1){
-                    let reg = /([Pp][Ii])([0-9]*).*/;
-                    let res = key.match(reg);
-                    if(res.length === 3){
-                        key = `${res[1]} ${res[2]}`
-                    }
-                }
             }
         }
         return (
