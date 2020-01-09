@@ -1,4 +1,4 @@
-function haploConfig(compare,side,minValue,maxValue,filters){
+export function haploConfig(compare,side,minValue,maxValue,filters){
   return {
     feature : compare.value,
     glyph: 'measure',
