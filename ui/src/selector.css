@@ -54,10 +54,6 @@ body .selector-container {
     margin: 0 1rem 0 1rem;
 }
 
-.modal-content {
-    font-size: 1.4rem;
-}
-
 p {
     margin-top: 1rem;
 }
@@ -196,7 +192,7 @@ h6 {
     left: 4em;
     right: 4em;
     bottom: 9em;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .modal-contents {
@@ -211,7 +207,7 @@ h6 {
 .modal-close {
     position: fixed;
     bottom: 4em;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .selector-container input[type="text"],
