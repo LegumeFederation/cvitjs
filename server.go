@@ -46,7 +46,7 @@ func main() {
 		fs := &fasthttp.FS{
 			Root:               "./ui/build/",
 			IndexNames:         []string{"index.html"},
-			GenerateIndexPages: true,
+			GenerateIndexPages: false,
 			Compress:           true,
 			AcceptByteRange:    false,
 		}
@@ -54,11 +54,21 @@ func main() {
 		fsHandler := fs.NewRequestHandler()
 		staticHandler := func(ctx *fasthttp.RequestCtx) {
 			start := time.Now()
-			fsHandler(ctx)
+			// serve index for / route breaks otherwise in docker
+			if string(ctx.Path()) == "/" {
+				ctx.SendFile(fs.Root + "/index.html")
+			} else {
+				fsHandler(ctx)
+			}
 			ctx.Logger().Printf("%dns", time.Now().Sub(start).Nanoseconds())
 		}
 		// routes
 		router.GET("/", staticHandler)
+		//		func(ctx *fasthttp.RequestCtx) {
+		//		start := time.Now()
+		//
+		//		ctx.Logger().Printf("%dns", time.Now().Sub(start).Nanoseconds())
+		//	})
 		// because /* won't work, try to serve valid requests from ui/build before invalid route error
 		router.NotFound = staticHandler
 	}
