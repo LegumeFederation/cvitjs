@@ -3,7 +3,8 @@
 FROM golang:alpine as builder
 #pass --build-arg apionly="true" when building to skip building cvitjs
 ARG apionly=false
-RUN apk add --update git dep
+#RUN apk add --update git dep
+RUN apk add --update git
 #add project to GOPATH/src so dep can run and make sure dependencies are right
 RUN mkdir /go/src/build
 ADD . /go/src/build
@@ -24,8 +25,8 @@ RUN if [ "$apionly" = "false" ] ; then cd ui && \
 	npm run build && \
 	echo Built UI components ; else echo Skipping UI components ; fi
 #grab dependencies for golang
-RUN dep ensure
-RUN go build -o server .
+#RUN dep ensure
+RUN go get && go build -o server .
 #actual deployment container
 FROM alpine
 RUN mkdir /app
