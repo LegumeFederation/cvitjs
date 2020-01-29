@@ -6,9 +6,9 @@ ARG apionly=false
 #RUN apk add --update git dep
 RUN apk add --update git
 #add project to GOPATH/src so dep can run and make sure dependencies are right
-RUN mkdir /go/src/build
-ADD . /go/src/build
-WORKDIR /go/src/build
+RUN mkdir /go/src/gcvit
+ADD . /go/src/gcvit
+WORKDIR /go/src/gcvit
 #if not planning on running UI from container, don't bother wasting time to build
 RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm && \
 	git clone --single-branch --branch preact/buildalt https://github.com/LegumeFederation/cvitjs.git && \
@@ -32,8 +32,8 @@ FROM alpine
 RUN mkdir /app
 RUN adduser -S -D -H -h /app appuser
 USER appuser
-COPY --from=builder /go/src/build/server /app/
-COPY --from=builder /go/src/build/ui/build /app/ui/build/
+COPY --from=builder /go/src/gcvit/server /app/
+COPY --from=builder /go/src/gcvit/ui/build /app/ui/build/
 #add mount points for config and assets
 VOLUME ["/app/config","/app/assets"]
 #Comment above and uncomment below if you would rather have assets built into container

@@ -1,18 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"github.com/spf13/viper"
-)
-
 /*
 	Server component for GCViT, all logic is in sub-module gcvit
 */
 
 import (
+	"fmt"
 	"gcvit/gcvit"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
 	"log"
 	"time"
