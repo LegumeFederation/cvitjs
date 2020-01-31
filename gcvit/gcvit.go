@@ -31,7 +31,10 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 	start := time.Now()
 	// Populate experiments if it hasn't been already
 	if len(experiments) == 0 {
-		PopulateExperiments()
+		err := PopulateExperiments()
+		if err != nil {
+			ctx.Logger().Printf("Error: Problem populating experiments: %s", err)
+		}
 	}
 
 	//Iterate through experiments and build response
@@ -44,7 +47,12 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 	}
 
 	//Response
-	optsJson, _ := json.Marshal(opts)
+	optsJson, err := json.Marshal(opts)
+	if err != nil {
+		ctx.Logger().Printf("Error: Problem converting experiments to JSON: %s", err)
+		ctx.Error("Problem getting experiments.", fasthttp.StatusInternalServerError)
+		return
+	}
 	ctx.SetContentType("application/json; charset=utf8")
 	fmt.Fprintf(ctx, "%s", optsJson)
 	//Log response time
@@ -59,7 +67,10 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 	exp := ctx.UserValue("exp").(string)
 	//Populate experiments if it hasn't been populated already
 	if len(experiments) == 0 {
-		PopulateExperiments()
+		err := PopulateExperiments()
+		if err != nil { //log errors opening provided files for debugging later
+			ctx.Logger().Printf("Error: Problem populating experiments: %s", err)
+		}
 	}
 
 	//Iterate through passed experiment and build response of GT headers
@@ -69,7 +80,12 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 	}
 
 	//Response
-	gtJson, _ := json.Marshal(gt)
+	gtJson, err := json.Marshal(gt)
+	if err != nil {
+		ctx.Logger().Printf("Error: Problem converting genotypes to JSON: %s", err)
+		ctx.Error("Problem populating experiment", fasthttp.StatusInternalServerError)
+		return
+	}
 	ctx.SetContentType("application/json; charset=utf8")
 	fmt.Fprintf(ctx, "%s", gtJson)
 	//Log response time
@@ -106,10 +122,18 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	}
 
 	ref := strings.Split(req.Ref, ":")
+	if len(ref) != 2 || ref[1] == "" { //not found if there isn't a ref defined, prevents server crash on sending empty request.
+		ctx.Error("Page Not Found", fasthttp.StatusNotFound)
+		ctx.Logger().Printf("Error: No reference genotype selected  \n")
+		return
+	}
 	vnt := make(map[string][]string, len(req.Variant))
 	vntOrder := make(map[int][]string, len(req.Variant))
 	for i := range req.Variant {
 		vt := strings.Split(req.Variant[i], ":")
+		if len(vt) != 2 || vt[1] == "" { //ignore empty variant
+			continue
+		}
 		if _, ok := vnt[vt[0]]; !ok {
 			vnt[vt[0]] = []string{vt[1]}
 		} else {
@@ -120,14 +144,18 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 
 	r, err := ReadFile(experiments[ref[0]].Location, experiments[ref[0]].Gzip)
 	if err != nil {
-		panic(fmt.Errorf("problem reading reference genotype's file: %s \n", err))
+		ctx.Error("Problem reading reference genotype's file: #{err} \n", fasthttp.StatusInternalServerError)
+		ctx.Logger().Printf("Error: Problem reading reference genotype's file: %s", err)
+		return
 	}
 
 	var b bytes.Buffer
 	writer, err := gff.NewWriter(&b)
 
 	if err != nil {
-		panic(fmt.Errorf("problem opening gff writer: %s \n", err))
+		ctx.Error("Problem opening gff writer: #{err} \n", fasthttp.StatusInternalServerError)
+		ctx.Logger().Printf("Error: Problem opening gff writer: %s", err)
+		return
 	}
 
 	ctg := make(map[string]int)
@@ -169,7 +197,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		if feat != nil {
 			gt, _ := feat.SingleGenotype(ref[1], r.Header.Genotypes)
 			rt, _ := feat.MultipleGenotypes(vnt[ref[0]], r.Header.Genotypes)
-			//reset contig based features, assuming that file is sorted by contig and ascending position
+			// reset contig based features, assuming that file is sorted by contig and ascending position
 			// when contig changes or you step outside of current bin
 			if feat.Pos > uint64(stepCt*stepVal) || contig != feat.Chrom {
 				if stepCt > 0 {
@@ -291,6 +319,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	}
 	writer.WriteFeature(&gffLine)
 
+	//send build gff
 	ctx.SetContentType("text/plain; charset=utf8")
 	fmt.Fprintf(ctx, "%s", b.String())
 	//Log completed request

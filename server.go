@@ -30,7 +30,10 @@ func main() {
 	// watch for changes to data files so server doesn't need to reset when changed
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		gcvit.PopulateExperiments()
+		err := gcvit.PopulateExperiments()
+		if err != nil {
+			log.Printf("Error: Problem populating experiments: #{err}  \n")
+		}
 	})
 
 	// setup /api/* routes

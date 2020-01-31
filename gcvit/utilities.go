@@ -15,29 +15,35 @@ import (
 )
 
 //PopulateExperiments gets the public list of available experiments
-func PopulateExperiments() {
+func PopulateExperiments() error {
 	var C map[string]interface{}
 	_ = viper.Unmarshal(&C)
 	for key := range C {
 		if key != "server" {
 			filecfg := viper.Sub(key) // viper is assumed to have the config read in at server startup or file edit
 			gz := strings.Contains(filecfg.GetString("location"), ".gz")
+			gt, err := PopulateGenotype(filecfg.GetString("location"), gz)
+			if err != nil {
+				return err
+			}
 			experiments[key] = DataFiles{
 				Name:      filecfg.GetString("name"),
 				Location:  filecfg.GetString("location"),
 				Format:    filecfg.GetString("format"),
 				Gzip:      gz,
-				Genotypes: PopulateGenotype(filecfg.GetString("location"), gz),
+				Genotypes: gt,
 			}
 		}
 	}
+
+	return nil
 }
 
 //PopulateGenotype populates the GT values for a given experiment
-func PopulateGenotype(loc string, gz bool) []string {
+func PopulateGenotype(loc string, gz bool) ([]string, error) {
 	read, err := ReadFile(loc, gz)
 	if err != nil {
-		panic(fmt.Errorf("problem in vcf.NewReader(): %s \n", err))
+		return nil, fmt.Errorf("problem in vcf.NewReader(): %s", err)
 	}
 	if read != nil {
 		var values []string
@@ -45,21 +51,21 @@ func PopulateGenotype(loc string, gz bool) []string {
 			values = append(values, key)
 		}
 		sort.Strings(values)
-		return values
+		return values, nil
 	}
-	return make([]string, 0)
+	return make([]string, 0), nil
 }
 
 // Read in the passed file as a VCF
 func ReadFile(loc string, gz bool) (*vcf.Reader, error) {
 	f, err := os.Open(loc)
 	if err != nil {
-		panic(fmt.Errorf("problem in os.Open: %s \n", err))
+		return nil, fmt.Errorf("problem in os.Open: %s", err)
 	}
 	if gz {
 		contents, err := gzip.NewReader(f)
 		if err != nil {
-			panic(fmt.Errorf("problem in gzip.NewReader(): %s \n", err))
+			return nil, fmt.Errorf("problem in gzip.NewReader(): %s", err)
 		}
 		return vcf.NewReader(contents)
 	} else {
