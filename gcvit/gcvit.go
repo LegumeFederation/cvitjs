@@ -6,24 +6,18 @@ package gcvit
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/awilkey/bio-format-tools-go/gff"
 	"github.com/awilkey/bio-format-tools-go/vcf"
+	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
 	"math"
 	"strconv"
 	"strings"
 	"time"
 )
-
-// experiment that stores all the allowed experiments
-var experiments map[string]DataFiles
-
-//init does initialization, only runs first time gcvit is called
-func init() {
-	experiments = make(map[string]DataFiles)
-}
 
 // GetExperiments is a GET path that returns a JSON object that represents all the currently loaded datasets GT field headers
 func GetExperiments(ctx *fasthttp.RequestCtx) {
@@ -44,6 +38,19 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 		exp := ExpData{Value: key, Label: experiments[key].Name}
 		opts[i] = exp
 		i++
+	}
+
+	if authState := ctx.UserValue("auth"); authState != nil {
+		// extend slice
+		auth := (authState).(string)
+		nOpts := make([]ExpData, len(experiments)+len(privateExp[auth]))
+		copy(nOpts, opts)
+		opts = nOpts
+		for key := range privateExp[auth] {
+			exp := ExpData{Value: key, Label: privateExp[auth][key].Name}
+			opts[i] = exp
+			i++
+		}
 	}
 
 	//Response
@@ -73,9 +80,19 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 		}
 	}
 
+	// populate experiment if possible due to auth state
+	var expSet DataFiles
+	if experiments[exp].Genotypes != nil {
+		expSet = experiments[exp]
+	} else if authState := ctx.UserValue("auth"); authState != nil && privateExp[(authState).(string)][exp].Genotypes != nil {
+		expSet = privateExp[(authState).(string)][exp]
+	} else {
+		ctx.Error("Experiment Not Available", fasthttp.StatusUnauthorized)
+		return
+	}
 	//Iterate through passed experiment and build response of GT headers
-	gt := make([]ExpData, len(experiments[exp].Genotypes))
-	for i, v := range experiments[exp].Genotypes {
+	gt := make([]ExpData, len(expSet.Genotypes))
+	for i, v := range expSet.Genotypes {
 		gt[i] = ExpData{Value: v, Label: v}
 	}
 
@@ -114,11 +131,11 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		req.Variant = append(req.Variant, string(v))
 	}
 
-	//parse bin size if available, if not passed, default to 500000 bases
+	//parse bin size if available, if not passed, default to config.binSize (500000) bases
 	if bSize, _ := strconv.Atoi(string(ctx.PostArgs().Peek("Bin"))); bSize > 0 {
 		req.Bin = bSize
 	} else {
-		req.Bin = 500000
+		req.Bin = binSize
 	}
 
 	ref := strings.Split(req.Ref, ":")
@@ -142,9 +159,21 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		vntOrder[i] = []string{vt[0], vt[1]}
 	}
 
-	r, err := ReadFile(experiments[ref[0]].Location, experiments[ref[0]].Gzip)
+	// populate experiment if possible due to auth state
+	var expSet DataFiles
+	if experiments[ref[0]].Location != "" {
+		expSet = experiments[ref[0]]
+	} else if authState := ctx.UserValue("auth"); authState != nil && privateExp[(authState).(string)][ref[0]].Location != "" {
+		expSet = privateExp[(authState).(string)][ref[0]]
+	} else {
+		ctx.Error("Experiment Not Available", fasthttp.StatusUnauthorized)
+		ctx.Logger().Printf("Cancel request for %s - %dns - Invalid credentials or non-extant dataset", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
+		return
+	}
+
+	r, err := ReadFile(expSet.Location, expSet.Gzip)
 	if err != nil {
-		ctx.Error("Problem reading reference genotype's file: #{err} \n", fasthttp.StatusInternalServerError)
+		ctx.Error("Problem reading reference genotype's file: %s \n", fasthttp.StatusInternalServerError)
 		ctx.Logger().Printf("Error: Problem reading reference genotype's file: %s", err)
 		return
 	}
@@ -153,7 +182,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	writer, err := gff.NewWriter(&b)
 
 	if err != nil {
-		ctx.Error("Problem opening gff writer: #{err} \n", fasthttp.StatusInternalServerError)
+		ctx.Error("Problem opening gff writer: %s \n", fasthttp.StatusInternalServerError)
 		ctx.Logger().Printf("Error: Problem opening gff writer: %s", err)
 		return
 	}
@@ -184,11 +213,15 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	var readErr error
 	var contig string
 	var stepSize int
+	if source == "" || binSize == 0 {
+		SetDefaults() // if somehow the source hasn't been set yet
+	}
 	if req.Bin > 0 {
 		stepSize = req.Bin
 	} else {
-		stepSize = 500000
+		stepSize = binSize
 	}
+
 	stepCt := 0
 	stepVal := 0
 
@@ -205,35 +238,8 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 					if ctg[contig] > 0 && end > uint64(ctg[contig]) {
 						end = uint64(ctg[contig])
 					}
-					gffLine := gff.Feature{
-						Seqid:      contig,
-						Source:     "soybase",
-						Type:       "same",
-						Start:      uint64((stepCt-1)*stepVal + 1),
-						End:        end,
-						Score:      gff.MissingScoreField,
-						Strand:     "+",
-						Phase:      gff.MissingPhaseField,
-						Attributes: map[string]string{"ID": fmt.Sprintf("%s.%d", "same", stepCt)},
-					}
-					for class, val := range sameCtr {
-						gffLine.Attributes[class] = strconv.Itoa(val)
-					}
-					writer.WriteFeature(&gffLine)
 
-					gffLine.Type = "diff"
-					gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "diff", stepCt)
-					for class, val := range diffCtr {
-						gffLine.Attributes[class] = strconv.Itoa(val)
-					}
-					writer.WriteFeature(&gffLine)
-
-					gffLine.Type = "total"
-					gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "total", stepCt)
-					for class, val := range totalCtr {
-						gffLine.Attributes[class] = strconv.Itoa(val)
-					}
-					writer.WriteFeature(&gffLine)
+					printGffLine(writer, contig, stepCt, stepVal, end, sameCtr, diffCtr, totalCtr)
 
 					//Reset counters
 					for val := range totalCtr {
@@ -282,46 +288,69 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		}
 	}
 
-	end := stepCt * stepVal
+	end := uint64(stepCt) * uint64(stepVal)
 
-	if ctg[contig] > 0 && end > ctg[contig] {
-		end = ctg[contig]
+	if ctg[contig] > 0 && end > uint64(ctg[contig]) {
+		end = uint64(ctg[contig])
 	}
 
-	gffLine := gff.Feature{
-		Seqid:      contig,
-		Source:     "soybase",
-		Type:       "same",
-		Start:      uint64((stepCt-1)*stepVal + 1),
-		End:        uint64(end),
-		Score:      gff.MissingScoreField,
-		Strand:     "+",
-		Phase:      gff.MissingPhaseField,
-		Attributes: map[string]string{"ID": fmt.Sprintf("%s.%d", "same", stepCt)},
-	}
-
-	for class, val := range sameCtr {
-		gffLine.Attributes[class] = strconv.Itoa(val)
-	}
-	writer.WriteFeature(&gffLine)
-
-	gffLine.Type = "diff"
-	gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "diff", stepCt)
-	for class, val := range diffCtr {
-		gffLine.Attributes[class] = strconv.Itoa(val)
-	}
-	writer.WriteFeature(&gffLine)
-
-	gffLine.Type = "total"
-	gffLine.Attributes["ID"] = fmt.Sprintf("%s.%d", "total", stepCt)
-	for class, val := range totalCtr {
-		gffLine.Attributes[class] = strconv.Itoa(val)
-	}
-	writer.WriteFeature(&gffLine)
+	printGffLine(writer, contig, stepCt, stepVal, end, sameCtr, diffCtr, totalCtr)
 
 	//send build gff
 	ctx.SetContentType("text/plain; charset=utf8")
 	fmt.Fprintf(ctx, "%s", b.String())
 	//Log completed request
 	ctx.Logger().Printf("Return request for %s - %dns", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
+}
+
+// Auth stuff
+
+func BasicAuth(h fasthttp.RequestHandler) fasthttp.RequestHandler {
+	return fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
+		// Get the Basic Authentication credentials
+		user, ok := basicAuth(ctx)
+		if ok {
+			ctx.SetUserValue("auth", user)
+		}
+		h(ctx)
+		return
+	})
+}
+
+func basicAuth(ctx *fasthttp.RequestCtx) (username string, ok bool) {
+	// check for auth header
+	auth := ctx.Request.Header.Peek("Authorization")
+	if auth == nil {
+		return
+	}
+	// check that auth is basic auth
+	sauth := string(auth)
+	prefix := "Basic "
+	if !strings.HasPrefix(sauth, prefix) {
+		return
+	}
+	// decode authstring
+	dec, err := base64.StdEncoding.DecodeString(sauth[len(prefix):])
+	if err != nil {
+		return
+	}
+	// find where username:password splits
+	sdec := string(dec)
+	s := strings.IndexByte(sdec, ':')
+	if s < 0 {
+		return
+	}
+
+	// set user and password
+	user := sdec[:s]
+	pw := sdec[s+1:]
+
+	// check if user : password is correct
+	var C map[string]interface{}
+	_ = viper.Unmarshal(&C)
+	authUsers := viper.Sub("users")
+	pss := authUsers.GetString(user)
+	status := pss != "" && pss == pw
+
+	return user, status
 }

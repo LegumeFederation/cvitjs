@@ -21,26 +21,28 @@ func main() {
 	viper.SetConfigName("assetconfig")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
-	viper.SetDefault("server", map[string]string{"port": "8080", "apiOnly": "false"})
+	viper.SetDefault("server", map[string]string{"port": "8080", "apiOnly": "false", "source": "gcvit", "binSize": "500000"})
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
 	}
-
+	// set source and binSize from config
+	gcvit.SetDefaults()
 	// watch for changes to data files so server doesn't need to reset when changed
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		err := gcvit.PopulateExperiments()
 		if err != nil {
-			log.Printf("Error: Problem populating experiments: #{err}  \n")
+			log.Printf("Error: Problem populating experiments: %s \n", err)
 		}
+		gcvit.SetDefaults()
 	})
 
 	// setup /api/* routes
 	router := fasthttprouter.New()
-	router.GET("/api/experiment", gcvit.GetExperiments)
-	router.GET("/api/experiment/:exp", gcvit.GetExperiment)
-	router.POST("/api/generateGFF", gcvit.GenerateGFF)
+	router.GET("/api/experiment", gcvit.BasicAuth(gcvit.GetExperiments))
+	router.GET("/api/experiment/:exp", gcvit.BasicAuth(gcvit.GetExperiment))
+	router.POST("/api/generateGFF", gcvit.BasicAuth(gcvit.GenerateGFF))
 
 	// Unmarshal the server settings from config for determining if static file store is needed
 	var serverSettings = viper.Sub("server")
@@ -67,12 +69,6 @@ func main() {
 		}
 		// routes
 		router.GET("/", staticHandler)
-		//		func(ctx *fasthttp.RequestCtx) {
-		//		start := time.Now()
-		//
-		//		ctx.Logger().Printf("%dns", time.Now().Sub(start).Nanoseconds())
-		//	})
-		// because /* won't work, try to serve valid requests from ui/build before invalid route error
 		router.NotFound = staticHandler
 	}
 
