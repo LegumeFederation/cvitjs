@@ -16,6 +16,7 @@ export default class DisplayButton extends React.Component {
     onSubmit = () => {
         const { selected, options } = this.props;
         const {priorRequest} = this.state;
+        let {headers} = this.props
         let requestString = '';
         let classes = {};
         let count = 0;
@@ -50,9 +51,12 @@ export default class DisplayButton extends React.Component {
             model._viewData.diff = {};
             model._viewData.total = {};
 
+            headers.append("Content-Type", "application/x-www-form-urlencoded")
+            console.log('auth-header', headers)
+
             model.appendData('api/generateGff', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: headers,
                 body: requestString,
             })
                 .then(() =>{

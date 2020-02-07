@@ -7,6 +7,9 @@ import OptionsForm from './Components/OptionsForm';
 import HelpModal from './Components/HelpModal'
 import DataModal from "./Components/DownloadModal";
 import DisplayButton from "./Components/DisplayButton";
+import GenotypeSelector from "./Components/GenotypeSelect";
+import Select, {createFilter} from "react-select";
+import {titleDefault} from "./Components/DefaultConfiguration";
 
 export default class App extends React.Component {
     state = {
@@ -33,13 +36,18 @@ export default class App extends React.Component {
         },
         hideOptions: false, //show/hide the gcvit configuration UI
         showModal: '', //show/hide overlay modals (dl/help)
+        auth: process.env.REACT_APP_USE_AUTH,
+        user: '',
+        pwd: '',
+        authHeader: new Headers(),
     };
 
     /**
      * GET request to API to fetch the available datasets to populate options
      **/
-    loadDatasets = () => {
-        fetch('api/experiment')
+    loadDatasets = (header = this.state.authHeader) => {
+        let datasets = []
+        fetch('api/experiment',{method:"GET", headers: header})
             .then( response => response.json())
             .then( datasets => {
                 this.setState({datasets});
@@ -65,7 +73,7 @@ export default class App extends React.Component {
     setDataset = (referenceDataset) => {
         let val = referenceDataset.value;
         if( !this.state.genotypes[val]){
-            fetch(`api/experiment/${val}`)
+            fetch(`api/experiment/${val}`,{method:"GET", headers: this.state.authHeader})
                 .then(result => result.json())
                 .then( genotype => {
                     let genotypes = JSON.parse(JSON.stringify(this.state.genotypes));
@@ -97,6 +105,43 @@ export default class App extends React.Component {
     handleOpenModal = (showModal) => this.setState({showModal});
 
     /**
+     * Username update
+     */
+    userChange = (e) => {
+        const user = e.target.value;
+        this.setState({user});
+    }
+
+    passwordChange = (e) => {
+        const pwd = e.target.value;
+        this.setState({pwd});
+    }
+
+    checkAuthState = () => {
+        const authString = btoa(this.state.user+':'+this.state.pwd);
+        let authHeader = new Headers();
+        authHeader.append('Authorization', 'Basic '+ authString)
+        fetch('/login', {method:'GET', headers:authHeader})
+            .then (response => {
+                if( response.status == 202 ) {
+                    this.setState({authHeader})
+                    this.loadDatasets()
+                } else {
+                    window.alert("Invalid credentials.")
+                }
+            })
+    }
+
+    logout = () => {
+        const authHeader = new Headers();
+        const pwd = "";
+        const user = "";
+        let datasets = [];
+        this.setState({authHeader, user, pwd, datasets});
+        this.loadDatasets(authHeader);
+    }
+
+    /**
      * After UI mounts, hide cvit-app until first comparison request is made, and populate
      * list of available datasets
      */
@@ -106,7 +151,7 @@ export default class App extends React.Component {
     };
 
     render() {
-        const { selected,options,hideOptions,showModal } = this.state;
+        const { selected, options, hideOptions, showModal, auth, user, authHeader } = this.state;
         let gts = this.state.referenceDataset !== null && this.state.genotypes[this.state.referenceDataset.value] !== undefined
             ? this.state.genotypes[this.state.referenceDataset.value]
             : [];
@@ -139,6 +184,37 @@ export default class App extends React.Component {
                     </div>
                 </div>
                 <form className={'display-options'} style={{maxHeight: hideOptions ? '0px' : '100%', overflow: hideOptions ? 'hidden' : 'visible'}}>
+                    { auth == "TRUE" ?
+                       !authHeader.has("Authorization") ?
+                            <fieldset className={'genotype-field'}>
+                                <legend> Login </legend>
+                                <div className={'pure-g genotype-select'}>
+                                    <div className={'pure-u-5-12 l-box '}>
+                                        <input type={'text'} className={'pure-u-1-1 l-box git-option'} placeholder={'username'} onInput={e=>this.userChange(e)} />
+                                    </div>
+                                    <div className={'pure-u-5-12 l-box'}>
+                                        <input type={'password'} className={'pure-u-1-1 l-box git-option'} placeholder={'password'} onInput={e=>this.passwordChange(e)} />
+                                    </div>
+                                    <div className={'pure-u-2-12 l-box'}>
+                                        <div className={'fake-button git-option'} onClick={()=> this.checkAuthState()} > Login </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            :
+                            <fieldset className={'genotype-field'}>
+                                <legend> Login </legend>
+                                <div className={'pure-g genotype-select'}>
+                                    <div className={'pure-u-10-12 l-box '}>
+                                        <div className={'pure-u-1-1 l-box'} style={{"width":"100%"}}> {`Logged in as ${user}`} </div>
+                                    </div>
+                                    <div className={'pure-u-2-12 l-box'}>
+                                        <div className={'fake-button git-option'} onClick={()=> this.logout()} > Logout </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        :
+                        null
+                    }
                     <ReferenceForm datasets={this.state.datasets} setDataset={this.setDataset} appendDataset={this.appendDataset} genotypes={gts} />
                     { selected.length > 0 && selected[0].genotype !== null
                         ? <CompareForm selected={this.state.referenceDataset} genotypes={gts} appendDataset={this.appendDataset} />
@@ -147,7 +223,7 @@ export default class App extends React.Component {
                     <OptionsForm setOptions ={this.setOptions} genotypes={selected} options={options}/>
                 </form>
                 <div className={'pure-g'}>
-                    <DisplayButton selected={selected} options={options} hide={()=>{this.setState({hideOptions:true});}}/>
+                    <DisplayButton selected={selected} options={options} headers={authHeader} hide={()=>{this.setState({hideOptions:true});}}/>
                     <div className={'pure-u-5-24 '}><br /></div>
                     <button className={'pure-u-1-4  pure-button button-display'} onClick={()=>this.handleOpenModal('data')}> Download </button>
                     <div className={'pure-u-1-24'} />
