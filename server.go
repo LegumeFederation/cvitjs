@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"gcvit/gcvit"
+	"gcvit/middleware"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -40,9 +41,10 @@ func main() {
 
 	// setup /api/* routes
 	router := fasthttprouter.New()
-	router.GET("/api/experiment", gcvit.BasicAuth(gcvit.GetExperiments))
-	router.GET("/api/experiment/:exp", gcvit.BasicAuth(gcvit.GetExperiment))
-	router.POST("/api/generateGFF", gcvit.BasicAuth(gcvit.GenerateGFF))
+	router.GET("/api/experiment", middleware.BasicAuth(gcvit.GetExperiments))
+	router.GET("/api/experiment/:exp", middleware.BasicAuth(gcvit.GetExperiment))
+	router.POST("/api/generateGFF", middleware.BasicAuth(gcvit.GenerateGFF))
+	router.GET("/login", middleware.BasicAuth(middleware.CheckAuth))
 
 	// Unmarshal the server settings from config for determining if static file store is needed
 	var serverSettings = viper.Sub("server")

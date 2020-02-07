@@ -6,12 +6,10 @@ package gcvit
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/awilkey/bio-format-tools-go/gff"
 	"github.com/awilkey/bio-format-tools-go/vcf"
-	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
 	"math"
 	"strconv"
@@ -87,7 +85,7 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 	} else if authState := ctx.UserValue("auth"); authState != nil && privateExp[(authState).(string)][exp].Genotypes != nil {
 		expSet = privateExp[(authState).(string)][exp]
 	} else {
-		ctx.Error("Experiment Not Available", fasthttp.StatusUnauthorized)
+		ctx.Error("Experiment Not Available", fasthttp.StatusForbidden)
 		return
 	}
 	//Iterate through passed experiment and build response of GT headers
@@ -166,7 +164,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	} else if authState := ctx.UserValue("auth"); authState != nil && privateExp[(authState).(string)][ref[0]].Location != "" {
 		expSet = privateExp[(authState).(string)][ref[0]]
 	} else {
-		ctx.Error("Experiment Not Available", fasthttp.StatusUnauthorized)
+		ctx.Error("Experiment Not Available", fasthttp.StatusForbidden)
 		ctx.Logger().Printf("Cancel request for %s - %dns - Invalid credentials or non-extant dataset", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
 		return
 	}
@@ -301,56 +299,4 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	fmt.Fprintf(ctx, "%s", b.String())
 	//Log completed request
 	ctx.Logger().Printf("Return request for %s - %dns", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
-}
-
-// Auth stuff
-
-func BasicAuth(h fasthttp.RequestHandler) fasthttp.RequestHandler {
-	return fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
-		// Get the Basic Authentication credentials
-		user, ok := basicAuth(ctx)
-		if ok {
-			ctx.SetUserValue("auth", user)
-		}
-		h(ctx)
-		return
-	})
-}
-
-func basicAuth(ctx *fasthttp.RequestCtx) (username string, ok bool) {
-	// check for auth header
-	auth := ctx.Request.Header.Peek("Authorization")
-	if auth == nil {
-		return
-	}
-	// check that auth is basic auth
-	sauth := string(auth)
-	prefix := "Basic "
-	if !strings.HasPrefix(sauth, prefix) {
-		return
-	}
-	// decode authstring
-	dec, err := base64.StdEncoding.DecodeString(sauth[len(prefix):])
-	if err != nil {
-		return
-	}
-	// find where username:password splits
-	sdec := string(dec)
-	s := strings.IndexByte(sdec, ':')
-	if s < 0 {
-		return
-	}
-
-	// set user and password
-	user := sdec[:s]
-	pw := sdec[s+1:]
-
-	// check if user : password is correct
-	var C map[string]interface{}
-	_ = viper.Unmarshal(&C)
-	authUsers := viper.Sub("users")
-	pss := authUsers.GetString(user)
-	status := pss != "" && pss == pw
-
-	return user, status
 }
