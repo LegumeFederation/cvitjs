@@ -109,27 +109,27 @@ export default class App extends React.Component {
     userChange = (e) => {
         const user = e.target.value;
         this.setState({user});
-    }
+    };
 
     passwordChange = (e) => {
         const pwd = e.target.value;
         this.setState({pwd});
-    }
+    };
 
     checkAuthState = () => {
         const authString = btoa(this.state.user+':'+this.state.pwd);
         let authHeader = new Headers();
-        authHeader.append('Authorization', 'Basic '+ authString)
+        authHeader.append('Authorization', 'Basic '+ authString);
         fetch('/login', {method:'GET', headers:authHeader})
             .then (response => {
                 if( response.status === 202 ) {
-                    this.setState({authHeader})
+                    this.setState({authHeader});
                     this.loadDatasets()
                 } else {
                     window.alert("Invalid credentials.")
                 }
             })
-    }
+    };
 
     logout = () => {
         const authHeader = new Headers();
@@ -138,7 +138,7 @@ export default class App extends React.Component {
         let datasets = [];
         this.setState({authHeader, user, pwd, datasets});
         this.loadDatasets(authHeader);
-    }
+    };
 
     /**
      * After UI mounts, hide cvit-app until first comparison request is made, and populate
