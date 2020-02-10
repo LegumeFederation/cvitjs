@@ -3,6 +3,7 @@
 FROM golang:alpine as builder
 #pass --build-arg apionly="true" when building to skip building cvitjs
 ARG apionly=false
+ARG apiauth=false
 RUN apk add --update git
 #add project to GOPATH/src so dep can run and make sure dependencies are right
 RUN mkdir /go/src/gcvit
@@ -17,13 +18,16 @@ RUN if [ "$apionly" = "false" ] ; then apk add --update nodejs npm && \
 	npm run build && \
 	cp -r build ../ui/public/cvitjs && \
 	echo Built cvitjs ; fi
+#Build UI components
 RUN if [ "$apionly" = "false" ] ; then cd ui && \
 	npm install && \
 	cp -r cvit_assets/* public/cvitjs && \
 	rm -rf public/cvitjs/src && \
 	npm run build && \
-	echo Built UI components ; else echo Skipping UI components ; fi
-#grab dependencies for golang
+	if [ "$apiauth" = "true" ] ; then echo Building UI with Auth && npm run buildauth ; else npm run build ; fi && \
+	echo Built UI components  ; else echo Skipping UI Components; fi
+
+#grab dependencies for golangdd
 RUN go get && go build -o server .
 #actual deployment container
 FROM alpine
