@@ -109,6 +109,12 @@ If you want to save time with automated builds and only need the server API comp
 --build-arg apionly=false
 ```
 is provided to skip over the building of the UI components.
+Similarly, if you wish to build the tool with BasicAuth the build-arg:
+```
+--build-arg apiauth=true
+```
+is provided.
+
 
 When it is time to start the container, there are two mount points exposed to add configuration and data:
 `/app/config` and `/app/assets` respectively.
@@ -183,6 +189,12 @@ To rebuild the UI component of GCViT:
 npm install
 npm run build
 ```
+or 
+```
+npm install
+npm run buildauth
+```
+if you wish to enable the basic authentication login prompt.
 
 This will create a webpacked version of the GCViT UI. Most common reasons to rebuild is updating the Help documentation and
 updating the CSS.
@@ -199,3 +211,4 @@ The following API is served by the GCViT service component:
 | /api/generateGFF | POST | returns gff. Expected parameters of Ref={experiment:PI}&Variant={sameexperiment:PI}, with any number of variants |
 | | | |
 | / | GET | tool UI - Only if apiOnly is **False** |
+|/login | GET | Attempts to authenticate a username and password. Returns statis 200 if OK, 401 if not. | 
