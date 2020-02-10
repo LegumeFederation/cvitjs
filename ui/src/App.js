@@ -7,9 +7,9 @@ import OptionsForm from './Components/OptionsForm';
 import HelpModal from './Components/HelpModal'
 import DataModal from "./Components/DownloadModal";
 import DisplayButton from "./Components/DisplayButton";
-import GenotypeSelector from "./Components/GenotypeSelect";
-import Select, {createFilter} from "react-select";
-import {titleDefault} from "./Components/DefaultConfiguration";
+// import GenotypeSelector from "./Components/GenotypeSelect";
+// import Select, {createFilter} from "react-select";
+ import {titleDefault} from "./Components/DefaultConfiguration";
 
 export default class App extends React.Component {
     state = {
@@ -29,7 +29,7 @@ export default class App extends React.Component {
                 draw_label : 0,
             },
             general:{
-                title:'',
+                title: titleDefault,
                 display_ruler: 'L',
                 tick_interval: 5000000,
             },
@@ -46,7 +46,6 @@ export default class App extends React.Component {
      * GET request to API to fetch the available datasets to populate options
      **/
     loadDatasets = (header = this.state.authHeader) => {
-        let datasets = []
         fetch('api/experiment',{method:"GET", headers: header})
             .then( response => response.json())
             .then( datasets => {
@@ -123,7 +122,7 @@ export default class App extends React.Component {
         authHeader.append('Authorization', 'Basic '+ authString)
         fetch('/login', {method:'GET', headers:authHeader})
             .then (response => {
-                if( response.status == 202 ) {
+                if( response.status === 202 ) {
                     this.setState({authHeader})
                     this.loadDatasets()
                 } else {
@@ -184,7 +183,7 @@ export default class App extends React.Component {
                     </div>
                 </div>
                 <form className={'display-options'} style={{maxHeight: hideOptions ? '0px' : '100%', overflow: hideOptions ? 'hidden' : 'visible'}}>
-                    { auth == "TRUE" ?
+                    { auth === "TRUE" ?
                        !authHeader.has("Authorization") ?
                             <fieldset className={'genotype-field'}>
                                 <legend> Login </legend>
