@@ -26,6 +26,7 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 		err := PopulateExperiments()
 		if err != nil {
 			ctx.Logger().Printf("Error: Problem populating experiments: %s", err)
+			ctx.Error("Problem populating experiments.", fasthttp.StatusInternalServerError)
 		}
 	}
 
@@ -75,6 +76,7 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 		err := PopulateExperiments()
 		if err != nil { //log errors opening provided files for debugging later
 			ctx.Logger().Printf("Error: Problem populating experiments: %s", err)
+			ctx.Error("Problem populating experiments.", fasthttp.StatusInternalServerError)
 		}
 	}
 
