@@ -114,7 +114,7 @@ func SetDefaults() {
 // printGffLine writes trio of formatted gffLines (same, different, total) to the passed writer
 func printGffLine(writer *gff.Writer, contig string, stepCt int, start, end uint64, sameCtr, diffCtr, totalCtr map[string]int) { //in go if no type, share first type encountered to the right
 	gffLine := gff.Feature{
-		Seqid:      string(contig),
+		Seqid:      contig,
 		Source:     source, //source is set when starting server/when config file changes
 		Type:       "same",
 		Start:      start,
