@@ -236,7 +236,6 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 			// reset contig based features, assuming that file is sorted by contig and ascending position
 			// when contig changes or you step outside of current bin
 			for feat.Pos > end || contig != feat.Chrom {
-				ctx.Logger().Printf("%s \t %d :: %d \t %d", feat.Chrom, feat.Pos, end, uint64(ctg[contig]))
 				if ctg[contig] > 0 && end > uint64(ctg[contig]) {
 					end = uint64(ctg[contig])
 				}
