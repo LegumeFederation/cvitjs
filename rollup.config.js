@@ -33,8 +33,6 @@ const postcssOptions = () => {
 
 const resolveOptions = () => {
     return {
-        jsnext: false,
-        main: false,
         browser: true,
         preferBuiltins: true,
         modulesOnly: false
