@@ -17,7 +17,7 @@ import (
 )
 
 var source string
-var binSize int
+var binSize uint64
 
 // experiment that stores all the allowed experiments
 var experiments map[string]DataFiles
@@ -108,16 +108,16 @@ func SetDefaults() {
 	_ = viper.Unmarshal(&C)
 	server := viper.Sub("server")
 	source = server.GetString("source")
-	binSize = server.GetInt("binSize")
+	binSize, _ = strconv.ParseUint(server.GetString("binSize"), 10, 64)
 }
 
 // printGffLine writes trio of formatted gffLines (same, different, total) to the passed writer
-func printGffLine(writer *gff.Writer, contig string, stepCt, stepVal int, end uint64, sameCtr, diffCtr, totalCtr map[string]int) { //in go if no type, share first type encountered to the right
+func printGffLine(writer *gff.Writer, contig string, stepCt int, start, end uint64, sameCtr, diffCtr, totalCtr map[string]int) { //in go if no type, share first type encountered to the right
 	gffLine := gff.Feature{
-		Seqid:      contig,
+		Seqid:      string(contig),
 		Source:     source, //source is set when starting server/when config file changes
 		Type:       "same",
-		Start:      uint64((stepCt-1)*stepVal + 1),
+		Start:      start,
 		End:        end,
 		Score:      gff.MissingScoreField,
 		Strand:     "+",

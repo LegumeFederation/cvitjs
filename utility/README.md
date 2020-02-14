@@ -30,4 +30,4 @@ Check column 7 to see if you have quality values to filter on (-qual_min)
 Set  -complex_var if you want to INCLUDE complex variants (indels). Default is just to use SNPs.
 
 Set -dist_min  determines the SNP density. For example,  -dist_min 20000 will give about 5k SNPs in a 100 million base chromosome.
-```
+```****

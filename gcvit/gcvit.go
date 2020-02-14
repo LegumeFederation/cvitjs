@@ -11,7 +11,6 @@ import (
 	"github.com/awilkey/bio-format-tools-go/gff"
 	"github.com/awilkey/bio-format-tools-go/vcf"
 	"github.com/valyala/fasthttp"
-	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -113,12 +112,12 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	//Log request received
 	ctx.Logger().Printf("Begin request for: %s", ctx.PostArgs())
-	start := time.Now()
+	startT := time.Now()
 	//Struct for holding Post Request
 	req := &struct {
 		Ref     string
 		Variant []string
-		Bin     int
+		Bin     uint64
 	}{}
 
 	//parse reference, both ref and variant are in the form "<exp>:<gt>"
@@ -132,7 +131,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	}
 
 	//parse bin size if available, if not passed, default to config.binSize (500000) bases
-	if bSize, _ := strconv.Atoi(string(ctx.PostArgs().Peek("Bin"))); bSize > 0 {
+	if bSize, _ := strconv.ParseUint(string(ctx.PostArgs().Peek("Bin")), 10, 64); bSize > 0 {
 		req.Bin = bSize
 	} else {
 		req.Bin = binSize
@@ -167,7 +166,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		expSet = privateExp[(authState).(string)][ref[0]]
 	} else {
 		ctx.Error("Experiment Not Available", fasthttp.StatusForbidden)
-		ctx.Logger().Printf("Cancel request for %s - %dns - Invalid credentials or non-extant dataset", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
+		ctx.Logger().Printf("Cancel request for %s - %dns - Invalid credentials or non-extant dataset", ctx.PostArgs(), time.Now().Sub(startT).Nanoseconds())
 		return
 	}
 
@@ -212,7 +211,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 	var feat *vcf.Feature
 	var readErr error
 	var contig string
-	var stepSize int
+	var stepSize uint64
 	if source == "" || binSize == 0 {
 		SetDefaults() // if somehow the source hasn't been set yet
 	}
@@ -222,45 +221,47 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		stepSize = binSize
 	}
 
+	start := uint64(1)
+	end := start + stepSize
 	stepCt := 0
-	stepVal := 0
 
 	for readErr == nil {
 		feat, readErr = r.Read()
 		if feat != nil {
 			gt, _ := feat.SingleGenotype(ref[1], r.Header.Genotypes)
 			rt, _ := feat.MultipleGenotypes(vnt[ref[0]], r.Header.Genotypes)
+			if stepCt == 0 {
+				contig = feat.Chrom
+			}
 			// reset contig based features, assuming that file is sorted by contig and ascending position
 			// when contig changes or you step outside of current bin
-			if feat.Pos > uint64(stepCt*stepVal) || contig != feat.Chrom {
-				if stepCt > 0 {
-					end := uint64(stepCt) * uint64(stepVal)
-					if ctg[contig] > 0 && end > uint64(ctg[contig]) {
-						end = uint64(ctg[contig])
-					}
-
-					printGffLine(writer, contig, stepCt, stepVal, end, sameCtr, diffCtr, totalCtr)
-
-					//Reset counters
-					for val := range totalCtr {
-						totalCtr[val] = 0
-					}
-					for val := range sameCtr {
-						sameCtr[val] = 0
-					}
-					for val := range diffCtr {
-						diffCtr[val] = 0
-					}
-					stepCt = (int(feat.Pos) / stepSize) + 1
+			for feat.Pos > end || contig != feat.Chrom {
+				ctx.Logger().Printf("%s \t %d :: %d \t %d", feat.Chrom, feat.Pos, end, uint64(ctg[contig]))
+				if ctg[contig] > 0 && end > uint64(ctg[contig]) {
+					end = uint64(ctg[contig])
 				}
+
+				printGffLine(writer, contig, stepCt, start, end, sameCtr, diffCtr, totalCtr)
+
+				start = end + 1
+				end = start + stepSize
+
+				//Reset counters
+				for val := range totalCtr {
+					totalCtr[val] = 0
+				}
+				for val := range sameCtr {
+					sameCtr[val] = 0
+				}
+				for val := range diffCtr {
+					diffCtr[val] = 0
+				}
+				stepCt++
 
 				if contig != feat.Chrom {
 					contig = feat.Chrom
-					if ctg[contig] > 0 {
-						stepVal = int(float64(ctg[contig]) / math.Ceil(float64(ctg[contig])/float64(stepSize)))
-					} else {
-						stepVal = stepSize
-					}
+					start = 1
+					end = start + stepSize
 					stepCt = 1
 				}
 			}
@@ -285,20 +286,22 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 					}
 				}
 			}
+			//	} else { // only uncomment if you want a undefined reference counting to total
+			//		totalCtr["value"]++
+			//		totalCtr["undefined"]++
+			//	}
 		}
 	}
-
-	end := uint64(stepCt) * uint64(stepVal)
 
 	if ctg[contig] > 0 && end > uint64(ctg[contig]) {
 		end = uint64(ctg[contig])
 	}
 
-	printGffLine(writer, contig, stepCt, stepVal, end, sameCtr, diffCtr, totalCtr)
+	printGffLine(writer, contig, stepCt, start, end, sameCtr, diffCtr, totalCtr)
 
 	//send build gff
 	ctx.SetContentType("text/plain; charset=utf8")
 	fmt.Fprintf(ctx, "%s", b.String())
 	//Log completed request
-	ctx.Logger().Printf("Return request for %s - %dns", ctx.PostArgs(), time.Now().Sub(start).Nanoseconds())
+	ctx.Logger().Printf("Return request for %s - %dns", ctx.PostArgs(), time.Now().Sub(startT).Nanoseconds())
 }
