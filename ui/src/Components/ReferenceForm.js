@@ -6,8 +6,6 @@ import GenotypeSelector from './GenotypeSelect';
  */
 export default class ReferenceForm extends React.Component {
 	render() {
-		console.log("ref form",this.props.datasets)
-
 		return (
 			<fieldset className={'genotype-field'}>
 				<legend> Reference Genotype</legend>

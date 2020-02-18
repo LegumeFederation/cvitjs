@@ -25,7 +25,7 @@ export default class GenotypeSelector extends React.Component {
 		selectedDataset: null,
 		selectedGenotype: null,
 		displayColorPicker: false,
-		color: colorDefault()
+		color: colorDefault,
 	};
 
 	formatDatasetValue(){

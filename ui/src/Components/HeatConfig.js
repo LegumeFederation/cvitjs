@@ -1,3 +1,5 @@
+import {binSizeDefault} from "./DefaultConfiguration";
+
 export function heatConfig(compare, side, minValue, maxValue,filters){
   return {
       feature: compare.value,
@@ -9,7 +11,7 @@ export function heatConfig(compare, side, minValue, maxValue,filters){
       max: 0,
       width: 10,
       offset:  side ? 0 : -0,
-      bin_size: 500000,
+      bin_size: binSizeDefault,
       bin_min: minValue,
       bin_max: maxValue,
       by_class: 1,

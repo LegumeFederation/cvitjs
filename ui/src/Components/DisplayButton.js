@@ -1,4 +1,5 @@
 import React from 'react';
+import {binSizeDefault} from "./DefaultConfiguration";
 
 /**
  * Button to send request for gff to server and add results to cvit image.
@@ -38,7 +39,7 @@ export default class DisplayButton extends React.Component {
         model._viewConfig.classes = classes;
 
         const binSize = options.left.hasOwnProperty('bin_size') ? options.left.bin_size :
-            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : 500000;
+            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : binSizeDefault;
         requestString = requestString + "&Bin=" + encodeURIComponent(binSize);
         this.props.hide();
         //fetch new data

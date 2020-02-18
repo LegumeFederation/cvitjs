@@ -25389,44 +25389,49 @@
    */
 
   function _setTitle(config) {
-    if (config.general.hasOwnProperty("title")) {
-      let act = paperFull.project.getActiveLayer();
-      let bg = new paperFull.Layer();
-      bg.name = 'cvitTitle';
-      let cvitTitle = config.general.title.split(/<[/i]+>/);
-      let titleLoc;
-      let titleSize = config.general.title_font_size;
-      let titleX;
-      let titleY;
-
-      if (config.general.hasOwnProperty('title_location')) {
-        let titlePos = config.general.title_location.match(/\((.*),(.*)\)/);
-        titleX = parseInt(titlePos[1]);
-        titleY = parseInt(titlePos[2]) + titleSize;
-      } else {
-        titleX = parseInt(config.general.image_padding) + parseInt(config.general.border_width);
-        titleY = titleX + titleSize;
-        let heightAllow = parseInt(config.general.title_height);
-
-        if (heightAllow > titleY) {
-          titleY = heightAllow;
-        }
-      }
-
-      titleLoc = new paperFull.Point(titleX, titleY);
-
-      for (let i = 0; i < cvitTitle.length; i++) {
-        let title = new paperFull.PointText(titleLoc);
-        title.fontFamily = config.general.title_font_face;
-        title.content = cvitTitle[i];
-        title.fontSize = titleSize;
-        title.fontWeight = i % 2 === 1 ? 'Italic' : 'normal';
-        title.fillColor = formatColor(config.general.title_font_color);
-        titleLoc.x += title.getStrokeBounds().width;
-      }
-
-      act.activate();
+    //Don't bother setting a blank title.
+    if (!config.general.hasOwnProperty("title")) {
+      return;
     }
+
+    let act = paperFull.project.getActiveLayer();
+    let bg = new paperFull.Layer();
+    bg.name = 'cvitTitle';
+    let cvitTitle = config.general.title || "";
+    console.log("title", config.general.title);
+    cvitTitle = cvitTitle.split(/<[/i]+>/);
+    let titleLoc;
+    let titleSize = config.general.title_font_size;
+    let titleX;
+    let titleY;
+
+    if (config.general.hasOwnProperty('title_location')) {
+      let titlePos = config.general.title_location.match(/\((.*),(.*)\)/);
+      titleX = parseInt(titlePos[1]);
+      titleY = parseInt(titlePos[2]) + titleSize;
+    } else {
+      titleX = parseInt(config.general.image_padding) + parseInt(config.general.border_width);
+      titleY = titleX + titleSize;
+      let heightAllow = parseInt(config.general.title_height);
+
+      if (heightAllow > titleY) {
+        titleY = heightAllow;
+      }
+    }
+
+    titleLoc = new paperFull.Point(titleX, titleY);
+
+    for (let i = 0; i < cvitTitle.length; i++) {
+      let title = new paperFull.PointText(titleLoc);
+      title.fontFamily = config.general.title_font_face;
+      title.content = cvitTitle[i];
+      title.fontSize = titleSize;
+      title.fontWeight = i % 2 === 1 ? 'Italic' : 'normal';
+      title.fillColor = formatColor(config.general.title_font_color);
+      titleLoc.x += title.getStrokeBounds().width;
+    }
+
+    act.activate();
   }
   /**
    *

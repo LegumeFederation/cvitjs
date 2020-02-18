@@ -1,3 +1,5 @@
+import {binSizeDefault} from "./DefaultConfiguration";
+
 export function haploConfig(compare,side,minValue,maxValue,filters){
   return {
     feature : compare.value,
@@ -12,7 +14,7 @@ export function haploConfig(compare,side,minValue,maxValue,filters){
     width: 3,
     bin_min: maxValue -1 > 0 ? maxValue - 1 : 0 ,
     bin_max: maxValue > 0 ?  maxValue : 1,
-    bin_size: 500000,
+    bin_size: binSizeDefault,
     by_class: 1,
     class_filter: filters.map( filter => filter.value),
     draw_label: 0,

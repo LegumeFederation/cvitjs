@@ -1,3 +1,5 @@
+import {binSizeDefault} from "./DefaultConfiguration";
+
 export function histConfig(compare,side,minValue,maxValue,filters,count){
 return {
   feature: compare.value,
@@ -10,7 +12,7 @@ return {
   width: 3,
   bin_min: minValue,
   bin_max: maxValue,
-  bin_size: 500000,
+  bin_size: binSizeDefault,
   by_class: 1,
   class_offset : 0,
   class_filter: filters.map( filter => filter.value),

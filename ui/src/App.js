@@ -9,7 +9,7 @@ import DataModal from "./Components/DownloadModal";
 import DisplayButton from "./Components/DisplayButton";
 // import GenotypeSelector from "./Components/GenotypeSelect";
 // import Select, {createFilter} from "react-select";
- import {titleDefault} from "./Components/DefaultConfiguration";
+ import {rulerIntervalDefault, titleDefault} from "./Components/DefaultConfiguration";
 
 export default class App extends React.Component {
     state = {
@@ -31,7 +31,7 @@ export default class App extends React.Component {
             general:{
                 title: titleDefault,
                 display_ruler: 'L',
-                tick_interval: 5000000,
+                tick_interval: rulerIntervalDefault,
             },
         },
         hideOptions: false, //show/hide the gcvit configuration UI
