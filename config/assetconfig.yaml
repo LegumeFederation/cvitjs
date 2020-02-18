@@ -5,7 +5,9 @@ server:
   binSize: 500000
 
 users:
-   test1  : password
+   user1  : password1
+   user2  : password2
+   user3  : password3
 
 snpnamed:
   location: assets/SoySNP50k_TestFile_named.vcf.gz
@@ -17,4 +19,12 @@ snpnamedr:
   name: soySNP 50k subset [named] [restricted]
   format: vcf
   restricted:
-    - test1
+    - user1
+
+snpnamedrmulti:
+  location: assets/SoySNP50k_TestFile_named.vcf.gz
+  name: soySNP 50k subset [named] [multi-restricted]
+  format: vcf
+  restricted:
+    - user2
+    - user3
