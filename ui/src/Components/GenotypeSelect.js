@@ -25,7 +25,7 @@ export default class GenotypeSelector extends React.Component {
 		selectedDataset: null,
 		selectedGenotype: null,
 		displayColorPicker: false,
-		color: colorDefault,
+		color: colorDefault
 	};
 
 	formatDatasetValue(){
@@ -76,7 +76,7 @@ export default class GenotypeSelector extends React.Component {
 			<div>
 			<div className={'pure-g genotype-select'}>
 				<div className={'pure-u-1-12 l-box '}>
-					<span> Color </span>
+					<span> Color </span><br/>
 					<div className={'fake-button git-option'} onClick={this.colorClick} style={{background:this.state.color, zIndex:1 }} />
 					{ this.state.displayColorPicker
 						?<div>
@@ -89,7 +89,7 @@ export default class GenotypeSelector extends React.Component {
 					}
 				</div>
 				<div className={'pure-u-5-12 l-box'}>
-					<span> Dataset </span>
+					<span> Dataset </span><br/>
 					<Select
 						defaultValue={this.props.selected || null}
 						label="Dataset"
@@ -105,7 +105,7 @@ export default class GenotypeSelector extends React.Component {
 					/>
 				</div>
 				<div className={'pure-u-1-3 l-box'}>
-					<span> Genotype </span>
+					<span> Genotype </span><br/>
 					<Select
 						className="basic-single git-option"
 						classNamePrefix="select"

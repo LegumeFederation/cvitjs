@@ -99,6 +99,7 @@ p {
 .git-option {
     margin-top: .25rem;
     margin-bottom: 1.25rem;
+    height: 5rem;
 }
 
 .git-option-component:hover {
