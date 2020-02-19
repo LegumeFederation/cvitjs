@@ -33,10 +33,10 @@ const rulerDisplayOptions = [
 export default class BaseOptions extends React.Component {
     state = {
         rulerDisplay : rulerDisplayDefault(rulerDisplayOptions), // Display ruler on LHS
-        binSize : binSizeDefault(),   // Default binsize of 500000 bp
-        rulerInterval: rulerIntervalDefault(), // Default interval of 5000000 bp
-        title: titleDefault(),  // Blank default title
-    }
+        binSize : binSizeDefault,   // Default binsize of 500000 bp
+        rulerInterval: rulerIntervalDefault, // Default interval of 5000000 bp
+        title: titleDefault,  // Blank default title
+    };
 
     /**
      * Pass updated options back to model
@@ -44,14 +44,14 @@ export default class BaseOptions extends React.Component {
      */
     optionsUpdate = (value) => {
         this.props.optionsUpdate('general',value);
-    }
+    };
 
     rulerChange = (rulerDisplay) => {
         let values = this.state;
         values.rulerDisplay = rulerDisplay;
         this.setState({rulerDisplay});
         this.optionsUpdate(values);
-    }
+    };
 
     titleChange = (e) => {
         const title = e.target.value;
@@ -59,7 +59,7 @@ export default class BaseOptions extends React.Component {
         values.title = title;
         this.setState({title});
         this.optionsUpdate(values);
-    }
+    };
 
     binChange = (e) => {
         const binSize = parseInt(e.target.value) || 1;
@@ -67,7 +67,7 @@ export default class BaseOptions extends React.Component {
         values.binSize = binSize;
         this.setState({binSize});
         this.optionsUpdate(values);
-    }
+    };
 
     intervalChange = (e) => {
         const rulerInterval = parseInt(e.target.value) || 1;
@@ -75,7 +75,7 @@ export default class BaseOptions extends React.Component {
         values.rulerInterval = rulerInterval;
         this.setState({rulerInterval});
         this.optionsUpdate(values);
-    }
+    };
 
     render(props,state) {
         const { rulerDisplay, binSize, rulerInterval, title } = this.state;
@@ -85,11 +85,11 @@ export default class BaseOptions extends React.Component {
                 <div className={'pure-g genotype-select'}>
                     <div className={'pure-u-1-2 l-box'}>
                         <span> Title </span>
-                        <input type={'text'} value={title} className={'pure-u-1-1 l-box git-option'} id={`title-gen`} placeholder={titleDefault()} onInput={e=>this.titleChange(e)} />
+                        <input type={'text'} value={title} className={'pure-u-1-1 l-box git-option'} id={`title-gen`} placeholder={titleDefault} onInput={e=>this.titleChange(e)} />
                     </div>
                     <div className={'pure-u-1-6 l-box'}>
                         <span> Bin Size </span>
-                        <input type={'text'} value={binSize} className={'pure-u-1-1 l-box git-option'} id={`binsize-gen`} placeholder={binSizeDefault()} onInput={e=>this.binChange(e)}/>
+                        <input type={'text'} value={binSize} className={'pure-u-1-1 l-box git-option'} id={`binsize-gen`} placeholder={binSizeDefault} onInput={e=>this.binChange(e)}/>
                     </div>
                     <div className={'pure-u-1-6 l-box'}>
                         <span> Ruler Display </span>
@@ -108,7 +108,7 @@ export default class BaseOptions extends React.Component {
                         <div className={'pure-u-1-6 l-box'}>
                             <span> Ruler Interval </span>
                             <input type={'text'} value={rulerInterval} className={'pure-u-1-1 l-box git-option'} id={`rulertic-gen`}
-                                   placeholder={rulerIntervalDefault()} onInput={e=> this.intervalChange(e)}/>
+                                   placeholder={rulerIntervalDefault} onInput={e=> this.intervalChange(e)}/>
                         </div>
                         : null
                     }

@@ -35,27 +35,44 @@ By default the configuration sits in `config/assetsconfig.yaml` and it has the f
 server:
   port: 8080
   apiOnly: False
+  source: gcvit
+  binSize: 500000
+
+users:
+  username : password
 
 snptestLegacy:
   location: assets/SoySNP50k_TestFile_named.vcf.gz 
   name: soySNP 50k subset [named]
   format: vcf
+  restricted:
+    - username
 ```
 
-The server stanza is optional, and supports two options:
+The server stanza is optional, and supports the following options:
 
 | Option | Default | Use |
 | ----- | ----- | ----- |
 | port | 8080 | Changes the port GCViT listens on. |
 | apiOnly | False | If True, only serves the api routes, ignoring the GCViT frontend |
+| source | gcvit | Value for Column 2 of generated gff files from /api/generateGFF |
+| binSize | 500000 | Default number of bases used for bins |
 
-After the server, you may have one or more data tracks, that have the following required fields:
+The users stanza is also optional. Use this configuration option to set one-or-more users to password protect datasets.
+Without proper credentials, users will never be presented with restricted datasets when using the gcvit ui.
+The format is one-or more `<username> : <password>` pairs. Note this only uses BasicAuth headers, and isn't intended to 
+be very secure. Future updates may include better practices if demand is present.
+
+Finally you may have one or more data tracks, that have the following required fields:
 
 ```yaml
 key: #internal key for API requests
   location: relative to root of server directory
   name: display name for dropdowns
   format: vcf (only option for now, automatically checks if gzipped)
+  restricted: [optional] whitelist of users that may access this dataset, if not present, data may be accessed by anyone
+    - username: username that can access this data
+    - username2: another user that can access this datta
 ```
 
 While it is recommended, data does not have to be in the `assets` folder to be read by GCViT.
@@ -92,6 +109,12 @@ If you want to save time with automated builds and only need the server API comp
 --build-arg apionly=false
 ```
 is provided to skip over the building of the UI components.
+Similarly, if you wish to build the tool with BasicAuth the build-arg:
+```
+--build-arg apiauth=true
+```
+is provided.
+
 
 When it is time to start the container, there are two mount points exposed to add configuration and data:
 `/app/config` and `/app/assets` respectively.
@@ -166,6 +189,12 @@ To rebuild the UI component of GCViT:
 npm install
 npm run build
 ```
+or 
+```
+npm install
+npm run buildauth
+```
+if you wish to enable the basic authentication login prompt.
 
 This will create a webpacked version of the GCViT UI. Most common reasons to rebuild is updating the Help documentation and
 updating the CSS.
@@ -182,3 +211,4 @@ The following API is served by the GCViT service component:
 | /api/generateGFF | POST | returns gff. Expected parameters of Ref={experiment:PI}&Variant={sameexperiment:PI}, with any number of variants |
 | | | |
 | / | GET | tool UI - Only if apiOnly is **False** |
+|/login | GET | Attempts to authenticate a username and password. Returns statis 200 if OK, 401 if not. | 

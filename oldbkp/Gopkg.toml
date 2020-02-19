@@ -26,25 +26,13 @@
 
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/awilkey/bio-format-tools-go"
-
-[[constraint]]
-  name = "github.com/buaazp/fasthttprouter"
-  version = "0.1.1"
-
-[[constraint]]
-  name = "github.com/fsnotify/fsnotify"
-  version = "1.4.7"
-
-[[constraint]]
-  name = "github.com/spf13/viper"
-  version = "1.6.2"
-
-[[constraint]]
-  name = "github.com/valyala/fasthttp"
-  version = "20180529.0.0"
+  name = "github.com/go-ozzo/ozzo-routing"
+  version = "2.1.4"
 
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/awilkey/bio-format-tools-go"

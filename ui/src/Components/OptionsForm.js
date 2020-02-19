@@ -1,13 +1,14 @@
 import React from 'react';
 import TrackOptions from "./TrackOptionsSelect";
 import BaseOptions from "./BaseOptionsSelect";
+import {binSizeDefault} from "./DefaultConfiguration";
 
 /**
  * Form for controlling LHS/RHS display options
  */
 export default class OptionsForm extends React.Component {
 	state = {
-		'binSize': 500000,
+		'binSize': binSizeDefault,
 	}
 
 	optionsUpdate = (group,value) => {

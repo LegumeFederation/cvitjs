@@ -1,4 +1,5 @@
 import React from 'react';
+import {binSizeDefault} from "./DefaultConfiguration";
 
 /**
  * Button to send request for gff to server and add results to cvit image.
@@ -16,6 +17,7 @@ export default class DisplayButton extends React.Component {
     onSubmit = () => {
         const { selected, options } = this.props;
         const {priorRequest} = this.state;
+        let {headers} = this.props
         let requestString = '';
         let classes = {};
         let count = 0;
@@ -37,7 +39,7 @@ export default class DisplayButton extends React.Component {
         model._viewConfig.classes = classes;
 
         const binSize = options.left.hasOwnProperty('bin_size') ? options.left.bin_size :
-            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : 500000;
+            options.right.hasOwnProperty('bin_size') ? options.right.bin_size : binSizeDefault;
         requestString = requestString + "&Bin=" + encodeURIComponent(binSize);
         this.props.hide();
         //fetch new data
@@ -50,9 +52,12 @@ export default class DisplayButton extends React.Component {
             model._viewData.diff = {};
             model._viewData.total = {};
 
+            headers.append("Content-Type", "application/x-www-form-urlencoded")
+            console.log('auth-header', headers)
+
             model.appendData('api/generateGff', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: headers,
                 body: requestString,
             })
                 .then(() =>{

@@ -7,19 +7,19 @@ export function rulerDisplayDefault(rulerDisplayOptions) { return rulerDisplayOp
 /**
  * Distance in default units between major tick ines in ruler
  */
-export function rulerIntervalDefault(){ return 5000000 };
+export const rulerIntervalDefault = 5000000;
 
 /**
  * Size of display "bin" for counts
  */
-export function binSizeDefault(){ return 500000 };
+export const binSizeDefault = 500000;
 
 /**
  * Default title
  */
-export function titleDefault(){ return ''};
+export const titleDefault  = "";
 
 /**
  * Default feature color
  */
-export function colorDefault(){ return '#19741A'}
+export const colorDefault = '#19741A';

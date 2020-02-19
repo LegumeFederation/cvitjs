@@ -25389,10 +25389,17 @@
    */
 
   function _setTitle(config) {
+    //Don't bother setting a blank title.
+    if (!config.general.hasOwnProperty("title")) {
+      return;
+    }
+
     let act = paperFull.project.getActiveLayer();
     let bg = new paperFull.Layer();
     bg.name = 'cvitTitle';
-    let cvitTitle = config.general.title.split(/<[/i]+>/);
+    let cvitTitle = config.general.title || "";
+    console.log("title", config.general.title);
+    cvitTitle = cvitTitle.split(/<[/i]+>/);
     let titleLoc;
     let titleSize = config.general.title_font_size;
     let titleX;
@@ -26662,13 +26669,26 @@
 
       for (let key in feature.attribute) {
         if (feature.attribute.hasOwnProperty(key)) {
-          attributes.push(h("tr", null, h("th", null, key), h("th", null, feature.attribute[key])));
+          attributes.push(h("tr", null, h("th", null, `${key}:`), h("td", null, feature.attribute[key])));
         }
       }
 
       return h("div", {
         className: 'popover-contents'
-      }, h("table", null, h("thead", null, h("tr", null, h("th", null, " Name:"), h("th", null, " ", feature.name || feature.attribute.id, " "))), h("tbody", null, h("tr", null, h("th", null, " Start:"), h("th", null, " ", feature.start, " ")), h("tr", null, h("th", null, " End:"), h("th", null, " ", feature.end, " ")), h("tr", null, h("th", null, " Strand:"), h("th", null, " ", feature.strand, " ")), h("tr", null, h("th", null, " Score:"), h("th", null, " ", typeof feature.score === 'number' ? feature.score.toExponential() : feature.score, " ")), attributes)));
+      }, h("table", {
+        style: {
+          margin: 'auto'
+        }
+      }, h("thead", null, h("tr", null, h("th", {
+        colSpan: 2,
+        style: {
+          textAlign: 'center'
+        }
+      }, " Feature Information "))), h("tbody", null, h("tr", null, h("th", null, " Name: "), h("td", null, " ", feature.name || feature.attribute.id, " ")), h("tr", null, h("th", null, " Chromosome: "), h("td", null, " ", feature.seqName, " ")), h("tr", null, h("th", null, " Start:"), h("td", null, " ", feature.start, " ")), h("tr", null, h("th", null, " End:"), h("td", null, " ", feature.end, " ")), attributes)), h("br", null), h("a", {
+        href: `https://soybase.org/gb2/gbrowse/gmax2.0/?name=${feature.seqName}%3A${feature.start}..${feature.end}`
+      }, " View Region in Soybase GBrowse "), h("br", null), h("a", {
+        href: `https://legumeinfo.org/lis_context_viewer/search/lis/glyma.${feature.seqName}/${feature.start}-${feature.end}`
+      }, " View Region in LIS Context Viewer "));
     });
     return h("div", {
       id: 'popover-contents'
@@ -27511,12 +27531,11 @@
           }
         }
 
-        let seqName = parsed.alias[gffLine.seqName] || gffLine.seqName;
-        console.log(seqName);
+        let seqName = parsed.alias[gffLine.seqName] || gffLine.seqName; //gffLine.seqName is a fallover if chromosomes don't come first in file
 
         if (seqNames.length > 0) {
           seqNames.some(seq => {
-            let re = new RegExp('.*' + seq).test(seqName);
+            let re = new RegExp('.*' + seqName).test(seq);
 
             if (re) {
               seqName = seq;
