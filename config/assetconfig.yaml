@@ -1,16 +1,16 @@
 server:
   port: 8080
   portTLS: 8888
-  certFile : config/testcert.cert
-  keyFIle : config/testcert.key
+  certFile: config/testcert.cert
+  keyFile: config/testcert.key
   apiOnly: False
   source: gcvit
   binSize: 500000
 
 users:
-   user1  : password1
-   user2  : password2
-   user3  : password3
+   user1: password1
+   user2: password2
+   user3: password3
 
 snpnamed:
   location: assets/SoySNP50k_TestFile_named.vcf.gz
