@@ -22,7 +22,7 @@ func main() {
 	viper.SetConfigName("assetconfig")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
-	viper.SetDefault("server", map[string]string{"port": "8080", "apiOnly": "false", "source": "gcvit", "binSize": "500000"})
+	viper.SetDefault("server", map[string]string{"port": "0", "portTLS": "0", "apiOnly": "false", "source": "gcvit", "binSize": "500000"})
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
@@ -74,8 +74,29 @@ func main() {
 		router.NotFound = staticHandler
 	}
 
-	// Setup port and serve
 	port := serverSettings.GetInt("port")
-	log.Printf("Server started at 127.0.0.1:%d", port)
-	log.Fatal(fasthttp.ListenAndServe(fmt.Sprintf(":%d", port), router.Handler))
+	portTLS := serverSettings.GetInt("portTLS")
+
+	// Setup http port if *no* ports are passed
+	if port > 1 && portTLS < 1 {
+		port = 8080
+	}
+
+	// Serve HTTP
+	if port > 0 {
+		log.Printf("Starting HTTP server on %d", port)
+		if err := fasthttp.ListenAndServe(fmt.Sprintf(":%d", port), router.Handler); err != nil {
+			log.Fatalf("error in ListenAndServer: %s", err)
+		}
+	}
+
+	// Serve TLS
+	if portTLS > 0 {
+		log.Printf("Starting HTTPS server on %d", portTLS)
+		certFile := serverSettings.GetString("certFile")
+		keyFile := serverSettings.GetString("keyFile")
+		if err := fasthttp.ListenAndServeTLS(fmt.Sprintf(":%d", portTLS), certFile, keyFile, router.Handler); err != nil {
+			log.Fatalf("error in ListenAndServerTLS: %s", err)
+		}
+	}
 }
