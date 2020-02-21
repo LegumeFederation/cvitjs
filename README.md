@@ -34,6 +34,9 @@ By default the configuration sits in `config/assetsconfig.yaml` and it has the f
 ```yaml
 server:
   port: 8080
+  portTLS: 8888
+  certFile: config/testcert.cert
+  keyFile: config/testcert.key
   apiOnly: False
   source: gcvit
   binSize: 500000
@@ -53,7 +56,10 @@ The server stanza is optional, and supports the following options:
 
 | Option | Default | Use |
 | ----- | ----- | ----- |
-| port | 8080 | Changes the port GCViT listens on. |
+| port | 8080 | Changes the port GCViT listens on for HTTPS traffic. Defaults to 8080 only if no portTLS is provided. Otherwise ignores HTTP traffic. |
+| portTLS | - | Changes the port GCViT listens for HTTPS traffic. No default provided as you need to set your own key/cert. |
+| certFile | - | Cert file for HTTPS. config/testcert.cert is only for testing purposes and not a default. |
+| keyFile | - | Key file for HTTPS. config/testcert.key is only for testing purposes and not a default. |
 | apiOnly | False | If True, only serves the api routes, ignoring the GCViT frontend |
 | source | gcvit | Value for Column 2 of generated gff files from /api/generateGFF |
 | binSize | 500000 | Default number of bases used for bins |

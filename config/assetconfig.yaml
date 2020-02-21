@@ -1,5 +1,8 @@
 server:
   port: 8080
+  portTLS: 8888
+  certFile : config/testcert.cert
+  keyFIle : config/testcert.key
   apiOnly: False
   source: gcvit
   binSize: 500000
