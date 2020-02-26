@@ -21,6 +21,7 @@ export default class Index {
     this._viewConfig = {};
     this._tag = '';
     this._active = 'status';
+    this._status = 'Loading default view data.';
     this._mouseTool = 'pan';
     this._dataLoaded = new CustomEvent('baseDataLoaded');
     this._trigger = false;
@@ -73,7 +74,7 @@ export default class Index {
         this.loadViewConfig(this.cvitRoot+viewConfig);
         // Load _viewData for view
         this.loadInitialData(dataSources);
-
+        this.status = '';
         this._inform();
       })
       .catch(e => console.error(e));
@@ -152,12 +153,25 @@ export default class Index {
     return this._popoverConfig;
   }
 
+  get status () {
+    return this._status;
+  }
+
+  set status (status) {
+    this._status = status;
+  }
+
+
   setColor(target,color){
     this[target] = color;
     this.active = 'canvas';
     this._inform();
   }
 
+  setStatus(status){
+    this.status = status;
+    this._inform();
+  }
 
   setTool(state){
     this.mouseTool = state;
@@ -187,6 +201,7 @@ export default class Index {
    * @param fetchParam optional
    */
   loadData(files, fetchParam = {}) {
+    this.status = 'Loading view data.';
     this._viewData = {};
     files.forEach((file, i) => {
 
@@ -213,6 +228,7 @@ export default class Index {
    * @param fetchParam optional
    */
   loadViewConfig(file, fetchParam = {}){
+    this.status = 'Loading view configuration.';
     this._viewConfig = {};
     let fp = fetchParam.hasOwnProperty(file)
         ? fetchParam[file]
@@ -249,6 +265,7 @@ export default class Index {
    */
   appendData(file,fetchParam = {}){
     if(this._active !== 'status'){
+      this.status = 'Appending data.';
       this._active = 'status';
       this._inform();
     }
@@ -263,6 +280,7 @@ export default class Index {
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
+        this.status = '';
         this._dirty = true;
         this._inform();
       })
@@ -270,6 +288,7 @@ export default class Index {
   }
 
   appendGff(gff,fetchParam = {}){
+    this.status = 'Appending gff data.';
     let fp = fetchParam.hasOwnProperty(file)
         ? fetchParam[file]
         : this._fetchParam.hasOwnProperty(file)
@@ -284,6 +303,7 @@ export default class Index {
         })
         .catch(e => console.error(e));
   }
+
 
 
   /**

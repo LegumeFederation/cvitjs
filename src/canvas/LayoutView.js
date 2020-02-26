@@ -11,7 +11,7 @@ import {formatColor, offsetSign, spreadBackbones, zoomCanvas,transformValue} fro
  * @param config
  * @param view
  */
-export default function layoutView(data,config,view){
+export default function layoutView(data,config,view,updateStatus){
   /** setup paper base layer's main group */
   let active = paper.project.getActiveLayer();
   active.removeChildren();
@@ -40,6 +40,7 @@ export default function layoutView(data,config,view){
   /** draw backbones **/
   if(data.hasOwnProperty('chromosome')) {
     data.chromosome.features.forEach(chromosome => {
+      updateStatus("Laying out "+chromosome.seqName);
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
       baseGroup.addChild(chr.group);
       labelGroup.addChild(chr.labelGroup);
@@ -59,6 +60,7 @@ export default function layoutView(data,config,view){
   for(let key in config){
     //Iterate through data and add to their target chromosomes
     if(key !== 'general' && config.hasOwnProperty(key)) {
+      updateStatus("Laying out "+ key);
       //set glyph/subglyph and the data.<group> that the features can be found in.
       let cGlyph = config[key].glyph ? config[key].glyph : key;
       let cSubglyph = config[key].display ? config[key].display : config[key].shape ? config[key].shape : key;

@@ -32,8 +32,10 @@ export default class CVIT {
    * @param fetchConfig
    */
   overwriteData(files,fetchConfig = {}){
+    this.model.setStatus('Adding new data.');
     this.model.setData(files,fetchConfig)
       .then(()=>{
+        this.model.status = '';
         this.model.setDirty(true);
       });
   }
@@ -44,8 +46,12 @@ export default class CVIT {
    * @param fetchConfig
    */
   overwriteConfig(file,fetchConfig = {}){
+    this.model.setStatus('Adding new configuration.');
     this.model.loadViewConfig(file,fetchConfig)
-      .then( () => this.model.setDirty(true));
+      .then( () => {
+        this.model.status = '';
+        this.model.setDirty(true)
+      });
   }
 
   pingModel(){

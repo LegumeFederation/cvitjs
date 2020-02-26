@@ -10,7 +10,13 @@ export default class CvitHeader extends Component {
     let ctrl = props.cvitModel.view.displayControls;
     return (
       <div className={'row cvit'} id={'cvit-main'}>
-        {(active === 'canvas' || /color.*/.test(active)) && (ctrl !== 'none') ?
+        {
+          active === 'status' || props.cvitModel.status !== '' ?
+            <div className={'twelve columns'} id={'loading-div'}> {props.cvitModel.status} </div>
+            :
+            null
+        }
+        {(active === 'canvas' || /color.*/.test(active)) && (ctrl !== 'none') && props.cvitModel.status === '' ?
           <CvitControls
             mouseTool={props.cvitModel.mouseTool}
             selectTool={(state) => {
@@ -35,18 +41,21 @@ export default class CvitHeader extends Component {
             cvitConfig={props.cvitModel.config}
             cvitView={props.cvitModel.view}
             dirty={props.cvitModel.dirty}
+            status={props.cvitModel.status}
             setDirty={(newState) => props.cvitModel.setDirty(newState)}
+            updateStatus={(status)=> props.cvitModel.setStatus(status)}
             popover={props.cvitModel.popoverConfig}
             displayControls={ctrl}
           />
           :
-          active === 'status' ?
-            <div className={'twelve columns'} id={'loading-div'}> "Loading Cvit Canvas" </div>
-            : <CvitModal
+          active !== 'status' && active !== 'canvas' ?
+            <CvitModal
               active={active}
               cColors={{color1: props.cvitModel.color1, color2: props.cvitModel.color2}}
               setColor={(target, color) => props.cvitModel.setColor(target, color)}
             />
+            :
+            null
         }
       </div>
     );
