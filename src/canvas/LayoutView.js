@@ -11,7 +11,7 @@ import {formatColor, offsetSign, spreadBackbones, zoomCanvas,transformValue} fro
  * @param config
  * @param view
  */
-export default function layoutView(data,config,view,updateStatus){
+export default function layoutView(data,config,view){
   /** setup paper base layer's main group */
   let active = paper.project.getActiveLayer();
   active.removeChildren();
@@ -40,7 +40,6 @@ export default function layoutView(data,config,view,updateStatus){
   /** draw backbones **/
   if(data.hasOwnProperty('chromosome')) {
     data.chromosome.features.forEach(chromosome => {
-      updateStatus("Laying out "+chromosome.seqName);
       let chr = glyph({data: chromosome, config: config.general, view: view}, 'chromosome');
       baseGroup.addChild(chr.group);
       labelGroup.addChild(chr.labelGroup);
@@ -60,7 +59,6 @@ export default function layoutView(data,config,view,updateStatus){
   for(let key in config){
     //Iterate through data and add to their target chromosomes
     if(key !== 'general' && config.hasOwnProperty(key)) {
-      updateStatus("Laying out "+ key);
       //set glyph/subglyph and the data.<group> that the features can be found in.
       let cGlyph = config[key].glyph ? config[key].glyph : key;
       let cSubglyph = config[key].display ? config[key].display : config[key].shape ? config[key].shape : key;
@@ -188,7 +186,6 @@ export default function layoutView(data,config,view,updateStatus){
   const x = baseGroup.position.x;
   const y = baseGroup.position.y;
   paper.view.cvtCenter = new paper.Point(x,y); //store the center-point for resetting the view
-  //cvitModel.setDrawn();
 
   /** set listener for resize event, move right ruler and respread backbone. */
   paper.view.onResize = (e) => {

@@ -19,6 +19,7 @@ export default class CvitCanvas extends Component{
   }
 
   layoutCanvasView(data,config,view){
+    this.props.setDirty(false);
     let zoom = 1;
     if(paper.view !== null) zoom = paper.view.zoom;
     if(paper.project) paper.project.remove();
@@ -26,33 +27,32 @@ export default class CvitCanvas extends Component{
     let layer = new paper.Layer();
     layer.name = 'cvitLayer';
     paper.view.zoom = zoom;
-    layoutView(data, config, view, this.props.updateStatus);
-    this.props.setDirty(false);
-    paper.view.draw();
+    layoutView(data, config, view);
     this.props.updateStatus('');
+    paper.view.draw();
   }
 
   componentDidMount() {
-    if(paper.view && this.props.status === '') paper.view.draw();
-    if(this.props.dirty && (this.props.status === '' )) { //only update paper state if there is reason to (changed config or new data)
-      this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
+    if(paper.view) paper.view.draw();
+    if(this.props.dirty && (this.props.active === "redraw")) { //only update paper state if there is reason to (changed config or new data)
+     this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
     }
 
   }
   componentWillReceiveProps(nextProps, nextContext) {
-    if(paper.view && nextProps.status === '') paper.view.draw();
+    if(paper.view) paper.view.draw();
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
-    if (paper.view && nextProps.status === '') {
+    if (paper.view ) {
       paper.view.draw();
     }
   }
 
   componentDidUpdate(previousProps, previousState, previousContext) {
-    if(paper.view && this.props.status === '') {
+    if(paper.view) {
       paper.view.draw();
-      if (this.props.dirty) { //redraw layout on same canvas if dirty update
+      if (this.props.dirty && this.props.active === 'redraw') { //redraw layout on same canvas if dirty update
         this.layoutCanvasView(this.props.cvitData, this.props.cvitConfig, this.props.cvitView);
       }
     }
@@ -103,7 +103,7 @@ export default class CvitCanvas extends Component{
     let computedStyle = {
       backgroundColor: canvas.color,
       height: canvas.height,
-      width: canvas.width ? canvas.width : '100%'
+      width: canvas.width ? canvas.width : '100%',
     };
 
     return (

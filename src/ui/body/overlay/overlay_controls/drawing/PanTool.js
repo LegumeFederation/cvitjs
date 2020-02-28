@@ -29,7 +29,9 @@ export default class PanTool extends Component{
   }
 
   componentWillUnmount() {
-    this.state.tool.remove();
+    if (this.state.tool !== null) {
+      this.state.tool.remove();
+    }
   }
 
   onClick(e) {

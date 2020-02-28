@@ -41,7 +41,6 @@ export default class Index {
     parseFile(`${this.cvitRoot}cvit.conf`,'ini',{})
       .then(response => this.baseConfig = response)
       .then(()=>{
-        this._dirty = true;
         this._tag = 'data.';
         if(passedConfig.hasOwnProperty('viewTag') && passedConfig.viewTag) {
           this._tag += passedConfig.viewTag;
@@ -69,13 +68,10 @@ export default class Index {
         let pcFetchParam = passedConfig.hasOwnProperty('fetchParam') ? passedConfig.fetchParam : {};
         let genFetchParam = this.baseConfig.general.hasOwnProperty('fetchParam') ? this.baseConfig.general.fetchParam: {};
         this._fetchParam = this._combineObjects(genFetchParam, pcFetchParam );
-
         // Load configuration for view
         this.loadViewConfig(this.cvitRoot+viewConfig);
         // Load _viewData for view
         this.loadInitialData(dataSources);
-        this.status = '';
-        this._inform();
       })
       .catch(e => console.error(e));
   }
@@ -123,15 +119,7 @@ export default class Index {
     return this._viewLayout;
   }
 
-  setActive(state){
-    this.active = state;
-    this._inform();
-  }
 
-  setDirty(state){
-    this.dirty = state;
-    this._inform();
-  }
 
   get color1(){
     return this._color1;
@@ -163,13 +151,27 @@ export default class Index {
 
 
   setColor(target,color){
+    console.log('set active',state,this.dirty);
     this[target] = color;
-    this.active = 'canvas';
     this._inform();
   }
 
-  setStatus(status){
-    this.status = status;
+  setActive(state){
+    console.log('set active',state,this.dirty);
+    this.active = state;
+    this._inform();
+  }
+
+  setDirty(state){
+    console.log('set dirty',state);
+    this.dirty = state;
+    if(state === false){ this.active = 'canvas'}
+    this._inform();
+  }
+
+  setStatus(state){
+    console.log('set status', state,this.dirty);
+    this.status = state;
     this._inform();
   }
 
@@ -214,11 +216,15 @@ export default class Index {
       this.appendData(file,fp)
         .then(() => {
           if (i === files.length-1) {
-            this._dirty = true;
-            this._inform();
+            console.log('set d load d');
+            this.status = 'View data loaded';
+            this.setDirty(true);
           }
         })
-        .catch(e => console.error(e));
+        .catch(e => {
+          this.setStatus("error loading data");
+          console.error(e);
+        });
     });
   }
 
@@ -251,10 +257,14 @@ export default class Index {
         }
       })
       .then(() => {
-        this._dirty = true;
-        this._inform();
+        console.log('set d load vc');
+        this.status = 'View config loaded.';
+        this.setDirty(true);
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        this.setStatus("error loading view configuration");
+        console.error(e);
+      });
   }
 
   /**
@@ -280,11 +290,15 @@ export default class Index {
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
-        this.status = '';
-        this._dirty = true;
-        this._inform();
+        console.log('set d append data');
+        this.status = 'Data appended.';
+        this.setDirty(true);
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        this.setStatus("error appending data");
+        console.error(e);
+      });
+
   }
 
   appendGff(gff,fetchParam = {}){
@@ -298,10 +312,14 @@ export default class Index {
         .then(response => this._viewData = this._combineObjects(this._viewData,response))
         .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
         .then(()=> {
-          this._dirty = true;
-          this._inform();
+          console.log('set d append gff');
+          this.status = 'gff appended.';
+          this.setDirty(true);
         })
-        .catch(e => console.error(e));
+      .catch(e => {
+        this.setStatus("error appending gff data");
+        console.error(e);
+      });
   }
 
 
@@ -316,9 +334,11 @@ export default class Index {
    */
 
   _inform(){
+    console.log("inform",this.active);
     if(this._viewConfig.general && this._viewData.hasOwnProperty('chromosome') && this._dirty){
+      console.log("inform dirty");
       this._viewLayout = this._setupView(this._viewData,this._viewConfig);
-      this._active = 'canvas';
+      this._active = 'redraw';
       if(!this._trigger) {
         this._trigger = true;
         document.dispatchEvent(this._dataLoaded);

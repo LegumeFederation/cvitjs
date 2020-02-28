@@ -4,55 +4,50 @@ import CvitCanvas from './canvas/Canvas';
 import CvitModal from './modal';
 import CvitControls from './overlay/Overlay';
 
-export default class CvitHeader extends Component {
+export default class CvitBody extends Component {
   render(props, state) {
-    let active = props.cvitModel.active;
-    let ctrl = props.cvitModel.view.displayControls;
+    let active = props.active;
+    let ctrl = props.view.displayControls;
     return (
       <div className={'row cvit'} id={'cvit-main'}>
-        {
-          active === 'status' || props.cvitModel.status !== '' ?
-            <div className={'twelve columns'} id={'loading-div'}> {props.cvitModel.status} </div>
-            :
-            null
-        }
-        {(active === 'canvas' || /color.*/.test(active)) && (ctrl !== 'none') && props.cvitModel.status === '' ?
+        {(active === 'canvas' || /color.*/.test(active)) && (ctrl !== 'none') ?
           <CvitControls
-            mouseTool={props.cvitModel.mouseTool}
+            mouseTool={props.mouseTool}
             selectTool={(state) => {
-              props.cvitModel.setTool(state);
+              props.setTool(state);
             }}
             changeModal={(state) => {
               if (state !== active) {
-                props.cvitModel.setActive(state);
+                props.setActive(state);
               } else {
-                props.cvitModel.setActive('canvas');
+                props.setActive('canvas');
               }
             }}
-            cColors={{color1: props.cvitModel.color1, color2: props.cvitModel.color2}}
-            setColor={(target, color) => props.cvitModel.setColor(target, color)}
+            cColors={{color1: props.color1, color2: props.color2}}
+            setColor={(target, color) => props.setColor(target, color)}
             displayControls={ctrl}
           /> :
           null
         }
-        {active === 'canvas' ?
+        {active === 'canvas' || active === 'redraw' ?
           <CvitCanvas
-            cvitData={props.cvitModel.data}
-            cvitConfig={props.cvitModel.config}
-            cvitView={props.cvitModel.view}
-            dirty={props.cvitModel.dirty}
-            status={props.cvitModel.status}
-            setDirty={(newState) => props.cvitModel.setDirty(newState)}
-            updateStatus={(status)=> props.cvitModel.setStatus(status)}
-            popover={props.cvitModel.popoverConfig}
+            cvitData={props.data}
+            cvitConfig={props.config}
+            cvitView={props.view}
+            dirty={props.dirty}
+            active={props.active}
+            setDirty={(newState) => props.setDirty(newState)}
+            updateStatus={(status)=> props.setStatus(status)}
+            updateActive={(status)=> props.setActive(status)}
+            popover={props.popoverConfig}
             displayControls={ctrl}
           />
           :
-          active !== 'status' && active !== 'canvas' ?
+          active !== 'status' && active !== 'canvas' && active !== 'redraw' ?
             <CvitModal
               active={active}
-              cColors={{color1: props.cvitModel.color1, color2: props.cvitModel.color2}}
-              setColor={(target, color) => props.cvitModel.setColor(target, color)}
+              cColors={{color1: props.color1, color2: props.color2}}
+              setColor={(target, color) => props.setColor(target, color)}
             />
             :
             null

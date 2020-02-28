@@ -13,20 +13,22 @@ export default class GroupToggle extends Component{
     let group = this.props.groupType;
     let target = this.props.target;
     let active = paper.projects[0].getActiveLayer().children['cvitView'];
-    let rulers = paper.projects[0].layers['rulersLayer'].children['rulers'];
-    let view = this.props.cvitModel.view;
-    view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
-    view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.bounds.width;
-    if(group === 'chromosome'){
-      active.children[target].visible = vis;
-    } else {
-      active.children.forEach(child => {
-        if(child.children.hasOwnProperty(group)) child.children[group].visible = vis;
-      });
+    if(active !== undefined ) {
+      let rulers = paper.projects[0].layers['rulersLayer'].children['rulers'];
+      let view = this.props.cvitModel.view;
+      view.leftEdge = rulers.children['leftRuler'] ? rulers.children['leftRuler'].getStrokeBounds().right : 0;
+      view.rightEdge = rulers.children['rightRuler'] ? rulers.children['rightRuler'].getStrokeBounds().left : paper.view.bounds.width;
+      if (group === 'chromosome') {
+        active.children[target].visible = vis;
+      } else {
+        active.children.forEach(child => {
+          if (child.children.hasOwnProperty(group)) child.children[group].visible = vis;
+        });
+      }
+      // this.props.setRedraw(true);
+      spreadBackbones(this.props.cvitModel.config, this.props.cvitModel.view);
+      this.setState({active: vis});
     }
-   // this.props.setRedraw(true);
-    spreadBackbones(this.props.cvitModel.config,this.props.cvitModel.view);
-    this.setState({active:vis});
   }
 
   render(props,state){
