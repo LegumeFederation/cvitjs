@@ -258,6 +258,8 @@ export function transformValue(value,transform,base=Math.E){
       return Math.log(value)/Math.log(base);
     case 'log' :
       return Math.pow(value,base);
+    case 'reference' :
+      return value === 0 ? 0 : value/base;
     default:
       return value;
   }

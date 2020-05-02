@@ -63,6 +63,8 @@ export default function layoutView(data,config,view){
       let cGlyph = config[key].glyph ? config[key].glyph : key;
       let cSubglyph = config[key].display ? config[key].display : config[key].shape ? config[key].shape : key;
       let cDataGroup;
+      let mRefBase = '';
+      let oRefBase = ''; config[key].value_base.slice(0);
       //Set data source if custom
       if(config[key].feature){
         let split = config[key].feature.split(':');
@@ -74,6 +76,11 @@ export default function layoutView(data,config,view){
       /** Preprocessing required for 'measure' style glyphs */
       if(config[key].glyph === 'measure') {
         view.measureConfig = _setMeasure(data,view,config,key,cDataGroup);
+	      //setup for "reference" value_dist (pulls base from existing value)
+      	if(config[key].value_distribution === "reference") {
+          oRefBase = config[key].value_base.slice(0);
+          mRefBase = config[key].value_base.split(":");
+	      }
       }
 
       //Go through each chromosome's backbone in order
@@ -102,35 +109,55 @@ export default function layoutView(data,config,view){
           //set feature group to draw
           let dg = view.hasOwnProperty('measureConfig') && view.measureConfig.generateBin !== 'pre' ?
             g.calcFeatures : g.features;
+           
+          //if value_dist is "reference" grab target "values" if they aren't local (not suggested unless you know your data)
+	        let mBaseGroup;
+	        if(mRefBase.length > 1 && data.hasOwnProperty(mRefBase[0]) && data[mRefBase[0]].hasOwnProperty(chr)){
+            mBaseGroup = data[mRefBase[0]][chr].features;
+            console.log(mBaseGroup)
+	        }
+
           //Add features to be drawn
-          dg.forEach(data => {
+          dg.forEach((fData, i) => {
             //filter for feature <source>:<type>
             if(cDataGroup[1]){
-              if(data.source !== cDataGroup[1]) return;
+              if(fData.source !== cDataGroup[1]) return;
             }
             let baseConf = {};
+            let refBase;
 
             // allows overriding configuration option from gff.
-            for (let att in data.attribute){
-              if( data.attribute.hasOwnProperty(att) && config[key].hasOwnProperty(att)){
+            for (let att in fData.attribute){
+              if( fData.attribute.hasOwnProperty(att) && config[key].hasOwnProperty(att)){
                baseConf[att] = config[key][att];
-               config[key][att] = data.attribute[att];
+               config[key][att] = fData.attribute[att];
                if(att === 'display' || att === 'shape' ){
                  baseConf[att].sg = cSubglyph;
-                 cSubglyph = data.attribute[att];
+                 cSubglyph = fData.attribute[att];
                }
               }
             }
 
-            let feature = glyph({data:data,config:config[key],view:view},cGlyph,cSubglyph);
+            //set base for value_dist "reference"
+            if(mRefBase){
+              if(mBaseGroup){
+                config[key].value_base = mBaseGroup[i].attribute[mRefBase[1]]
+              } else {
+                config[key].value_base = fData.attribute[mRefBase[0]]
+              }
+            }
+
+            let feature = glyph({data:fData,config:config[key],view:view},cGlyph,cSubglyph);
 
             // reset config
             for(let att in baseConf){
               if( baseConf.hasOwnProperty(att) && config[key].hasOwnProperty(att)){
                 config[key][att] = baseConf[att];
                 if(att === 'display' || att === 'shape' ) cSubglyph = baseConf.sg;
+                if(refBase) config[key].value_base = refBase;
               }
             }
+            if(oRefBase) config[key].value_base = oRefBase;
 
             if(feature && feature.group && feature.children[0]){
               /** add feature to group */
@@ -387,7 +414,10 @@ function _setMeasure(data,view,config,key,cDataGroup){
   } else {
     /** calculate min/max */
     view.chrOrder.forEach(chr => {
-      if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
+      if(config[key].value_distribution == 'reference'){
+	      mb.min = 0;
+	      mb.max = 1;
+      } else if (data[cDataGroup[0]] && data[cDataGroup[0]][chr]) {
         if(cc){
           data[cDataGroup[0]][chr].features.forEach(feature => {
             let count = 0;
@@ -432,7 +462,10 @@ function _setMeasure(data,view,config,key,cDataGroup){
   if(config[key]['bin_min']) mb.min = config[key]['bin_min'];
 
   // transform from linear if needed.
-  if(config[key].value_distribution !== 'linear'){
+  if(config[key].value_distribution === 'reference'){
+    mb.min = 0;
+    mb.max = 1;
+  } else if(config[key].value_distribution !== 'linear'){
     mb.min = transformValue(mb.min,config[key].value_distribution, config[key].value_base);
     mb.max = transformValue(mb.max,config[key].value_distribution, config[key].value_base);
   }
