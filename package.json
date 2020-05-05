@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "module": "build/cvit.esm.js",
   "scripts": {
-    "build" : "rollup -c && npm run babel",
-    "babel" : "babel src -d lib && bundlesize",
+    "build": "rollup -c && npm run babel",
+    "babel": "babel src -d lib && bundlesize",
     "watch": "nps build.watch",
     "lint": "eslint src test",
     "drupalbuild": "rollup --c drupal.rollup.config.js && npm run babel",
