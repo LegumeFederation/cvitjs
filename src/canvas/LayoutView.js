@@ -64,7 +64,7 @@ export default function layoutView(data,config,view){
       let cSubglyph = config[key].display ? config[key].display : config[key].shape ? config[key].shape : key;
       let cDataGroup;
       let mRefBase = '';
-      let oRefBase = ''; config[key].value_base.slice(0);
+      let oRefBase = ''; 
       //Set data source if custom
       if(config[key].feature){
         let split = config[key].feature.split(':');
@@ -114,7 +114,6 @@ export default function layoutView(data,config,view){
 	        let mBaseGroup;
 	        if(mRefBase.length > 1 && data.hasOwnProperty(mRefBase[0]) && data[mRefBase[0]].hasOwnProperty(chr)){
             mBaseGroup = data[mRefBase[0]][chr].features;
-            console.log(mBaseGroup)
 	        }
 
           //Add features to be drawn
