@@ -10,7 +10,8 @@ export default class DisplayButton extends React.Component {
         priorRequest:{
             request:'',
             interval:50000,
-            response:{}
+            response:{},
+            refMax: 0,
         },
     };
 
@@ -75,7 +76,7 @@ export default class DisplayButton extends React.Component {
                     console.error('cvit.js: Error requesting data: ', e);
                 });
         } else {
-            this.setView(options, model,count);
+            this.setView(options, model,count,priorRequest.refMax);
         }
     };
     setView = (options,model,count,refMax) =>{
