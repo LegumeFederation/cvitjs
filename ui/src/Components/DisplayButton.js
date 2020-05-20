@@ -56,7 +56,7 @@ export default class DisplayButton extends React.Component {
             headers.append("Content-Type", "application/x-www-form-urlencoded")
             console.log('auth-header', headers)
 
-            model.appendData('api/generateGff', {
+            model.appendData('api/generateGFF', {
                 method: 'POST',
                 headers: headers,
                 body: requestString,
