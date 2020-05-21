@@ -162,8 +162,8 @@ export default class ColorModal extends Component {
 
     /** set pointer position and box colors */
 
-    //this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
-    this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
+    this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
+   // this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
     //paper.view.draw();
