@@ -199,9 +199,9 @@ export default class ColorModal extends Component {
     this.setState({
       pointer: pointer,
       pGra: pGra,
-      sSlide: sSlide,
+   //   sSlide: sSlide,
       sGra: sGra,
-      aSlide: aSlide,
+   //   aSlide: aSlide,
       aGra: aGra,
       sRad: sRad,
       colPrev: colPrev
