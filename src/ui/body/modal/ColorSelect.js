@@ -170,7 +170,7 @@ export default class ColorModal extends Component {
 
     pGra.onMouseDown = (e) => {
       pointer.position = e.point;
-      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+      this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     };
     pGra.onMouseDrag =  pGra.onMouseDown;
 
@@ -180,7 +180,7 @@ export default class ColorModal extends Component {
         e.point.y <= sGra.bounds.bottomLeft.y) {
         sSlide.position.y = e.point.y;
       }
-      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+      this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     };
 
     sGra.onMouseDrag = sGra.onMouseDown;
