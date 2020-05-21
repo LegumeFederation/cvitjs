@@ -146,7 +146,7 @@ export default class ColorModal extends Component {
     pointer.strokeColor = new paper.Color(0.6);
     pointer.position = pGra.bounds.bottomRight;
 
-    //// Setup sliders for saturation and alpha sliders
+    // Setup sliders for saturation and alpha sliders
     let q = new paper.Point(10, 10);
     let w = new paper.Size(25, 10);
     sSlide = new paper.Path.Rectangle(q, w);
@@ -160,32 +160,32 @@ export default class ColorModal extends Component {
     aSlide.position = aGra.position;
     aSlide.position.y = aGra.bounds.topLeft.y;
 
-    ///** set pointer position and box colors */
+    /** set pointer position and box colors */
     this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
-    //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
+    this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
     //paper.view.draw();
     let s = this.state;
 
-    //pGra.onMouseDown = (e) => {
-    //  pointer.position = e.point;
-    //  this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
-    //};
-    //pGra.onMouseDrag =  pGra.onMouseDown;
+    pGra.onMouseDown = (e) => {
+      pointer.position = e.point;
+      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+    };
+    pGra.onMouseDrag =  pGra.onMouseDown;
 
-    //// Mouse control for sliders
-    //sGra.onMouseDown = (e) => {
-    //  if (sGra.bounds.topLeft.y <= e.point.y &&
-    //    e.point.y <= sGra.bounds.bottomLeft.y) {
-    //    sSlide.position.y = e.point.y;
-    //  }
-    //  this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
-    //};
+    // Mouse control for sliders
+    sGra.onMouseDown = (e) => {
+      if (sGra.bounds.topLeft.y <= e.point.y &&
+        e.point.y <= sGra.bounds.bottomLeft.y) {
+        sSlide.position.y = e.point.y;
+      }
+      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+    };
 
-    //sGra.onMouseDrag = sGra.onMouseDown;
-    //sSlide.onMouseDown = sGra.onMouseDown;
-    //sSlide.onMouseDrag = sGra.onMouseDown;
+    sGra.onMouseDrag = sGra.onMouseDown;
+    sSlide.onMouseDown = sGra.onMouseDown;
+    sSlide.onMouseDrag = sGra.onMouseDown;
 
     aGra.onMouseDown = (e) => {
       if (aGra.bounds.topLeft.y <= e.point.y &&
