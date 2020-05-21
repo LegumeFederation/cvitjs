@@ -5,7 +5,18 @@ export default class ColorModal extends Component {
   constructor() {
     super();
     this.state = {
-      pointer:null,
+      pointer: new paper.CompoundPath({
+      children: [
+        new paper.Path.Line({
+          from: [25, 20],
+          to: [25, 30]
+        }),
+        new paper.Path.Line({
+          from: [20, 25],
+          to: [30, 25]
+        })
+      ]
+      }),
       pGra: null,
       sSlide:null,
       sGra:null,
