@@ -161,7 +161,8 @@ export default class ColorModal extends Component {
     aSlide.position.y = aGra.bounds.topLeft.y;
 
     /** set pointer position and box colors */
-    this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
+
+    //this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
     this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
