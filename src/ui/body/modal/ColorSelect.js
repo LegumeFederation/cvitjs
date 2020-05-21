@@ -129,21 +129,20 @@ export default class ColorModal extends Component {
     });
 
     //// setup colorbox pointer for hue and brightness selection
-    //let pointer = new paper.CompoundPath({
-    //  children: [
-    //    new paper.Path.Line({
-    //      from: [25, 20],
-    //      to: [25, 30]
-    //    }),
-    //    new paper.Path.Line({
-    //      from: [20, 25],
-    //      to: [30, 25]
-    //    })
-    //  ],
-    //  strokeColor: 'black'
-    //});
-    //pointer.strokeColor = new paper.Color(0.6);
-    //pointer.position = pGra.bounds.bottomRight;
+    let pointer = new paper.CompoundPath({
+      children: [
+        new paper.Path.Line({
+          from: [25, 20],
+          to: [25, 30]
+        }),
+        new paper.Path.Line({
+          from: [20, 25],
+          to: [30, 25]
+        })
+      ]
+    });
+    pointer.strokeColor = new paper.Color(0.6);
+    pointer.position = pGra.bounds.bottomRight;
 
     //// Setup sliders for saturation and alpha sliders
     //let q = new paper.Point(10, 10);
