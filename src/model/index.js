@@ -151,26 +151,22 @@ export default class Index {
 
 
   setColor(target,color){
-    console.log('set active',state,this.dirty);
     this[target] = color;
     this._inform();
   }
 
   setActive(state){
-    console.log('set active',state,this.dirty);
     this.active = state;
     this._inform();
   }
 
   setDirty(state){
-    console.log('set dirty',state);
     this.dirty = state;
     if(state === false){ this.active = 'canvas'}
     this._inform();
   }
 
   setStatus(state){
-    console.log('set status', state,this.dirty);
     this.status = state;
     this._inform();
   }
@@ -216,7 +212,6 @@ export default class Index {
       this.appendData(file,fp)
         .then(() => {
           if (i === files.length-1) {
-            console.log('set d load d');
             this.status = 'View data loaded';
             this.setDirty(true);
           }
