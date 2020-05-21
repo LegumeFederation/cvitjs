@@ -219,11 +219,11 @@ export default class ColorModal extends Component {
     pointer.position.y = pGra.bounds.height*-color.brightness + pGra.bounds.height + pGra.bounds.topLeft.y;
     sSlide.position.y = sGra.bounds.height*-color.saturation + sGra.bounds.height + sGra.bounds.topLeft.y;
     aSlide.position.y = aGra.bounds.height*-color.alpha + aGra.bounds.height + aGra.bounds.topLeft.y;
-  //  this.setState(
+    this.setState(
   //    pointer: pointer,
-  //    sSlide: sSlide,
-  //    aSlide: aSlide
-  //  });
+      sSlide: sSlide,
+      aSlide: aSlide
+    });
   }
 
   changeColor (pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev){
