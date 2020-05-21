@@ -145,17 +145,17 @@ export default class ColorModal extends Component {
     pointer.position = pGra.bounds.bottomRight;
 
     //// Setup sliders for saturation and alpha sliders
-    //let q = new paper.Point(10, 10);
-    //let w = new paper.Size(25, 10);
-    //let sSlide = new paper.Path.Rectangle(q, w);
-    //sSlide.fillColor = new paper.Color(0.6);
-    //sSlide.strokeColor = 'black';
-    //sSlide.strokeWidth = 1;
-    //sSlide.position = sGra.position;
-    //sSlide.position.y = sGra.bounds.topLeft.y;
-    //let aSlide = sSlide.clone();
-    //aSlide.position = aGra.position;
-    //aSlide.position.y = aGra.bounds.topLeft.y;
+    let q = new paper.Point(10, 10);
+    let w = new paper.Size(25, 10);
+    let sSlide = new paper.Path.Rectangle(q, w);
+    sSlide.fillColor = new paper.Color(0.6);
+    sSlide.strokeColor = 'black';
+    sSlide.strokeWidth = 1;
+    sSlide.position = sGra.position;
+    sSlide.position.y = sGra.bounds.topLeft.y;
+    let aSlide = sSlide.clone();
+    aSlide.position = aGra.position;
+    aSlide.position.y = aGra.bounds.topLeft.y;
 
     ///** set pointer position and box colors */
     //this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
@@ -199,9 +199,9 @@ export default class ColorModal extends Component {
     this.setState({
       pointer: pointer,
       pGra: pGra,
-   //   sSlide: sSlide,
+      sSlide: sSlide,
       sGra: sGra,
-   //   aSlide: aSlide,
+      aSlide: aSlide,
       aGra: aGra,
       sRad: sRad,
       colPrev: colPrev
