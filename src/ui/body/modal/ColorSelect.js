@@ -21,9 +21,9 @@ export default class ColorModal extends Component {
 
   componentDidUpdate(previousProps, previousState, previousContext) {
     if(previousProps.target !== this.props.target) {
-      let s = this.state;
-      this.setPosition(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, this.props.cColors[this.props.target]);
-      this.changeColor(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, s.sRad, s.colPrev);
+      let {pointer, pGra, sSlide, aSlide, aGra, sRad, colPrev} = this.state;
+      this.setPosition(pointer, pGra, sSlide, sGra, aSlide, aGra, this.props.cColors[this.props.target]);
+      this.changeColor(pointer, pGra, sSlide, sGra, aSlide, aGra, sRad, colPrev);
     }
   }
 
@@ -160,8 +160,8 @@ export default class ColorModal extends Component {
 
     /** set pointer position and box colors */
     this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
-    this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
-    this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
+    this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,this.props.cColors[this.props.target);
+    //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
     paper.view.draw();
     let s = this.state;
