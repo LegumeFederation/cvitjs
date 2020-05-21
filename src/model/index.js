@@ -252,7 +252,6 @@ export default class Index {
         }
       })
       .then(() => {
-        console.log('set d load vc');
         this.status = 'View config loaded.';
         this.setDirty(true);
       })
@@ -285,7 +284,6 @@ export default class Index {
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
-        console.log('set d append data');
         this.status = 'Data appended.';
         this.setDirty(true);
       })
@@ -307,7 +305,6 @@ export default class Index {
         .then(response => this._viewData = this._combineObjects(this._viewData,response))
         .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
         .then(()=> {
-          console.log('set d append gff');
           this.status = 'gff appended.';
           this.setDirty(true);
         })
@@ -329,9 +326,7 @@ export default class Index {
    */
 
   _inform(){
-    console.log("inform",this.active);
     if(this._viewConfig.general && this._viewData.hasOwnProperty('chromosome') && this._dirty){
-      console.log("inform dirty");
       this._viewLayout = this._setupView(this._viewData,this._viewConfig);
       this._active = 'redraw';
       if(!this._trigger) {

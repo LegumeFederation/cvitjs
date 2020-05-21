@@ -27,7 +27,7 @@ export default class CvitUI extends Component {
                   popoverConfig={props.cvitModel.popoverConfig}
                   color1={props.cvitModel.color1}
                   color2={props.cvitModel.color2}
-                  setColor={(target,color)=>{console.log("cvtUI sc", target, color); props.cvitModel.setColor(target, color)}}
+                  setColor={(target,color)=>{props.cvitModel.setColor(target, color)}}
                   cvitModel={props.cvitModel}
                   status={props.cvitModel.status}
         />
