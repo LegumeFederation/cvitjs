@@ -12,7 +12,7 @@ export default class ColorModal extends Component {
       aSlide:null,
       aGra:null,
       sRad: null,
-      colPrev:null
+      colPrev:'black',
     };
     this.onConfirm = this.onConfirm.bind(this);
     this.onCancel = this.onCancel.bind(this);
