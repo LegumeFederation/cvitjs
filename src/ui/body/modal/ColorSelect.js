@@ -184,17 +184,17 @@ export default class ColorModal extends Component {
     //sSlide.onMouseDown = sGra.onMouseDown;
     //sSlide.onMouseDrag = sGra.onMouseDown;
 
-    //aGra.onMouseDown = (e) => {
-    //  if (aGra.bounds.topLeft.y <= e.point.y &&
-    //    e.point.y <= aGra.bounds.bottomLeft.y) {
-    //    aSlide.position.y = e.point.y;
-    //  }
-    //  this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
-    //};
+    aGra.onMouseDown = (e) => {
+      if (aGra.bounds.topLeft.y <= e.point.y &&
+        e.point.y <= aGra.bounds.bottomLeft.y) {
+        aSlide.position.y = e.point.y;
+      }
+      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+    };
 
-    //aGra.onMouseDrag = aGra.onMouseDown;
-    //aSlide.onMouseDown = aGra.onMouseDown;
-    //aSlide.onMouseDrag = aGra.onMouseDown;
+    aGra.onMouseDrag = aGra.onMouseDown;
+    aSlide.onMouseDown = aGra.onMouseDown;
+    aSlide.onMouseDrag = aGra.onMouseDown;
 
     this.setState({
       pointer: pointer,
