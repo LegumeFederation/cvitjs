@@ -163,7 +163,7 @@ export default class ColorModal extends Component {
     //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
     //paper.view.draw();
-    //let s = this.state;
+    let s = this.state;
 
     //pGra.onMouseDown = (e) => {
     //  pointer.position = e.point;
