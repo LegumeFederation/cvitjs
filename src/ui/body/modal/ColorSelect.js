@@ -5,7 +5,7 @@ export default class ColorModal extends Component {
   constructor() {
     super();
     this.state = {
-      pointer:null,
+      pointer: null,
       pGra: null,
       sSlide:null,
       sGra:null,
@@ -28,6 +28,8 @@ export default class ColorModal extends Component {
   }
 
   componentDidMount() {
+
+    let { pointer, pGra, sSlide, sGra, aSlide, aGra, sRad, colPrev} = this.state;
     if(paper.projects[1]) paper.projects[1].remove();
     paper.setup(document.querySelector('#select-canvas'));
     let topLeft = new paper.Point(10, 10);
@@ -49,7 +51,7 @@ export default class ColorModal extends Component {
       strokeWidth: 1
     });
 
-    let pGra = new paper.Path.Rectangle({
+    pGra = new paper.Path.Rectangle({
       topLeft: topLeft,
       bottomRight: bottomRight,
       fillColor: {
@@ -64,14 +66,14 @@ export default class ColorModal extends Component {
     topLeft = topRight.add(leftOffset);
     bottomRight = bottomRight.add(rightOffset);
     topRight = topRight.add(rightOffset);
-    let sRad = new paper.Path.Rectangle({
+    sRad = new paper.Path.Rectangle({
       topLeft: topLeft,
       bottomRight: bottomRight,
       fillColor: 'black',
       strokeColor: 'black',
       strokeWidth: 1
     });
-    let sGra = sRad.clone();
+    sGra = sRad.clone();
     sGra.fillColor = {
       gradient: {
         stops: [new paper.Color(1, 1, 1, 0), new paper.Color(1, 1, 1, 1)]
@@ -83,7 +85,7 @@ export default class ColorModal extends Component {
     topLeft = topRight.add(leftOffset);
     bottomRight = bottomRight.add(rightOffset);
     topRight = topRight.add(rightOffset);
-    let aGra = new paper.Path.Rectangle({
+    aGra = new paper.Path.Rectangle({
       topLeft: topLeft,
       bottomRight: bottomRight,
       fillColor: {
@@ -119,7 +121,7 @@ export default class ColorModal extends Component {
       fillColor: 'black'
     });
 
-    let colPrev = new paper.Path.Rectangle({
+    colPrev = new paper.Path.Rectangle({
       topLeft: [10, 140],
       bottomRight: bottomRight.add([0, 60]),
       fillColor: 'black',
@@ -128,8 +130,8 @@ export default class ColorModal extends Component {
 
     });
 
-    // setup colorbox pointer for hue and brightness selection
-    let pointer = new paper.CompoundPath({
+    //// setup colorbox pointer for hue and brightness selection
+    pointer = new paper.CompoundPath({
       children: [
         new paper.Path.Line({
           from: [25, 20],
@@ -139,8 +141,7 @@ export default class ColorModal extends Component {
           from: [20, 25],
           to: [30, 25]
         })
-      ],
-      strokeColor: 'black'
+      ]
     });
     pointer.strokeColor = new paper.Color(0.6);
     pointer.position = pGra.bounds.bottomRight;
@@ -148,27 +149,29 @@ export default class ColorModal extends Component {
     // Setup sliders for saturation and alpha sliders
     let q = new paper.Point(10, 10);
     let w = new paper.Size(25, 10);
-    let sSlide = new paper.Path.Rectangle(q, w);
+    sSlide = new paper.Path.Rectangle(q, w);
     sSlide.fillColor = new paper.Color(0.6);
     sSlide.strokeColor = 'black';
     sSlide.strokeWidth = 1;
     sSlide.position = sGra.position;
     sSlide.position.y = sGra.bounds.topLeft.y;
-    let aSlide = sSlide.clone();
+    
+    aSlide = sSlide.clone();
     aSlide.position = aGra.position;
     aSlide.position.y = aGra.bounds.topLeft.y;
 
     /** set pointer position and box colors */
+
     this.setPosition(pointer,pGra,sSlide,sGra,aSlide,aGra,this.props.cColors[this.props.target]);
     this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,this.props.cColors[this.props.target);
     //this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
 
-    paper.view.draw();
-    let s = this.state;
+    //paper.view.draw();
+  //  let s = this.state;
 
     pGra.onMouseDown = (e) => {
       pointer.position = e.point;
-      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+      this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     };
     pGra.onMouseDrag =  pGra.onMouseDown;
 
@@ -178,7 +181,7 @@ export default class ColorModal extends Component {
         e.point.y <= sGra.bounds.bottomLeft.y) {
         sSlide.position.y = e.point.y;
       }
-      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+      this.changeColor(pointer,pGra,sSlide,sGra,aSlide,aGra,sRad,colPrev);
     };
 
     sGra.onMouseDrag = sGra.onMouseDown;
@@ -190,7 +193,7 @@ export default class ColorModal extends Component {
         e.point.y <= aGra.bounds.bottomLeft.y) {
         aSlide.position.y = e.point.y;
       }
-      this.changeColor(s.pointer,s.pGra,s.sSlide,s.sGra,s.aSlide,s.aGra,s.sRad,s.colPrev);
+      this.changeColor(pointer, pGra, sSlide, sGra, aSlide, aGra, sRad, colPrev);
     };
 
     aGra.onMouseDrag = aGra.onMouseDown;
@@ -198,14 +201,14 @@ export default class ColorModal extends Component {
     aSlide.onMouseDrag = aGra.onMouseDown;
 
     this.setState({
-      pointer: pointer,
-      pGra: pGra,
-      sSlide: sSlide,
-      sGra: sGra,
-      aSlide: aSlide,
-      aGra: aGra,
-      sRad: sRad,
-      colPrev: colPrev
+      pointer,
+      pGra,
+      sSlide,
+      sGra,
+      aSlide,
+      aGra,
+      sRad,
+      colPrev
     });
   }
 
@@ -215,6 +218,7 @@ export default class ColorModal extends Component {
   }
 
   setPosition (pointer,pGra,sSlide,sGra,aSlide,aGra,color){
+    console.log("sp", pointer, color);
     pointer.position.x = ((pGra.bounds.width * color.hue)/360) +  pGra.topLeft.x;
     pointer.position.y = pGra.bounds.height*-color.brightness + pGra.bounds.height + pGra.bounds.topLeft.y;
     sSlide.position.y = sGra.bounds.height*-color.saturation + sGra.bounds.height + sGra.bounds.topLeft.y;
@@ -250,14 +254,14 @@ export default class ColorModal extends Component {
     colPrev.fillColor = prev;
     paper.view.draw();
     this.setState({
-      pointer: pointer,
-      pGra: pGra,
-      sSlide: sSlide,
-      sGra: sGra,
-      aSlide: aSlide,
-      aGra: aGra,
-      sRad: sRad,
-      colPrev: colPrev
+      pointer,
+      pGra,
+      sSlide,
+      sGra,
+      aSlide,
+      aGra,
+      sRad,
+      colPrev
     });
   }
 
