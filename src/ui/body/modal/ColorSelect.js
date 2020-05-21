@@ -272,9 +272,10 @@ export default class ColorModal extends Component {
     this.changeColor(s.pointer, s.pGra, s.sSlide, s.sGra, s.aSlide, s.aGra, s.sRad, s.colPrev);
   }
 
-  onConfirm(e,state,props){
+  onConfirm(e){
     e.preventDefault();
-    this.props.setColor(props.target, state.colPrev.fillColor);
+    console.log("CS oCon", this.state.colPrev.fillColor);
+    this.props.setColor(this.props.target, this.state.colPrev.fillColor);
   }
 
   render(props, state) {
@@ -293,7 +294,7 @@ export default class ColorModal extends Component {
         <div>
           <button
             className={'modal-confirm'}
-            onClick={(e) => this.onConfirm(e,state,props)}
+            onClick={this.onConfirm}
           >
             Select Color
           </button>
