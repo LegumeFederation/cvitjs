@@ -21,11 +21,32 @@ export default class GeneralOptions extends React.Component {
                 <div className={'pure-g'}>
                     <div className={'help-text pure-g'} style={{maxHeight: hideInfo ? '0px' : '50%'}}>
                         <div className={'pure-u-1-1 l-box modal-section'}>
-                            <p> <b>Title</b> <i>Default: blank</i>  Title included on the display. </p>
-                            <p> <b>Bin Size</b> <i>Default: 500000bp</i> Each chromosome is broken down into bins for calculating the requested data. This is the size per bin in base pairs.
-                            It is recommended to not go much lower than this default, as it becomes harder to see differences in the displayed data.</p>
-                            <p> <b>Ruler Display</b> <i>Default: left</i> Where ruler is placed on the generated image. </p>
-                            <p> <b>Ruler Interval</b> <i>Default 5000000</i> Distance in bp between major divisions on the ruler. Each major division will have one minor division between. Any value under 1000000 can lead to a rather cramped display.</p>
+                            <p>
+                              <b>Title</b> <i>Default: blank</i> Title shown on the display. 
+                            </p>
+                            <p> 
+                              <b>Bin Size</b> <i>Default: 500000bp</i> Because the data 
+                              on a whole genome display is highly condensed, it must be 
+                              divided into bins, with the data within each bin averaged,
+                              counted, or otherwise combined into one value. Large 
+                              genomes and/or very dense data sets suggest smaller bin 
+                              sizes. However, setting the bin size too small will slow 
+                              down rendering of the image to the point it may not display 
+                              at all or it may become difficult or impossible to see 
+                              differences in the data. For large genomes, it is 
+                              recommended to not set the bin size much lower than 
+                              500000.
+                            </p>
+                            <p> 
+                              <b>Ruler Display</b> <i>Default: left</i> Where ruler is placed on the image. 
+                            </p>
+                            <p> 
+                              <b>Ruler Interval</b> <i>Default: 5000000</i> Measured in
+                              bp, indicates how often to draw tic marks on the ruler. 
+                              Each major tic mark will be labeled with a number and have 
+                              one minor division between. Any value below 1000000 is 
+                              likely to cause labels to overlap and be unreadable.
+                            </p>
                         </div>
                     </div>
                 </div>
