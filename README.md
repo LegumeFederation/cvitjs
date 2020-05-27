@@ -92,7 +92,7 @@ While it is recommended, the data file given for 'location' does not have to be 
 
 To link the GFF file to CViTjs, edit the file ui/cvit_assets/cvit.conf to indicate the file exists and which CViTjs UI configuration file to use (described in [CViTjs documentation](https://github.com/LegumeFederation/cvitjs)).
 
-**Genotype Data Sets** Each genotype data set is represented by a single VCF file (which may be gzipped). By default, the files should go into the assets/ directory, but if you can choose a different directory, it will be necessary to tell the application where to find the files. Information about connecting to a different the genotype data directory is described below.
+**Genotype Data Sets** Each genotype data set is represented by a single VCF file (which may be gzipped). By default, the files should go into the assets/ directory, but if you choose a different directory, it will be necessary to tell the application where to find the files. Information about connecting to a different the genotype data directory is described below.
 
 ### Configuring the UI
 
@@ -102,7 +102,7 @@ Configuration files for the three glyphs used by GCViT *Haplotype Block*, *Heatm
 
 Other display options (title, bin size, ruler tic interval) can be changed through editing the values in `ui/src/Components/DefaultConfiguration.js`. After changes are made, the docker container will need to be rebuilt, or a manual build will need to be triggered through node, as described in the following sections. 
 
-**Popover customization** The box that pops up when clicking on a glyph in the image can be customized by editing `ui/cvit_assets/src/templates/Popover.js.`
+**Popover customization** The box that pops up when clicking on a glyph in the image can be customized by editing `ui/cvit_assets/src/templates/Popover.js` if building in docker, or by rebuilding the changes in CViTjs if using Go + Node and moving the resulting build to `/ui/public/cvitjs/`.
 
 **Note:** Configuration settings in `ui/src/Components/DefaultConfiguration.js` override CViTjs equivalent configuration settings, for example, ruler tic interval.
 
@@ -111,7 +111,7 @@ For general use, it is easiest to get started with GCViT using [Docker](https://
 
 The Docker build process will retrieve the most recent version of CViTjs during the build process. 
 
-To add reference genome backbone files and popover customizations, place the files in `ui/cvit_assets`. 
+To add reference genome backbone files, popover customizations, or any other change to CViT place the files in `ui/cvit_assets`. This will overwrite the equivalent CViT file during the build process. 
 
 To build through docker:
 ```
@@ -154,7 +154,7 @@ To make changes without rebuilding GCViT or CViTjs, edit and add files to `build
 The best practices are to make CViTjs changes in `cvit_assets/` or `public/.`
 
 ##### Adding data set files to Docker container
-If data set files are located in the `/app/assets/` directory, it is likely they should be included in the container. To do so, edit `Dockerfile,` look for the line, `#Comment above and uncomment below if you would rather have assets built into container,` and follow the instructions.
+If data set files are located in the `/app/assets/` directory, you may want to build them into the container, especially for smaller datasets. To do so, edit `Dockerfile,` look for the line, `#Comment above and uncomment below if you would rather have assets built into container,` and follow the instructions.
 
 ### Go + Node Setup
 GCViT may also be built and served directly using [Go](https://golang.org/) and and [Node](https://nodejs.org/en/) together.
