@@ -96,7 +96,7 @@ To link the GFF file to CViTjs, edit the file ui/cvit_assets/cvit.conf to indica
 
 ### Configuring the UI
 
-Most aspects of the CViTjs display can be customized, including colors, fonts, and the popover box that appears when mousing over a feature. For more information on configuring the CViTjs component of GCViT, please see the documentation [here](https://github.com/LegumeFederation/cvitjs/wiki) and the example file `ui/cvit_assets/soySnp/soySnp.conf`.
+Most aspects of the CViTjs display can be customized, including colors, fonts, and the popover box that appears when mousing over a feature. For more information on configuring the CViTjs component of GCViT, please see the documentation [here](https://github.com/LegumeFederation/cvitjs/wiki) and the example file `ui/cvit_assets/data/soySnp/soySnp.conf`.
 
 Configuration files for the three glyphs used by GCViT *Haplotype Block*, *Heatmap* and *Histogram* are in `ui/src/Components/[HaploConfig.js|HeatConfig.js|HistConfig.js]` respectively.
 
@@ -104,6 +104,8 @@ Other display options (title, bin size, ruler tic interval) can be changed throu
 
 **Popover customization** The box that pops up when clicking on a glyph in the image can be customized by editing `ui/cvit_assets/src/templates/Popover.js.`
 
+**Help box customizations** The text in in-app help can be customized. Edit the files `ui/src/Components/HelpTopcs.`
+  
 **Note:** Configuration settings in `ui/src/Components/DefaultConfiguration.js` override CViTjs equivalent configuration settings, for example, ruler tic interval.
 
 ### Docker Setup
@@ -238,4 +240,5 @@ The following API is served by the GCViT service component:
 |/login | GET | Attempts to authenticate a username and password. Returns status 200 if OK, 401 if not. | 
 
 ## Authentication:
-To control access to data sets, create users and restrict access, see `assestconfig.yaml`. 
+To control access to data sets, create users and restrict access, see `assestconfig.yaml`. The files `config/testcert.*` are an example of a self-signed SSL certificate. Instruction for generating a new one and be found [here](
+https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04)
