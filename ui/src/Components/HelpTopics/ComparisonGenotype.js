@@ -33,7 +33,7 @@ export default class ComparisonGenotype extends React.Component {
                                       important to pick distinct colors for each.
                                     </li>
                                     <li> 
-                                      Select a reference genotype by either typing in 
+                                      Select a comparison genotype by either typing in 
                                       the name of the genotype or using the pull down 
                                       menu to see available genotypes. 
                                     </li>
