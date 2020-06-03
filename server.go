@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"flag"
 	"gcvit/gcvit"
 	"gcvit/middleware"
 	"github.com/buaazp/fasthttprouter"
@@ -17,18 +18,23 @@ import (
 )
 
 func main() {
+	//read flags for default configuration
+	confFileName := flag.String("conf", "./config", "path to assetconfig.yaml")
+	flag.Parse()
 
 	// configure and read in config.yaml
 	viper.SetConfigName("assetconfig")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath(*confFileName)
 	viper.SetDefault("server", map[string]string{"port": "0", "portTLS": "0", "apiOnly": "false", "source": "gcvit", "binSize": "500000"})
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("problem reading in assetconfig: %s \n", err))
 	}
-	// set source and binSize from config
+
+	// populate gcvit defaults from config
 	gcvit.SetDefaults()
+
 	// watch for changes to data files so server doesn't need to reset when changed
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
@@ -77,7 +83,7 @@ func main() {
 	port := serverSettings.GetInt("port")
 	portTLS := serverSettings.GetInt("portTLS")
 
-	// Setup http port if *no* ports are passed
+	// Setup HTTP port if *no* ports are passed
 	if port > 1 && portTLS < 1 {
 		port = 8080
 	}
@@ -90,7 +96,7 @@ func main() {
 		}
 	}
 
-	// Serve TLS
+	// Serve HTTPS
 	if portTLS > 0 {
 		log.Printf("Starting HTTPS server on %d", portTLS)
 		certFile := serverSettings.GetString("certFile")
