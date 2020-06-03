@@ -1,3 +1,7 @@
+/**
+ * Sets default options for "haplotype" display type
+ */
+
 import {binSizeDefault} from "./DefaultConfiguration";
 
 export function haploConfig(compare,side,minValue,maxValue,filters){
