@@ -1,8 +1,13 @@
+/**
+ * React component for rendering the "export data" modal
+ */
+
 import React from 'react';
+import {imageTitleDefault} from "./DefaultConfiguration";
 
 export default class DataModal extends React.Component {
     state = {
-        name: 'cvit',
+        name: imageTitleDefault,
         format: 'svg',
         quality: .95,
         gffOptions: {
@@ -13,37 +18,72 @@ export default class DataModal extends React.Component {
         }
     };
 
-    exportImage = (blob) => {
-        let url = URL.createObjectURL(blob);
-        this.saveImage(url);
-    };
+    /**
+     * Save image using configured parameters
+     */
+    onClickImage = async function(){
+	//toggle on load indicator
+        let loadIndicator = document.getElementById("img-load");
+        loadIndicator.classList.toggle("download-loading");
+	const url = this.state.format === 'svg' ? await this.resolveSVGBlob() : this.resolvePngBlob();
+	this.saveImage(url);
+    }
+    
+    /**
+     * Convert canvas to SVG blob url
+     */
+    resolveSVGBlob = () =>{
+	    return new Promise(resolve => {
+		    setTimeout(() => { // use short timeout to give DOM chance to render load indicator div
+   	        	let paper = window.cvit.model.paper;
+                	let url = 'data:image/svg+xml;utf8,' +
+                	encodeURIComponent(paper.project.exportSVG({asString:true}));
+                	let name = this.state.name !== '' ? this.state.name : 'cvit';
+                	name += `.${this.state.format}`;
+	        	resolve(url);
+		    }, 500);
 
+	    });
+    }
+
+    /**
+     * Convert canvas to png blob url
+     */
+    resolvePngBlob = () => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+   	        let paper = window.cvit.model.paper;
+                paper.project.view.element.toBlob((blob) => {
+                    let url = URL.createObjectURL(blob);
+                    this.saveImage(url);
+                    resolve(url);
+		});
+            }, 20);
+        });
+    };
+    
+    /**
+     * Download generated url blob
+     */
     saveImage = (url) => {
-        let name = this.state.name !== '' ? this.state.name : 'cvit';
+        let name = this.state.name !== '' ? this.state.name : 'gcvit';
         name += `.${this.state.format}`;
         let link = document.createElement('a');
         link.download = name;
         link.href = url;
         document.body.appendChild(link);
+	// toggle off load indicator
+        let loadIndicator = document.getElementById("img-load");
+        loadIndicator.classList.toggle("download-loading");
         link.click();
-    };
-
-    onClickImage = () => {
-        let paper = window.cvit.model.paper;
-        console.log(paper);
-        if(this.state.format === 'svg'){
-            let url = 'data:image/svg+xml;utf8,' +
-                encodeURIComponent(paper.project.exportSVG({asString:true}));
-            this.saveImage(url);
-        } else {
-            paper.project.view.element.toBlob((blob) => this.exportImage(blob));
-        }
     };
 
     onClickData = () => {
         let gff = '##gff-version 3.2.1';
         let data = window.cvit.model.data;
         let gffOpts = this.state.gffOptions;
+        let loadIndicator = document.getElementById("data-load");
+        loadIndicator.classList.toggle("download-loading");
         for (let group in data) {
             if(data.hasOwnProperty(group) && gffOpts[group]) {
                 let dataGroup = data[group];
@@ -63,13 +103,13 @@ export default class DataModal extends React.Component {
         }
         let url = 'data:text/plain;utf8,' +
             encodeURIComponent(gff);
+	// toggle off loading indicator
+        loadIndicator.classList.toggle("download-loading");
+	// open gff in new window
         let win = window.open();
         // noinspection HtmlDeprecatedAttribute
         win.document.write('<iframe src="' + url  + '" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>');
         win.download('gcvit.gff');
-        // link.href = url;
-        // document.body.appendChild(link);
-        // link.click();
     };
 
     onInput = (evt) =>{
@@ -89,13 +129,13 @@ export default class DataModal extends React.Component {
     render(props,state){
         let {name,format,gffOptions} = this.state;
         return(
-            <div className={"modal-area selector-container"}>
+            <div className={"modal-area"}>
                 <div className={"modal-content"} >
                     <h5> Downloads </h5>
                     <hr />
                     <div className={'modal-contents'}>
                         <div className={'pure-g'}>
-                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-modal'} >
+                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-img-modal'} >
                                 <h5> Download Image </h5>
                                 <p> Download the current view as an image.</p>
 
@@ -141,14 +181,15 @@ export default class DataModal extends React.Component {
                                     </tr>
                                     </tbody>
                                 </form>
-                                <button className={'pure-button button-display modal-confirm'}
+				<div id="img-load" className={'gcvit-load-text'}> Generating Image: Please Wait </div>	
+		                <button className={'pure-button button-display modal-confirm'}
                                         onClick={()=>this.onClickImage()}
                                 > Export Image </button>
                             </div>
                         </div>
                         <div className={'pure-g'}>
                             <hr />
-                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-modal'} >
+                            <div className={'pure-u-1-1 l-box cvit cvit-modal'} id={'export-data-modal'} >
                                 <h5> Download Data </h5>
                                 <p> Download data as a gff </p>
 
@@ -211,7 +252,7 @@ export default class DataModal extends React.Component {
                                     </tr>
                                     </tbody>
                                 </form>
-
+				<div id="data-load" className={"gcvit-load-text"}> Generating Gff: Please Wait </div>
                                 <button className={'pure-button button-display modal-confirm'}
                                         onClick={()=>this.onClickData()}
                                 > Download Data </button>
