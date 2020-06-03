@@ -1,16 +1,21 @@
+/**
+ * Form for controlling display options on the
+ * CViT canvas div BaseOptions controls rulers/title
+ * TrackOptions controls LHS/RHS options
+ */
 import React from 'react';
 import TrackOptions from "./TrackOptionsSelect";
 import BaseOptions from "./BaseOptionsSelect";
 import {binSizeDefault} from "./DefaultConfiguration";
 
-/**
- * Form for controlling LHS/RHS display options
- */
 export default class OptionsForm extends React.Component {
 	state = {
 		'binSize': binSizeDefault,
 	}
-
+	
+	/**
+	 * Setup options and pass to parent
+	 */
 	optionsUpdate = (group,value) => {
 		let options = this.props.options;
 
