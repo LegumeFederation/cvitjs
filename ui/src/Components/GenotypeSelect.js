@@ -1,8 +1,13 @@
+/**
+ * Selector dropdown for a new genotype option
+ */
+
 import React  from 'react';
 import Select, {createFilter, components} from 'react-select';
 import {SketchPicker} from 'react-color';
 import {colorDefault} from './DefaultConfiguration';
 
+// placement of color select popup
 const popover = {
 	position: 'absolute',
 	zIndex: '2'
@@ -16,9 +21,6 @@ const cover = {
 	left: '0px',
 };
 
-/**
- * Selector dropdown for a new genotype option
- */
 export default class GenotypeSelector extends React.Component {
 
 	state = {
@@ -28,6 +30,9 @@ export default class GenotypeSelector extends React.Component {
 		color: colorDefault
 	};
 
+	/**
+	 * Set up genotype value from form options
+	 */
 	formatDatasetValue(){
 		return {
 			dataset: this.state.selectedDataset || null,
@@ -36,6 +41,9 @@ export default class GenotypeSelector extends React.Component {
 		}
 	};
 
+	/**
+	 * Change dataset source if enabled
+	 */
 	datasetChange = (selectedDataset) => {
 		this.setState({ selectedDataset, selectedGenotype: null });
 		this.props.setDataset(selectedDataset);
@@ -43,25 +51,41 @@ export default class GenotypeSelector extends React.Component {
 		this.props.appendDataset(this.props.idx, append)
 	};
 
+	/**
+	 * Change genotype if enabled
+	 */
 	gtChange = (selectedGenotype) => {
 		this.setState({ selectedGenotype });
 		let append = { dataset: this.state.selectedDataset, genotype: selectedGenotype, color: this.state.color||null};
 		this.props.appendDataset(this.props.idx, append);
 	};
 
+	/**
+	 * Display color picker
+	 */
 	colorClick = () => {
 		this.setState({displayColorPicker : true})
 	};
 
+	/**
+	 * hide color picker
+	 */
 	colorClose = () => {
 		this.setState({displayColorPicker : false});
 		this.props.appendDataset(this.props.idx, this.formatDatasetValue())
 	};
 
+	/**
+	 * set chosen color
+	 */
 	colorSet = (color) => {
 		this.setState({color: color.hex})
 	};
 
+
+	/**
+	 * Set dataset if component is for a variant
+	 */
 	componentDidMount() {
 		if(this.props.selected){
 			this.setState({'selectedDataset':this.props.selected})
@@ -132,7 +156,7 @@ export default class GenotypeSelector extends React.Component {
 }
 
 /**
- * custom rendering options for react-select component
+ * custom rendering options for react-select (select dropdown) component
  */
 class CustomOption extends React.Component {
 	render() {
