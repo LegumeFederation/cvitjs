@@ -1,7 +1,5 @@
-/*
-	route handlers for the gcvit server
-*/
-
+// package gcvit provides handlers for the gcvit server
+// API routes
 package gcvit
 
 import (
@@ -16,7 +14,7 @@ import (
 	"time"
 )
 
-// GetExperiments is a GET path that returns a JSON object that represents all the currently loaded datasets GT field headers
+// GetExperiments returns a JSON object that represents all the currently loaded datasets
 func GetExperiments(ctx *fasthttp.RequestCtx) {
 	//start time for logging
 	start := time.Now()
@@ -38,6 +36,7 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 		i++
 	}
 
+	//Add any datasets available from authentication state
 	if authState := ctx.UserValue("auth"); authState != nil {
 		// extend slice
 		auth := (authState).(string)
@@ -64,7 +63,7 @@ func GetExperiments(ctx *fasthttp.RequestCtx) {
 	ctx.Logger().Printf("%dns", time.Now().Sub(start).Nanoseconds())
 }
 
-// GetExperiments is a GET path that returns a JSON representation of all the passed experiment's
+// GetExperimet returns a JSON representation of all the passed experiment's GT values
 func GetExperiment(ctx *fasthttp.RequestCtx) {
 	//Start time for logging
 	start := time.Now()
@@ -79,7 +78,7 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 		}
 	}
 
-	// populate experiment if possible due to auth state
+	// check if experiment is available due to auth state
 	var expSet DataFiles
 	if experiments[exp].Genotypes != nil {
 		expSet = experiments[exp]
@@ -89,6 +88,7 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 		ctx.Error("Experiment Not Available", fasthttp.StatusForbidden)
 		return
 	}
+
 	//Iterate through passed experiment and build response of GT headers
 	gt := make([]ExpData, len(expSet.Genotypes))
 	for i, v := range expSet.Genotypes {
@@ -108,44 +108,39 @@ func GetExperiment(ctx *fasthttp.RequestCtx) {
 	ctx.Logger().Printf("%dns", time.Now().Sub(start).Nanoseconds())
 }
 
-//GenerateGFF takes a post request for a given vcf file and returns a GFF
+// GenerateGFF returns a gff from one or more provided GT fields in the vcf
 func GenerateGFF(ctx *fasthttp.RequestCtx) {
-	//Log request received
+	// Log request received
 	ctx.Logger().Printf("Begin request for: %s", ctx.PostArgs())
 	startT := time.Now()
-	//Struct for holding Post Request
+
+	// Struct for holding Post Request
 	req := &struct {
-		Ref     string
-		Variant []string
-		Bin     uint64
+		Ref     string		//reference GT
+		Variant []string	//slice of comparison GTs
+		Bin     uint64		//bin size in bases
 	}{}
 
-	//parse reference, both ref and variant are in the form "<exp>:<gt>"
-	//Peek is used here, as current GCViT only supports a single reference
+	// Parse reference, both ref and variant are in the form "<exp>:<gt>"
+	// Peek is used here, as current GCViT only supports a single reference
 	req.Ref = string(ctx.PostArgs().Peek("Ref"))
-
-	//parse variant(s)
-	vnts := ctx.PostArgs().PeekMulti("Variant")
-	for _, v := range vnts {
-		req.Variant = append(req.Variant, string(v))
-	}
-
-	//parse bin size if available, if not passed, default to config.binSize (500000) bases
-	if bSize, _ := strconv.ParseUint(string(ctx.PostArgs().Peek("Bin")), 10, 64); bSize > 0 {
-		req.Bin = bSize
-	} else {
-		req.Bin = binSize
-	}
-
 	ref := strings.Split(req.Ref, ":")
-	if len(ref) != 2 || ref[1] == "" { //not found if there isn't a ref defined, prevents server crash on sending empty request.
+	// Error is no ref is passed, prevents server crash on empty or malformed request.
+	if len(ref) != 2 || ref[1] == "" {
 		ctx.Error("Page Not Found", fasthttp.StatusNotFound)
 		ctx.Logger().Printf("Error: No reference genotype selected  \n")
 		return
 	}
+
+	// Parse variant(s) (Peek is single value, peek multi for array)
+	vnts := ctx.PostArgs().PeekMulti("Variant")
+	for _, v := range vnts {
+		req.Variant = append(req.Variant, string(v))
+	}
 	vnt := make(map[string][]string, len(req.Variant))
+	// save order, as most go versions iterate over hashes randomly by design.
 	vntOrder := make(map[int][]string, len(req.Variant))
-	for i := range req.Variant {
+	for i := range req.Variant { // Parse vnts to useable slices
 		vt := strings.Split(req.Variant[i], ":")
 		if len(vt) != 2 || vt[1] == "" { //ignore empty variant
 			continue
@@ -158,7 +153,16 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		vntOrder[i] = []string{vt[0], vt[1]}
 	}
 
-	// populate experiment if possible due to auth state
+	// Parse bin size if available, if not passed, default to config.binSize (500000) bases
+	if bSize, _ := strconv.ParseUint(string(ctx.PostArgs().Peek("Bin")), 10, 64); bSize > 0 {
+		req.Bin = bSize
+	} else {
+		req.Bin = binSize
+	}
+
+
+	// Populate experiment if possible due to auth state, it should be possible if having got
+	// this far, but still check for security reasons.
 	var expSet DataFiles
 	if experiments[ref[0]].Location != "" {
 		expSet = experiments[ref[0]]
@@ -170,6 +174,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// Read in file as needed.
 	r, err := ReadFile(expSet.Location, expSet.Gzip)
 	if err != nil {
 		ctx.Error("Problem reading reference genotype's file: %s \n", fasthttp.StatusInternalServerError)
@@ -177,6 +182,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// Build byte buffer for writing resulting gff
 	var b bytes.Buffer
 	writer, err := gff.NewWriter(&b)
 
@@ -186,6 +192,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// Setup variables for storing values when parsing vcf -> gff
 	ctg := make(map[string]int)
 	for i := range r.Header.Contigs {
 		ctgLen, _ := strconv.Atoi(r.Header.Contigs[i].Optional["length"])
@@ -208,10 +215,10 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		totalCtr[gt] = 0
 	}
 
-	var feat *vcf.Feature
+	var feat *vcf.Feature // line of vcf file
 	var readErr error
-	var contig string
-	var stepSize uint64
+	var contig string // individual contig
+	var stepSize uint64 // next bin step
 	if source == "" || binSize == 0 {
 		SetDefaults() // if somehow the source hasn't been set yet
 	}
@@ -221,10 +228,11 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 		stepSize = binSize
 	}
 
-	start := uint64(1)
-	end := start + stepSize
-	stepCt := 0
+	start := uint64(1) //vcf files are 1-based
+	end := start + stepSize //end of current bin
+	stepCt := 0 //running count of bins
 
+	// Read vcf file for conversion
 	for readErr == nil {
 		feat, readErr = r.Read()
 		if feat != nil {
@@ -264,6 +272,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 					stepCt = 1
 				}
 			}
+			// Read and coutn GT fields as compared to reference
 			gFields := gt.Fields["GT"]
 			if gFields != "./." && gFields != ".|." {
 				totalCtr["value"]++
@@ -272,7 +281,7 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 				for i := range rt {
 					rFields := rt[i].Fields["GT"]
 					id := rt[i].Id
-					if rFields == "./." || rFields == ".|." {
+					if rFields == "./." || rFields == ".|." { // allow for undefined fields
 						totalCtr["undefined"]++
 					} else if gFields == rFields {
 						sameCtr[id]++
@@ -285,10 +294,6 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 					}
 				}
 			}
-			//	} else { // only uncomment if you want a undefined reference counting to total
-			//		totalCtr["value"]++
-			//		totalCtr["undefined"]++
-			//	}
 		}
 	}
 
@@ -298,9 +303,10 @@ func GenerateGFF(ctx *fasthttp.RequestCtx) {
 
 	printGffLine(writer, contig, stepCt, start, end, sameCtr, diffCtr, totalCtr)
 
-	//send build gff
+	//send build gff as response
 	ctx.SetContentType("text/plain; charset=utf8")
 	fmt.Fprintf(ctx, "%s", b.String())
+
 	//Log completed request
 	ctx.Logger().Printf("Return request for %s - %dns", ctx.PostArgs(), time.Now().Sub(startT).Nanoseconds())
 }
