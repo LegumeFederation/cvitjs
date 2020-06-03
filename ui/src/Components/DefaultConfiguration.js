@@ -1,4 +1,9 @@
 /**
+ * Default values for UI components.
+ */
+
+
+/**
  * Side of drawing to display the ruler
  */
 export function rulerDisplayDefault(rulerDisplayOptions) { return rulerDisplayOptions[0]}; //0-LHS,1-RHS,2-Both,3-None
@@ -23,3 +28,8 @@ export const titleDefault  = "";
  * Default feature color
  */
 export const colorDefault = '#19741A';
+
+/**
+ * Default title for exported image
+ */
+export const imageTitleDefault = "GCViT" + new Date().toDateString();
