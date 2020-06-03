@@ -339,6 +339,8 @@ h6 {
     left: 4em;
     right: 4em;
     bottom: 9em;
+    width: 80%;
+    margin: auto;
 }
 
 .modal-close {
@@ -347,3 +349,39 @@ h6 {
     font-size: 1.5rem;
 }
 
+/* - loading for data donwload -*/
+.gcvit-load-text {
+    display: none;
+ }
+
+
+.gcvit-load-text.download-loading{
+   display:block;
+   color: white;
+   border-radius: 4px;
+   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+   background: rgb(66, 184, 221);
+   padding: 1em;
+}
+
+.download-loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026";
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
