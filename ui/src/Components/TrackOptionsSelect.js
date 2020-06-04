@@ -164,6 +164,7 @@ export default class TrackOptions extends React.Component {
         viewConfig.invert_value = heat.value === 'low' ? 0 : 1;
         this.setState({ heat, viewConfig });
         this.optionsUpdate(viewConfig);
+    }
     
     /**
      * Update bin count max from form
@@ -206,6 +207,7 @@ export default class TrackOptions extends React.Component {
             }
         });
 
+	// hide filter dropdown if "none" is selected
         let filter = displayAs.value !== 'none'
             ? (<div className={'pure-u-1-3 l-box'}>
                     <span>Filter Genotypes</span>
@@ -222,7 +224,7 @@ export default class TrackOptions extends React.Component {
                     />
                 </div>
             )
-            : null; // Hide things if "none" display is selected
+            : null; 
 
         return (
             <fieldset className={'genotype-field'}>
