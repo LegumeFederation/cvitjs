@@ -31,6 +31,9 @@ Instructions for the UI are provided in the application itself.
 
 The steps for setting up a GCViT instance consists of downloading and installing the application, configuring the server, and data preparation. The GCViT repository includes example data from soybean consisting of these files: SNP data is in `assets/SoySNP50k_TestFile_named.vcf,` the backbone chromosomes are defined in `ui/cvit_assets/data/soySnp/gm_backbone.gff,` and the CViTjs image is configured with `ui/cvit_assets/data/soySnp/soySnp.conf.` 
 
+Before beginning configuration, if you plan on using the ui initialize the [CViTjs](https://github.com/LegumeFederation/cvitjs/tree/preact/buildalt) git submodule using `git submodule update --init`. This will grab the required repository for generating images.
+
+
 #### Configuring the Service
 No matter which method you intend to run GCViT, configuration of the Go backend service is the same. The default configuration file is `config/assetsconfig.yaml` and it has the following format:
 
@@ -205,8 +208,8 @@ This repository contains a pre-built version of both the UI component and CViTjs
 
 If you wish to add configuration data for CViT without re-building the tool, you may place the files directly in `ui/build/cvitjs`.
 
-If you want to use a custom build of CViTjs, grab and build [CViTjs](https://github.com/LegumeFederation/cvitjs/tree/preact/buildalt). Place the resulting
-files from the build directory directly into `ui/build/cvitjs/build`. 
+If you want to use a custom build of CViTjs, navigate to the `cvitjs/` submodule and write and build your changes. This is most often used when wanting to change CViT's css or the click on feature Popover display. Place the resulting
+files from the build directory directly into `ui/build/cvitjs/build`. These changes will last until you rebuild the GCViT ui component. 
 
 Any changes to CViT that you want to keep when re-building the UI component will need to be placed in `ui/public/cvitjs`
 
