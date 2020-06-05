@@ -38,8 +38,6 @@ export default class DataModal extends React.Component {
    	        	let paper = window.cvit.model.paper;
                 	let url = 'data:image/svg+xml;utf8,' +
                 	encodeURIComponent(paper.project.exportSVG({asString:true}));
-                	let name = this.state.name !== '' ? this.state.name : 'cvit';
-                	name += `.${this.state.format}`;
 	        	resolve(url);
 		    }, 500);
 
