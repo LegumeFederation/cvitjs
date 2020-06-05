@@ -2,7 +2,6 @@
 #Build stage for cvit component
 FROM node:12.18.0-alpine3.11 as cvitui
 ARG apionly=false
-ARG apiauth=false
 RUN mkdir /cvit
 WORKDIR /cvit
 #Doing package before build allows us to leverage docker caching.
@@ -34,7 +33,6 @@ RUN if [ "$apionly" = "false" ] ; then rm -rf public/cvitjs/src && \
 
 #Build stage for golang API components
 FROM golang:1.13.12-alpine3.12 as gcvitapi
-#pass --build-arg apionly="true" when building to skip building cvitjs
 RUN apk add --update git
 #add project to GOPATH/src so dep can run and make sure dependencies are right
 RUN mkdir /go/src/gcvit
@@ -44,7 +42,7 @@ WORKDIR /go/src/gcvit
 RUN go get
 RUN go build -o server .
 
-#actual deployment container
+#Actual deployment container stage
 FROM alpine:3.12.0
 RUN mkdir /app
 #Good practice to not run deployed container as root
@@ -54,7 +52,8 @@ COPY --from=gcvitapi /go/src/gcvit/server /app/
 COPY --from=gcvitui /gcvit/build /app/ui/build/
 #add mount points for config and assets
 VOLUME ["/app/config","/app/assets"]
-#Comment above and uncomment below if you would rather have assets built into container
+#Comment VOLUME directive above and uncomment COPY directives below if you would rather have assets built into container
+#This works best with smaller datasets
 #COPY --from=gcvitapi /go/src/gcvit/config /app/config/
 #COPY --from=gcvitapi /go/src/gcvit/assets /app/assets/
 WORKDIR /app
