@@ -12,7 +12,8 @@ export default class DisplayButton extends React.Component {
         priorRequest:{
             request:'',
             interval: binSizeDefault,
-            response:{}
+            response:{},
+            refMax: 0,
         },
     };
 
@@ -62,7 +63,7 @@ export default class DisplayButton extends React.Component {
             headers.append("Content-Type", "application/x-www-form-urlencoded")
             console.log('auth-header', headers)
 
-            model.appendData('api/generateGff', {
+            model.appendData('api/generateGFF', {
                 method: 'POST',
                 headers: headers,
                 body: requestString,
@@ -82,7 +83,7 @@ export default class DisplayButton extends React.Component {
                     console.error('cvit.js: Error requesting data: ', e);
                 });
         } else {
-            this.setView(options, model,count);
+            this.setView(options, model,count,priorRequest.refMax);
         }
     };
 
