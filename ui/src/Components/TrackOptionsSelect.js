@@ -1,9 +1,15 @@
+/**
+ * Control for editing LHS/RHS comparison options
+ * for display in CViT canvas
+ */
+
 import React from 'react';
 import Select from 'react-select';
 import {heatConfig} from './HeatConfig';
 import {histConfig} from './HistConfig';
 import {haploConfig} from './HaploConfig';
 
+// Display format dropdown values
 const displayFormats = [
     {
         value: 'none',
@@ -23,6 +29,7 @@ const displayFormats = [
     },
 ];
 
+// Comparison format dropdown values
 const comparisonFormats = [
     {
         value: 'diff',
@@ -38,6 +45,7 @@ const comparisonFormats = [
     },
 ];
 
+// heatmap direction dropdown values
 const heatFormat = [
     {
         value: 'low',
@@ -49,6 +57,7 @@ const heatFormat = [
     },
 ];
 
+// heatmap color dropdown values
 const heatColorFormat = [
     {
         value: 'white',
@@ -72,6 +81,9 @@ export default class TrackOptions extends React.Component {
         minValue: 0,
     }
 
+    /**
+     * set configuration on display type change from defaults
+     */
     setConfiguration = (format) => {
         const {compare,filters, maxValue, minValue} = this.state;
         const side = this.props.side === 'Right';
@@ -90,10 +102,17 @@ export default class TrackOptions extends React.Component {
         }
     };
 
+
+    /**
+     * update selected options in parents
+     */
     optionsUpdate = (value) => {
         this.props.optionsUpdate(this.props.side.toLowerCase(),value);
     }
 
+    /**
+     * Action on changing DisplayAs dropdown
+     */
     displayChange = (displayAs) => {
         let viewConfig = this.setConfiguration(displayAs.value);
         if(displayAs.value === 'haplo'){ // make sure haplotype block gets configured correctly
@@ -106,6 +125,9 @@ export default class TrackOptions extends React.Component {
         this.optionsUpdate(viewConfig);
     }
 
+    /**
+     * Update options on comparison type change
+     */
     compareChange = (compare) => {
         let viewConfig = this.state.viewConfig;
         viewConfig.feature = compare.value;
@@ -113,6 +135,10 @@ export default class TrackOptions extends React.Component {
         this.optionsUpdate(viewConfig);
     }
 
+
+    /**
+     * Update filter whitelist for features
+     */
     filterChange = (filters) => {
         let viewConfig = this.state.viewConfig;
 	if (filters === null){
@@ -128,6 +154,9 @@ export default class TrackOptions extends React.Component {
         this.optionsUpdate(viewConfig);
     }
 
+    /**
+     * Update heatcolor from dropdown
+     */
     heatColorChange = (heatColor) => {
         let viewConfig = this.state.viewConfig;
         viewConfig.class_heat = [heatColor.value];
@@ -135,13 +164,19 @@ export default class TrackOptions extends React.Component {
         this.optionsUpdate(viewConfig);
     }
 
+    /**
+     * Update direction from dropdown
+     */
     heatChange = (heat) => {
         let viewConfig = this.state.viewConfig;
         viewConfig.invert_value = heat.value === 'low' ? 0 : 1;
         this.setState({ heat, viewConfig });
         this.optionsUpdate(viewConfig);
     }
-
+    
+    /**
+     * Update bin count max from form
+     */
     maxChange = (max) => {
         const maxValue = parseInt(max.target.value) || 0;
         let viewConfig = this.state.viewConfig;
@@ -159,6 +194,9 @@ export default class TrackOptions extends React.Component {
         this.optionsUpdate(viewConfig);
     }
 
+    /**
+     * Update bin count min from form
+     */
     minChange = (min) => {
         const minValue = parseInt(min.target.value) || 0;
         let viewConfig = this.state.viewConfig;
@@ -177,6 +215,7 @@ export default class TrackOptions extends React.Component {
             }
         });
 
+	// hide filter dropdown if "none" is selected
         let filter = displayAs.value !== 'none'
             ? (<div className={'pure-u-1-3 l-box'}>
                     <span>Filter Genotypes</span>
@@ -193,7 +232,7 @@ export default class TrackOptions extends React.Component {
                     />
                 </div>
             )
-            : null;
+            : null; 
 
         return (
             <fieldset className={'genotype-field'}>

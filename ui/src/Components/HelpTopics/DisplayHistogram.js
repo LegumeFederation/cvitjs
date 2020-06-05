@@ -30,11 +30,23 @@ export default class DisplayHistogram extends React.Component {
                                     <li><b>Total</b>: Total number of SNPs for reference and comparison, alongside a count for locations where the allele was undefined.</li>
                                 </ul>
                             </p>
-                            <p> <b>Filter Genotypes</b> <i>Default: all [blank]</i> Allows the restriction of the displayed genotypes when more-than-one is available,
-                            due to either more-than-one comparison, or using the total comparison. If not empty, only the selected genotypes will display.  This option is useful if the user would like to see the differences between the reference and each comparison on opposite sides of the chromosome.
+                            <p> 
+                              <b>Filter Genotypes</b> <i>Default: all [blank]</i> Select 
+                              one or more genotypes or leave blank for all comparison 
+                              genotypes.
                             </p>
-                            <p> <b>Min Value</b> <i>Default: 0</i> Value cuttoff for displaying any height on the glyph. Any count equal to or smaller than this number will not be displayed.</p>
-                            <p> <b>Max Value</b> <i>Default: 0</i>  Here, 0 is shorthand for the largest count in the reference across all bins. Value cutoff for displaying maximum height on the glyph. Any count equal to or larger than this number will be displayed as the full height.</p>
+                            <p> 
+                              <b>Min Value</b> <i>Default: 0</i> Cutoff value for 
+                              displaying any height on the glyph. Any count equal to or 
+                              smaller than this number will not be displayed.
+                            </p>
+                            <p> 
+                              <b>Max Value</b> <i>Default: 0</i> Cutoff value for 
+                              displaying maximum height on the glyph. Any count equal to 
+                              or larger than this number will be displayed as the full 
+                              height. Here, 0 is shorthand for the largest count in the 
+                              reference across all bins. 
+                            </p>
                         </div>
                     </div>
                 </div>

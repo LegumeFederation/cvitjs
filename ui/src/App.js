@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Main gcvit ui app.
+ * TODO: Update from class to hooks
+ */
+
 import React from 'react';
 import ReactModal from 'react-modal';
 
@@ -7,9 +12,7 @@ import OptionsForm from './Components/OptionsForm';
 import HelpModal from './Components/HelpModal'
 import DataModal from "./Components/DownloadModal";
 import DisplayButton from "./Components/DisplayButton";
-// import GenotypeSelector from "./Components/GenotypeSelect";
-// import Select, {createFilter} from "react-select";
- import {rulerIntervalDefault, titleDefault} from "./Components/DefaultConfiguration";
+import {rulerIntervalDefault, titleDefault} from "./Components/DefaultConfiguration";
 
 export default class App extends React.Component {
     state = {
@@ -36,14 +39,15 @@ export default class App extends React.Component {
         },
         hideOptions: false, //show/hide the gcvit configuration UI
         showModal: '', //show/hide overlay modals (dl/help)
-        auth: process.env.REACT_APP_USE_AUTH,
-        user: '',
-        pwd: '',
-        authHeader: new Headers(),
+        auth: process.env.REACT_APP_USE_AUTH, //is react using authentication?
+        user: '', // passed username
+        pwd: '', // passed password
+        authHeader: new Headers(), //basicAuth header
     };
 
     /**
      * GET request to API to fetch the available datasets to populate options
+     * @param {header} header
      **/
     loadDatasets = (header = this.state.authHeader) => {
         fetch('api/experiment',{method:"GET", headers: header})
@@ -55,8 +59,8 @@ export default class App extends React.Component {
 
     /**
      * Append a new comparison set to the display array
-     * @param idx  index to add value to array
-     * @param value color+dataset+genotype object to append
+     * @param {number} idx  index to add value to array
+     * @param {Object} value color+dataset+genotype object to append
      */
     appendDataset = (idx,value) => {
         let selected = this.state.selected.slice();
@@ -66,7 +70,7 @@ export default class App extends React.Component {
 
     /**
      * GET request to populate the genotype array
-     * @param referenceDataset dataset to draw genotypes from
+     * @param {Object} referenceDataset dataset to draw genotypes from
      */
 
     setDataset = (referenceDataset) => {
@@ -86,7 +90,7 @@ export default class App extends React.Component {
 
     /**
      * Edit display options
-     * @param options display options
+     * @param {object} options display options
      */
     setOptions = (options) => {
         this.setState(options);
@@ -99,23 +103,30 @@ export default class App extends React.Component {
 
     /**
      * Display help/download modal at open
-     * @param showModal
+     * @param {boolean} showModal
      */
     handleOpenModal = (showModal) => this.setState({showModal});
 
     /**
      * Username update
+     * @param e form event
      */
     userChange = (e) => {
         const user = e.target.value;
         this.setState({user});
     };
-
+  
+    /**
+     * Update password from form
+     * @param e form event
+     */
     passwordChange = (e) => {
         const pwd = e.target.value;
         this.setState({pwd});
     };
-
+    /**
+     * Test curret credentials against server
+     */
     checkAuthState = () => {
         const authString = btoa(this.state.user+':'+this.state.pwd);
         let authHeader = new Headers();
@@ -131,6 +142,9 @@ export default class App extends React.Component {
             })
     };
 
+    /**
+     * Reset auth state to none
+     */
     logout = () => {
         const authHeader = new Headers();
         const pwd = "";
@@ -149,6 +163,9 @@ export default class App extends React.Component {
         this.loadDatasets()
     };
 
+    /**
+     * Render app components
+     */
     render() {
         const { selected, options, hideOptions, showModal, auth, user, authHeader } = this.state;
         let gts = this.state.referenceDataset !== null && this.state.genotypes[this.state.referenceDataset.value] !== undefined

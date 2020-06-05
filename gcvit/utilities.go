@@ -1,8 +1,5 @@
 package gcvit
 
-/*
-	General-use functions for the gcvit server
-*/
 
 import (
 	"compress/gzip"
@@ -16,20 +13,21 @@ import (
 	"strings"
 )
 
-var source string
-var binSize uint64
+var source string	// Column 2 of gff
+var binSize uint64	// default binSize for vcf->gff conversion
 
-// experiment that stores all the allowed experiments
+// experiments is a slice all the public experiments
 var experiments map[string]DataFiles
+// privateExp is a slice of all the password protected experiments
 var privateExp map[string]map[string]DataFiles
 
-//init does initialization, only runs first time gcvit is called
+// init runs once to setup server-state initialization of variables/
 func init() {
 	experiments = make(map[string]DataFiles)
 	privateExp = make(map[string]map[string]DataFiles)
 }
 
-//PopulateExperiments gets the public list of available experiments
+// PopulateExperiments retreives the public list of available experiments
 func PopulateExperiments() error {
 	var C map[string]interface{}
 	_ = viper.Unmarshal(&C)
@@ -103,6 +101,7 @@ func ReadFile(loc string, gz bool) (*vcf.Reader, error) {
 	}
 }
 
+// SetDefaults caches basic server information for later use.
 func SetDefaults() {
 	var C map[string]interface{}
 	_ = viper.Unmarshal(&C)
@@ -113,6 +112,7 @@ func SetDefaults() {
 
 // printGffLine writes trio of formatted gffLines (same, different, total) to the passed writer
 func printGffLine(writer *gff.Writer, contig string, stepCt int, start, end uint64, sameCtr, diffCtr, totalCtr map[string]int) { //in go if no type, share first type encountered to the right
+	// structure representing single line of gff file
 	gffLine := gff.Feature{
 		Seqid:      contig,
 		Source:     source, //source is set when starting server/when config file changes
@@ -125,11 +125,13 @@ func printGffLine(writer *gff.Writer, contig string, stepCt int, start, end uint
 		Attributes: map[string]string{"ID": fmt.Sprintf("%s.%s.%d", contig, "same", stepCt)},
 	}
 
+	// write line for "same" features
 	for class, val := range sameCtr {
 		gffLine.Attributes[class] = strconv.Itoa(val)
 	}
 	writer.WriteFeature(&gffLine)
 
+	// write line for "different" featues
 	gffLine.Type = "diff"
 	gffLine.Attributes["ID"] = fmt.Sprintf("%s.%s.%d", contig, "diff", stepCt)
 	for class, val := range diffCtr {
@@ -137,6 +139,7 @@ func printGffLine(writer *gff.Writer, contig string, stepCt int, start, end uint
 	}
 	writer.WriteFeature(&gffLine)
 
+	//write line for total counts
 	gffLine.Type = "total"
 	gffLine.Attributes["ID"] = fmt.Sprintf("%s.%s.%d", contig, "total", stepCt)
 	for class, val := range totalCtr {

@@ -1,3 +1,7 @@
+/**
+ * Set default settings for heat map display type
+ */
+
 import {binSizeDefault} from "./DefaultConfiguration";
 
 export function heatConfig(compare, side, minValue, maxValue,filters){

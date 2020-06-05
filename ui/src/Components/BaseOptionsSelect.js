@@ -4,7 +4,7 @@
 
 import React from 'react';
 import Select from 'react-select';
-import {rulerDisplayDefault, binSizeDefault,rulerIntervalDefault,titleDefault} from './DefaultConfiguration';
+import {rulerDisplayDefault, binSizeDefault,rulerIntervalDefault,titleDefault} from './DefaultConfiguration'; //sub-components
 
 /**
  * Quick setup for defining ruler options
@@ -30,6 +30,9 @@ const rulerDisplayOptions = [
     },
 ];
 
+/**
+ * Options component react class
+ */
 export default class BaseOptions extends React.Component {
     state = {
         rulerDisplay : rulerDisplayDefault(rulerDisplayOptions), // Display ruler on LHS
@@ -45,7 +48,11 @@ export default class BaseOptions extends React.Component {
     optionsUpdate = (value) => {
         this.props.optionsUpdate('general',value);
     };
-
+    
+    /**
+     * Change ruler placement in cvit canvas component
+     * @param value
+     */
     rulerChange = (rulerDisplay) => {
         let values = this.state;
         values.rulerDisplay = rulerDisplay;
@@ -53,6 +60,11 @@ export default class BaseOptions extends React.Component {
         this.optionsUpdate(values);
     };
 
+
+    /**
+     * Change title in cvit canvas component
+     * @param e form event
+     */
     titleChange = (e) => {
         const title = e.target.value;
         let values = this.state;
@@ -61,6 +73,10 @@ export default class BaseOptions extends React.Component {
         this.optionsUpdate(values);
     };
 
+    /**
+     * Change number of bases used for binning
+     * @param e form event
+     */
     binChange = (e) => {
         const binSize = parseInt(e.target.value) || 1;
         let values = this.state;
@@ -69,6 +85,11 @@ export default class BaseOptions extends React.Component {
         this.optionsUpdate(values);
     };
 
+
+    /**
+     * Change major intervals on ruler in cvit component
+     * @param e form event
+     */
     intervalChange = (e) => {
         const rulerInterval = parseInt(e.target.value) || 1;
         let values = this.state;
@@ -77,6 +98,12 @@ export default class BaseOptions extends React.Component {
         this.optionsUpdate(values);
     };
 
+    
+    /**
+     * Render options component
+     * @param props react component props
+     * @param state react component state
+     */
     render(props,state) {
         const { rulerDisplay, binSize, rulerInterval, title } = this.state;
         return (

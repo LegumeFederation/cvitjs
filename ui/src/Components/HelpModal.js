@@ -1,3 +1,9 @@
+/**
+ * Container for managing help documentation
+ * all help topic contents are found in
+ * src/Components/HelpTopics
+ */
+
 import React from 'react';
 import About from "./HelpTopics/About";
 import ReferenceGenotype from "./HelpTopics/ReferenceGenotype";
@@ -8,9 +14,6 @@ import DisplayHaplotype from "./HelpTopics/DisplayHaplotype";
 import DisplayHistogram from "./HelpTopics/DisplayHistogram";
 import DisplayHeat from "./HelpTopics/DisplayHeat";
 
-/**
- * Container for managing help documentation
- */
 export default class HelpModal extends React.Component {
     render () {
         return(

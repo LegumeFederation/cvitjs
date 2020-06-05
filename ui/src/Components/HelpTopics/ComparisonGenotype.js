@@ -22,11 +22,25 @@ export default class ComparisonGenotype extends React.Component {
                     <div className={'help-text pure-g'} style={{maxHeight: hideInfo ? '0px' : '50%'}}>
                         <div className={'pure-u-1-1 l-box modal-section'}>
                             <p>
+                                One or more comparison genotypes can be specified. Note
+                                that Comparisons can only be made within the same dataset.
+                            </p>
+                            <p>
                                 <ul>
-                                    <li> Pick a Color that will represent the reference genome. Please note that this color will only show up when “total” is indicated in the display options. </li>
-                                    <li> At this time, comparisons may only be made within the dataset of the selected reference. </li>
-                                    <li> Select which genotype will be the reference by either typing in the name of the genotype or using the pull down menu to see available genotypes. For comparisons, each selected genotyped with be compared against this reference.</li>
-                                    <li> Remove a comparison by clicking on the X </li>
+                                    <li> 
+                                      Pick a Color that will represent the comparison
+                                      genome. If comparing multiple genotypes it will be
+                                      important to pick distinct colors for each.
+                                    </li>
+                                    <li> 
+                                      Select a comparison genotype by either typing in 
+                                      the name of the genotype or using the pull down 
+                                      menu to see available genotypes. 
+                                    </li>
+                                    <li> 
+                                      Remove a comparison genotype by clicking on the 
+                                      <b>X</b>. 
+                                    </li>
                                 </ul>
                             </p>
                         </div>

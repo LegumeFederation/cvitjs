@@ -1,20 +1,25 @@
+/**
+ * Button to send request for gff to server and 
+ * re-render cvitjs canvas component with results.
+ */
+
 import React from 'react';
 import {binSizeDefault} from "./DefaultConfiguration";
 
-/**
- * Button to send request for gff to server and add results to cvit image.
- */
 
 export default class DisplayButton extends React.Component {
     state = {
         priorRequest:{
             request:'',
-            interval:50000,
+            interval: binSizeDefault,
             response:{},
             refMax: 0,
         },
     };
 
+    /**
+     * craft request for new gff if needed, then re-render cvit canvas with new options
+     */
     onSubmit = () => {
         const { selected, options } = this.props;
         const {priorRequest} = this.state;
@@ -22,6 +27,7 @@ export default class DisplayButton extends React.Component {
         let requestString = '';
         let classes = {};
         let count = 0;
+	// iterate through selected GTs and build request string
         selected.forEach((query, i) => {
             if (query !== null && query.hasOwnProperty('dataset') && query.hasOwnProperty('genotype')
                 && query.dataset != null && query.genotype != null){
@@ -34,15 +40,16 @@ export default class DisplayButton extends React.Component {
             }
         });
         classes['undefined'] = 'black';
+
         // Configure cvit model for new view
         let cvit = window.cvit;
         let model = cvit.model;
         model._viewConfig.classes = classes;
-
         const binSize = options.left.hasOwnProperty('bin_size') ? options.left.bin_size :
             options.right.hasOwnProperty('bin_size') ? options.right.bin_size : binSizeDefault;
         requestString = requestString + "&Bin=" + encodeURIComponent(binSize);
         this.props.hide();
+
         //fetch new data
         if( (priorRequest.request !== requestString) ||
             (binSize !== priorRequest.interval )
@@ -79,27 +86,28 @@ export default class DisplayButton extends React.Component {
             this.setView(options, model,count,priorRequest.refMax);
         }
     };
+
+    // update cvit canvas
     setView = (options,model,count,refMax) =>{
-    //  let vd = model._viewData;
-    //  Object.keys(vd.total).forEach(key => {
-    //      let chr = vd.total[key];
-    //      if (chr.hasOwnProperty('maxScore') && chr.maxScore.value > max) max = chr.maxScore.value;
-    //  });
-    if(options.left.bin_max === 0){
-        options.left.bin_max = options.left.display === 'heat' ? refMax : refMax*count;
-    }
-    if(options.right.bin_max === 0){
-        options.right.bin_max = options.right.display === 'heat' ? refMax : refMax*count;
-    }
-    model._viewConfig.left.class_heat = [];
-    model._viewConfig.right.class_heat = [];
-    model._viewConfig.left.class_filter = [];
-    model._viewConfig.right.class_filter = [];
-    model._viewConfig = model._combineObjects(model._viewConfig, options);
-    model._redraw = true;
-    model.setDirty(true);
-    model._inform();
-};
+       if(options.left.bin_max === 0){
+           options.left.bin_max = options.left.display === 'heat' ? refMax : refMax*count;
+       }
+       if(options.right.bin_max === 0){
+           options.right.bin_max = options.right.display === 'heat' ? refMax : refMax*count;
+       }
+       model._viewConfig.left.class_heat = [];
+       model._viewConfig.right.class_heat = [];
+       model._viewConfig.left.class_filter = [];
+       model._viewConfig.right.class_filter = [];
+       model._viewConfig = model._combineObjects(model._viewConfig, options);
+       model._redraw = true;
+       model.setDirty(true);
+       model._inform();
+    };
+
+    /**
+     * render button component
+     */
     render () {
         return(
             <button className={'pure-u-1-4 pure-button-primary button-action pure-button'} onClick={this.onSubmit}> Display </button>
