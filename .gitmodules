@@ -1,0 +1,4 @@
+[submodule "cvitjs"]
+	path = cvitjs
+	url = https://github.com/LegumeFederation/cvitjs.git
+	branch = preact/buildalt
