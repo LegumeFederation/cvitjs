@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cvit/menu/modals/uploadmodal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cvit/menu/modals/uploadmodal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file View of the upload modal window.
+ * @author awilkey
+ * @module menu/modals/uploadModal
+ *
+ */
+define(["jquery", "cvit/file/file", "draw/glyph/glyph", "glyph/utilities",
+    "bootstrap"
+  ],
+  function ($, file, glyph, utility) {
+
+    return /** @alias module:menu/modals/uploadModal */ {
+      /**
+       * Draws the glyph of a given feature.
+       *
+       * @param {object} context - context from parent menu.
+       */
+      populate: function (context) {
+        var uploadModal = $("#upload-modal");
+        uploadModal.find(".modal-title").text("Upload Your Data");
+        // Need to test if local file upload is supported by browser.
+        // Will essentially only return false if using IE&lt;8
+        if (window.File &amp;&amp; window.FileReader &amp;&amp; window.FileList &amp;&amp; window.Blob) {
+          var fileTypes = ["gff", "gff3"];
+          uploadModal.find(".modal-body").html("&lt;div>&lt;input type=\"file\" id=\"files\" name=\"files[]\" multiple />&lt;output id=\"list\">&lt;/output>&lt;/div>");
+          $("#files").on("change", function (event) {
+            var files = event.target.files;
+            var output = [];
+            for (var key in files) {
+              var f = files[key];
+              var extension = f.name.split(".").pop().toLowerCase();
+              if (fileTypes.indexOf(extension) &lt; 0) {
+                continue;
+              }
+
+              output.push("&lt;li>&lt;strong>", escape(f.name), "&lt;/strong> - ",
+                f.size, " bytes, last modified: ",
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : "n/a",
+                "&lt;/li>");
+              var fileReader = new FileReader();
+              fileReader.name = files[key].name;
+              // TODO: Support customizing glyph options.
+              $(fileReader).on("load", function (event) {
+                console.log(event);
+                var fileContents = event.target;
+                var newFeatures = file.parse.gff(event.target.result);
+                for (var fkey in newFeatures) {
+                  console.log(newFeatures);
+                  context.view.viewName = this.name.slice(0, this.name.lastIndexOf(".")) + " " + fkey;
+                  //upmod.checkBack(context.group,newFeatures[ fkey ].features,this.name);
+                  glyph.drawGlyph(newFeatures[fkey], "range:range", context.conf, context.view, context.group).then(function () {
+                    paper.view.draw();
+                  });
+                }
+              });
+              context.view.viewName = f.name.toLowerCase();
+              fileReader.readAsText(f);
+            }
+
+            $("#list").html("&lt;ul>" + output.join("") + "&lt;/ul>");
+
+          });
+
+        } else {
+          uploadModal.find(".modal-body").text("Uploading a local file is not currently supported in this browser. See help for supported browser list.");
+        }
+      },
+
+      /**
+       * @description
+       * Compares targets of uploaded gff with the backbone, alerting user to
+       * name mismatch.
+       *
+       * @param {object} backbone - backbone of the cvit view.
+       * @param {object} features - feature to check provided seqNames against backbone
+       * @param {string} filename - name of uploaded file
+       *
+       */
+
+      checkBack: function (backbone, features, filename) {
+        for (var i = 0; i &lt; features.length; i++) {
+          var feature = features[i];
+          console.log(feature.seqName);
+          console.log(backbone._namedChildren[feature.seqName]);
+          // TODO(?): Add alert window allowing manual renaming
+          if (backbone._namedChildren[feature.seqName] === undefined) {
+            $("#upload-modal").find(".modal-body").append("&lt;div id=\"upload-warning\" class=\"alert alert-warning\">" +
+              "&lt;strong>Warning!&lt;/strong> One or more sequence names in " + filename + " do not match backbone and may not be displayed.&lt;/br> Please check your names.&lt;/div>");
+            break;
+          }
+        }
+      }
+
+    };
+  }
+);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cvit.html">cvit</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-draw_glyph.html">draw/glyph</a></li><li><a href="module-draw_glyph_border.html">draw/glyph/border</a></li><li><a href="module-draw_glyph_centromere.html">draw/glyph/centromere</a></li><li><a href="module-draw_glyph_chromosome.html">draw/glyph/chromosome</a></li><li><a href="module-draw_glyph_marker.html">draw/glyph/marker</a></li><li><a href="module-draw_glyph_measure_distance.html">draw/glyph/measure/distance</a></li><li><a href="module-draw_glyph_measure_heat.html">draw/glyph/measure/heat</a></li><li><a href="module-draw_glyph_measure_histogram.html">draw/glyph/measure/histogram</a></li><li><a href="module-draw_glyph_measure_measure.html">draw/glyph/measure/measure</a></li><li><a href="module-draw_glyph_position_circle.html">draw/glyph/position/circle</a></li><li><a href="module-draw_glyph_position_doublecircle.html">draw/glyph/position/doublecircle</a></li><li><a href="module-draw_glyph_position_rect.html">draw/glyph/position/rect</a></li><li><a href="module-draw_glyph_range.html">draw/glyph/range</a></li><li><a href="module-draw_glyph_utilities.html">draw/glyph/utilities</a></li><li><a href="module-draw_rulers.html">draw/rulers</a></li><li><a href="module-file.html">file</a></li><li><a href="module-menu.html">menu</a></li><li><a href="module-menu_modals_exportModal.html">menu/modals/exportModal</a></li><li><a href="module-menu_modals_helpModal.html">menu/modals/helpModal</a></li><li><a href="module-menu_modals_uploadModal.html">menu/modals/uploadModal</a></li><li><a href="module-tools.html">tools</a></li><li><a href="module-tools_draw_color.html">tools/draw/color</a></li><li><a href="module-tools_draw_drawControls.html">tools/draw/drawControls</a></li><li><a href="module-tools_draw_eraser.html">tools/draw/eraser</a></li><li><a href="module-tools_draw_free.html">tools/draw/free</a></li><li><a href="module-tools_draw_rect.html">tools/draw/rect</a></li><li><a href="module-tools_zoom.html">tools/zoom</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-cvit-view.html">view</a></li><li><a href="module-file-parse.html">parse</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 17:35:28 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
