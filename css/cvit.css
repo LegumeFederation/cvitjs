@@ -1,0 +1,290 @@
+/*
+    General CViTjs config
+    #cvit-app is the wrapper div for the entire
+    cvit application
+*/
+
+#cvit-app {
+    max-width: 85%;
+}
+
+
+/*
+    cvit-header is the import/export/help menu
+    display : none to hide
+ */
+
+#cvit-header {
+    background: #666;
+    display: none;
+}
+
+#cvit-header .head-item {
+    padding: 1rem 0 1rem 0;
+    text-align: center;
+    color: white;
+}
+
+#cvit-header .head-item:hover {
+    background-color: #111111;
+}
+
+#cvit-header .active {
+    background-color: darkseagreen;
+}
+
+/*
+    cvit-main shows the canvas or modal menus
+    the core of cvit-js
+ */
+
+#cvit-main {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden
+}
+
+/**
+  cvit-canvas is the keystone feature of cvit-js.
+  in addition to being configured here, height,width, and background
+  color may be configured in cvit.conf
+  as height, width and canvasColor.
+  is is suggested width is only changed as a last resort.
+ */
+
+#cvit-display {
+    overflow-x: auto;
+    max-width: 91%;
+}
+
+/**
+   cvit-controls is the control panel for zoom
+   and pan interactions (zoom, reset, pan, annotate)
+ */
+#cvit-controls hr {
+    margin: 0.5rem 0 1rem 0;
+}
+
+#cvit-controls .control-label {
+    font-size: 0.75em;
+    color: #666;
+    text-align: center;
+}
+
+#cvit-controls .cvit-button {
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+#cvit-controls .cvit-button:disabled {
+    background: darkseagreen;
+    color: #fff;
+}
+
+#cvit-controls .cvit-button i {
+    position: relative;
+    top: 0.5rem;
+}
+
+/**
+   cvit-modal is the class for all menu modal windows
+ */
+.cvit-modal {
+    overflow: hidden;
+}
+
+.cvit-modal input {
+    width: auto;
+}
+
+.cvit-modal td {
+    border: none;
+}
+
+.cvit-modal .modal-confirm {
+    margin: auto;
+}
+
+.cvit-modal p {
+    width: 50%
+}
+
+#cvit-popover {
+    position: absolute;
+    display: inline-block;
+    background: white;
+    padding: 1em;
+    border: #666 1px solid;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 40rem;
+    width: 20rem;
+}
+
+#popover-contents {
+    display: inline-block;
+    position: relative;
+    max-height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+
+/**
+   Footer and viewtoggle config
+ */
+
+#cvit-footer {
+    background: #666;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+#cvit-footer #toggle-title i {
+    font-size: 1.5rem;
+    margin: 0 2rem 0 2rem;
+    color: white;
+    position: relative;
+    top: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+#cvit-footer .collapsible {
+    transition: max-height 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+#cvit-footer .content {
+    background: #ffffff;
+    overflow-y: auto;
+    transition: max-height 0.2s ease-in-out;
+    color: black;
+
+}
+
+#cvit-footer .content td {
+    border: none;
+    width: 7rem;
+    padding: 1rem 0 1rem 1rem;
+}
+
+#cvit-footer .control-head {
+    text-align: center;
+}
+
+#cvit-footer .content table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.group-toggle {
+    position: relative;
+    width: 80px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.group-toggle-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #999999;
+    border-radius: 0;
+}
+
+.group-toggle-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.group-toggle-inner:before, .group-toggle-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 20px;
+    padding: 0;
+    line-height: 16px;
+    font-size: 1rem;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.group-toggle-inner:before {
+    content: 'ON';
+    padding-left: 10px;
+    background-color: #D4D4D4;
+    color: #FFFFFF;
+}
+
+.group-toggle-inner:after {
+    content: 'OFF';
+    padding-right: 10px;
+    background-color: #D4D4D4;
+    text-align: right;
+}
+
+.group-toggle-switch {
+    display: block;
+    width: 30px;
+    margin: 0;
+    background: #A1A1A1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 50px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.group-toggle-checkbox:checked + .group-toggle-label .group-toggle-inner {
+    margin-left: 0;
+}
+
+.group-toggle-checkbox:checked + .group-toggle-label .group-toggle-switch {
+    right: 0;
+    background-color: #8FBC8F;
+}
+
+.group-toggle-checkbox {
+    display: none;
+}
+
+.container input[type='checkbox'] {
+    display: none;
+}
+
+.cvit-loading-spinner {
+    display: inline-block;
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.cvit-loading-spinner:after {
+    content: " ";
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0.5rem;
+    border-radius: 50%;
+    border: 0.25rem solid #666;
+    border-color: #666 transparent #666 transparent;
+    animation: cvit-loading-spinner 1.5s linear infinite;
+}
+
+@keyframes cvit-loading-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

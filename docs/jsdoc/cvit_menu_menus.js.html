@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cvit/menu/menus.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cvit/menu/menus.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Add controls for all the menus with modals (export, add data, help)
+ * @author awilkey
+ * @module menu
+ *
+ */
+
+define(["jquery", "tools/tools", "tools/zoom/zoom", "cvit/menu/modals/exportmodal",
+    "cvit/menu/modals/uploadmodal", "cvit/menu/modals/helpmodal", "bootstrap"
+  ],
+  function ($, tools, zoom, exportMod, uploadMod, helpMod) {
+    return /** @alias module:menu */ {
+      /**
+       * @description Create menu button stack
+       *
+       * @param {object} conf - Configuration file
+       * @param {object} view - Canvas View
+       * @param {object} group - Backbone group
+       *
+       */
+
+       /* TODO: Make configurable from conf file
+        */
+
+      build: function (conf, view, group) {
+        var thisC = this;
+        thisC.setFeatures(conf, view, group);
+        //thisC.conf = conf;
+        //thisC.view = view;
+        //thisC.group = group;
+        thisC.addZoomControl();
+        thisC.addOptionsMenu();
+        thisC.addViewMenu();
+      },
+
+      /**
+       * @description
+       * Add a button ovelay to cvit camvas for the zoom controls (in out reset)
+       * call the function from zoom here in case of later additions to menu.
+       *
+       */
+
+      addZoomControl: function () {
+        zoom.addZoomControl();
+        tools.addToolsControl();
+      },
+
+      /**
+       * @description
+       * Add a menu for Cvitjs. This menu appears as a "hamburger" icon and
+       * hosts the "Export to image", "View your data" and "Help" menus.
+       * Each menu pops up as its own modal dialog from accessing the
+       * corresponding menu option.
+       *
+       */
+
+      addOptionsMenu: function () {
+        var thisc = this;
+        //var leftedge = paper.view.bounds.width;
+        var menuButton = $("&lt;button type=\"button\" id=\"menubutton\" class=\"btn btn-default\" data-toggle=\"collapse\" data-target=\"#menu-group\">&lt;/button>");
+        $(menuButton).append("&lt;span class=\"glyphicon glyphicon-menu-hamburger\" aria-label=\"menu\" aria-hidden=\"true\">&lt;/span>");
+        $(menuButton).css("position", "absolute");
+
+        // place options menu "hamburger" depending on if there is a title div
+        var rightOffset = paper.view.bounds.width;
+        var titleDiv = $("#title-div");
+        if (titleDiv.length) {
+          titleDiv.css("position", "relative");
+          titleDiv.append(menuButton);
+          $(menuButton).css("top", "5%");
+        } else {
+          $("#overlay").append(menuButton);
+          $(menuButton).css("top", "10px");
+          rightOffset -= 10;
+        }
+        rightOffset -= parseInt(menuButton.css("width"));
+        $(menuButton).css("left", rightOffset + "px");
+
+        var mg = $("&lt;div class=\"collapse\" id=\"menu-group\" >");
+        var menuGroup = $("&lt;div class=\"btn-group btn-group-justified\">");
+        $(menuGroup).css("width", paper.view.bounds.width);
+
+        var mExport = $("&lt;div class=\"btn-group\">&lt;button type=\"button\" class=\"btn btn-default\"" +
+          " id=\"btn-export\" data-toggle=\"modal\" data-target = \"#export-modal\">" +
+          "&lt;span class=\"glyphicon glyphicon-picture\" aria-hidden=\"true\"/> Export View to Image&lt;/button>&lt;/div>"
+        );
+        var mUpload = $("&lt;div class=\"btn-group\">&lt;button type=\"button\" class=\"btn btn-default\"" +
+          " id=\"btn-upload\" data-toggle=\"modal\" data-target=\"#upload-modal\">" +
+          "&lt;span class=\"glyphicon glyphicon-open\" aria-hidden=\"true\"/>Add My Data&lt;/button>&lt;/div>"
+        );
+        var mHelp = $("&lt;div class=\"btn-group\">&lt;button type=\"button\" class=\"btn btn-default\"" +
+          " id=\"btn-help\" data-toggle=\"modal\" data-target=\"#help-modal\">? Help&lt;/button>&lt;/div>"
+        );
+
+        $(mExport).on("click", function () {
+          var exportModal = thisc.makeModal("export-modal");
+          $("#cvit-div").append(exportModal);
+          exportMod.populate();
+        });
+
+        $(mUpload).on("click", function () {
+          var uploadModal = thisc.makeModal("upload-modal");
+          $("#cvit-div").append(uploadModal);
+          uploadMod.populate(thisc);
+        });
+
+        $(mHelp).on("click", function () {
+          var helpModal = thisc.makeModal("help-modal");
+          $("#cvit-div").append(helpModal);
+          helpMod.populate();
+        });
+
+        $(menuGroup).append(mExport);
+        $(menuGroup).append(mUpload);
+        $(menuGroup).append(mHelp);
+
+        $(mg).append(menuGroup);
+        $("#cvit-div").prepend(mg);
+      },
+
+      /**
+       * @description
+       * Adds a menu to allow user to toggle off and on the display of feature
+       * groups. By default, every group starts as displayed.
+       *
+       */
+
+      addViewMenu: function () {
+        var viewGroup = $("&lt;div class=\"btn-group btn-group-justified\" role=\"group\">");
+        var menuButton = $("&lt;div class=\"btn-group\">" +
+          "&lt;button type=\"button\" id=\"viewButton\" class=\"btn btn-default\"" +
+          " data-toggle=\"collapse\" data-target=\"#view-group\">" +
+          "&lt;span id=\"bob\" class=\"glyphicon glyphicon-menu-down\" aria-hidden=\"true\"/>" +
+          " View Options &lt;span class=\"glyphicon glyphicon-menu-down\" aria-hidden=\"true\"/> &lt;/button>&lt;/div>");
+
+        $(menuButton).on("click", function () {
+          var gmd = $(".glyphicon-menu-down");
+          if (gmd.length) {
+            gmd.toggleClass("glyphicon-menu-down glyphicon-menu-up");
+          } else {
+            $(".glyphicon-menu-up").toggleClass("glyphicon-menu-down glyphicon-menu-up");
+          }
+        });
+
+        $(viewGroup).css("width", paper.view.bounds.width);
+        $(viewGroup).append(menuButton);
+
+        var vg = $("&lt;div class=\"collapse\" id=\"view-group\" >&lt;div class=\"scrollable-menu\" role=\"menu\" style=\"height:auto; max-height:216px; overflow-y:scroll;\">" +
+          "&lt;hr />&lt;ul id=\"view-list\" style=\"list-style: none;\">&lt;/ul>&lt;/div>&lt;/div>");
+        $(vg).css("width", paper.view.bounds.width);
+
+        $("#cvit-div").append(viewGroup).append(vg);
+      },
+
+      //** Generic modal window, to be decorated later */
+      makeModal: function (id) {
+        return $("&lt;div id=\"" + id + "\" class=\"modal fade\" role=\"dialog\">&lt;div class=\"modal-dialog menu-modal\">" +
+          "&lt;div class=\"modal-content\">&lt;div class=\"modal-header\">&lt;button type=\"button\" class=\"close\"" +
+          " data-dismiss=\"modal\">&amp;times;&lt;/button>&lt;h4 class=\"modal-title\">&lt;/h4>&lt;/div>" +
+          "&lt;div class=\"modal-body\">&lt;/div>&lt;div class=\"modal-footer\">&lt;button type=\"button\"" +
+          " class=\"btn btn-default\" data-dismiss=\"modal\">Close&lt;/button>&lt;/div>&lt;/div>&lt;/div>&lt;/div>"
+        );
+
+      },
+
+      /**
+       * @description
+       * Set the menu's group/configuration/view features
+       *
+       * @param conf
+       * @param view
+       * @param group
+       *
+       */
+
+      setFeatures: function (conf, view, group) {
+        this.conf = conf;
+        this.view = view;
+        this.group = group;
+      }
+    };
+  }
+);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cvit.html">cvit</a></li><li><a href="module-draw.html">draw</a></li><li><a href="module-draw_glyph.html">draw/glyph</a></li><li><a href="module-draw_glyph_border.html">draw/glyph/border</a></li><li><a href="module-draw_glyph_centromere.html">draw/glyph/centromere</a></li><li><a href="module-draw_glyph_chromosome.html">draw/glyph/chromosome</a></li><li><a href="module-draw_glyph_marker.html">draw/glyph/marker</a></li><li><a href="module-draw_glyph_measure_distance.html">draw/glyph/measure/distance</a></li><li><a href="module-draw_glyph_measure_heat.html">draw/glyph/measure/heat</a></li><li><a href="module-draw_glyph_measure_histogram.html">draw/glyph/measure/histogram</a></li><li><a href="module-draw_glyph_measure_measure.html">draw/glyph/measure/measure</a></li><li><a href="module-draw_glyph_position_circle.html">draw/glyph/position/circle</a></li><li><a href="module-draw_glyph_position_doublecircle.html">draw/glyph/position/doublecircle</a></li><li><a href="module-draw_glyph_position_rect.html">draw/glyph/position/rect</a></li><li><a href="module-draw_glyph_range.html">draw/glyph/range</a></li><li><a href="module-draw_glyph_utilities.html">draw/glyph/utilities</a></li><li><a href="module-draw_rulers.html">draw/rulers</a></li><li><a href="module-file.html">file</a></li><li><a href="module-menu.html">menu</a></li><li><a href="module-menu_modals_exportModal.html">menu/modals/exportModal</a></li><li><a href="module-menu_modals_helpModal.html">menu/modals/helpModal</a></li><li><a href="module-menu_modals_uploadModal.html">menu/modals/uploadModal</a></li><li><a href="module-tools.html">tools</a></li><li><a href="module-tools_draw_color.html">tools/draw/color</a></li><li><a href="module-tools_draw_drawControls.html">tools/draw/drawControls</a></li><li><a href="module-tools_draw_eraser.html">tools/draw/eraser</a></li><li><a href="module-tools_draw_free.html">tools/draw/free</a></li><li><a href="module-tools_draw_rect.html">tools/draw/rect</a></li><li><a href="module-tools_zoom.html">tools/zoom</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-cvit-view.html">view</a></li><li><a href="module-file-parse.html">parse</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Feb 02 2018 17:35:28 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

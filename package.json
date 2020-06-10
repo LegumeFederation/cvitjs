@@ -1,0 +1,82 @@
+{
+  "name": "cvitjs",
+  "version": "0.2.0",
+  "description": "CViT - Chromosome Viewing Tool, JavaScript editon",
+  "main": "lib/index.js",
+  "module": "build/cvit.esm.js",
+  "scripts": {
+    "build": "rollup -c && npm run babel",
+    "babel": "babel src -d lib && bundlesize",
+    "watch": "nps build.watch",
+    "lint": "eslint src test",
+    "drupalbuild": "rollup --c drupal.rollup.config.js && npm run babel",
+    "pretest": "npm run build",
+    "test": "mocha",
+    "coverage": "nyc npm test",
+    "validate-config": "ajv -s cmap-schema.json -d cmap.json"
+  },
+  "author": "Andrew Wilkey",
+  "license": "SEE LICENSE IN README",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
+    "babel-plugin-array-includes": "^2.0.3",
+    "babel-preset-preact": "^1.1.0",
+    "bundlesize": "^0.18.0",
+    "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
+    "mdn-polyfills": "^5.19.0",
+    "npm-run-all": "^4.1.5",
+    "postcss-nested": "^4.2.1",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-simple-vars": "^5.0.2",
+    "preact": "^8.5.3",
+    "preact-compat": "^3.19.0",
+    "promise-polyfill": "^8.1.3",
+    "query-string": "^6.9.0",
+    "rollup": "1.1.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^4.2.4",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-terser": "^4.0.2",
+    "style-loader": "^0.19.1",
+    "unfetch": "^3.0.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LegumeFederation/cvitjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LegumeFederation/cvitjs/issues"
+  },
+  "homepage": "https://github.com/LegumeFederation/cvitjs#readme",
+  "dependencies": {
+    "paper": "^0.12.3",
+    "qs": "^6.9.1",
+    "rbush": "^2.0.2",
+    "skeleton.css": "^2.0.4"
+  },
+  "files": [
+    "build",
+    "lib",
+    "src"
+  ],
+  "bundlesize": [
+    {
+      "path": "./build/cvit.js"
+    }
+  ]
+}
