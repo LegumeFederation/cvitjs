@@ -29,6 +29,7 @@ const main = () => {
     let dTag = dataset.tag ? dataset.tag : null;
     let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
     let croot = dataset.cvitroot ? dataset.cvitroot : '';
+    let register = dataset.register ? dataset.register : true;
     let configData = {
       viewConf: dConf,
       viewTag : dTag,
@@ -36,7 +37,7 @@ const main = () => {
       cvitRoot : croot
     };
     let _cvit = new CVIT(configData);
-    if(dataset.registerGlobal) window.cvit = _cvit;
+    if (register) window.cvit = _cvit;
 
     const postLoadHandler = () => {
       console.log('CViTjs:','Data successfully loaded');

@@ -71,7 +71,7 @@ export default class Chromosome {
     let label = new paper.PointText(point);
     label.justification = 'center';
     label.fontFamily = config.chrom_font_face;
-    label.content = group.name;
+    label.content = data.attribute.hasOwnProperty('name') ? data.attribute.name : group.name;
     label.fontSize = config.chrom_font_size;
     label.fillColor = formatColor(config.chrom_label_color);
     label.name = group.name + 'Label';

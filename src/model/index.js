@@ -2,6 +2,7 @@ import paper from 'paper';
 import Query from './QueryString';
 import {parseFile} from './file';
 import {defaultConfig} from './DefaultConfig';
+import {parseGff} from "./file/ParseGff";
 
 export default class Index {
   /**
@@ -20,6 +21,7 @@ export default class Index {
     this._viewConfig = {};
     this._tag = '';
     this._active = 'status';
+    this._status = 'Loading default view data.';
     this._mouseTool = 'pan';
     this._dataLoaded = new CustomEvent('baseDataLoaded');
     this._trigger = false;
@@ -34,10 +36,11 @@ export default class Index {
       data:[]
     };
 
-    parseFile(`${this.cvitRoot}cvit.conf`,'ini')
+    this._paperContext = paper;
+
+    parseFile(`${this.cvitRoot}cvit.conf`,'ini',{})
       .then(response => this.baseConfig = response)
       .then(()=>{
-        this._dirty = true;
         this._tag = 'data.';
         if(passedConfig.hasOwnProperty('viewTag') && passedConfig.viewTag) {
           this._tag += passedConfig.viewTag;
@@ -61,12 +64,14 @@ export default class Index {
           ?  [this.baseConfig[tag].defaultData]
           :  this.baseConfig[tag].defaultData;
 
+        // set fetch parameters
+        let pcFetchParam = passedConfig.hasOwnProperty('fetchParam') ? passedConfig.fetchParam : {};
+        let genFetchParam = this.baseConfig.general.hasOwnProperty('fetchParam') ? this.baseConfig.general.fetchParam: {};
+        this._fetchParam = this._combineObjects(genFetchParam, pcFetchParam );
         // Load configuration for view
-        this.loadViewConfig(viewConfig);
+        this.loadViewConfig(this.cvitRoot+viewConfig);
         // Load _viewData for view
-        this.loadData(dataSources);
-
-        this._inform();
+        this.loadInitialData(dataSources);
       })
       .catch(e => console.error(e));
   }
@@ -106,19 +111,15 @@ export default class Index {
     this._mouseTool = tool;
   }
 
+  get paper(){
+    return this._paperContext;
+  }
+
   get view(){
     return this._viewLayout;
   }
 
-  setActive(state){
-    this.active = state;
-    this._inform();
-  }
 
-  setDirty(state){
-    this.dirty = state;
-    this._inform();
-  }
 
   get color1(){
     return this._color1;
@@ -140,12 +141,35 @@ export default class Index {
     return this._popoverConfig;
   }
 
+  get status () {
+    return this._status;
+  }
+
+  set status (status) {
+    this._status = status;
+  }
+
+
   setColor(target,color){
     this[target] = color;
-    this.active = 'canvas';
     this._inform();
   }
 
+  setActive(state){
+    this.active = state;
+    this._inform();
+  }
+
+  setDirty(state){
+    this.dirty = state;
+    if(state === false){ this.active = 'canvas'}
+    this._inform();
+  }
+
+  setStatus(state){
+    this.status = state;
+    this._inform();
+  }
 
   setTool(state){
     this.mouseTool = state;
@@ -165,31 +189,54 @@ export default class Index {
    * Public Methods
    */
 
+  loadInitialData(files){
+    files = files.map(file => this.cvitRoot+file );
+    this.loadData(files)
+  }
   /**
    * Load view _viewData from the passed file locations
    * @param files
+   * @param fetchParam optional
    */
-  loadData(files) {
+  loadData(files, fetchParam = {}) {
+    this.status = 'Loading view data.';
     this._viewData = {};
     files.forEach((file, i) => {
-      this.appendData(this.cvitRoot+file)
+
+      let fp = fetchParam.hasOwnProperty(file)
+          ? fetchParam[file]
+          : this._fetchParam.hasOwnProperty(file)
+              ? this._fetchParam[file]
+              : fetchParam;
+
+      this.appendData(file,fp)
         .then(() => {
           if (i === files.length-1) {
-            this._dirty = true;
-            this._inform();
+            this.status = 'View data loaded';
+            this.setDirty(true);
           }
         })
-        .catch(e => console.error(e));
+        .catch(e => {
+          this.setStatus("error loading data");
+          console.error(e);
+        });
     });
   }
 
   /**
    * Load _viewConfig from the passed file location
    * @param file
+   * @param fetchParam optional
    */
-  loadViewConfig(file){
+  loadViewConfig(file, fetchParam = {}){
+    this.status = 'Loading view configuration.';
     this._viewConfig = {};
-    parseFile(this.cvitRoot+file, 'ini') //get <config.ini/conf>
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : {};
+    parseFile(file, 'ini',fp) //get <config.ini/conf>
       .then(response => this._viewConfig = this._combineObjects(this.defaultViewConf,response)) //overwrite default conf with passed data
       .then(() => { //set configuration info of custom types
         for(let key in this._viewConfig){
@@ -205,33 +252,69 @@ export default class Index {
         }
       })
       .then(() => {
-        this._dirty = true;
-        this._inform();
+        this.status = 'View config loaded.';
+        this.setDirty(true);
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        this.setStatus("error loading view configuration");
+        console.error(e);
+      });
   }
 
   /**
    * Append view _viewData from the passed file to existing dataset
    * @param {string} file
+   * @param fetchParam
    * @returns {promise}
    */
-  appendData(file){
-
+  appendData(file,fetchParam = {}){
     if(this._active !== 'status'){
+      this.status = 'Appending data.';
       this._active = 'status';
       this._inform();
     }
 
-    return parseFile(file, 'gff',this._viewLayout.chrOrder)
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : fetchParam;
+    let aliases = this.data.hasOwnProperty('alias') ? this.data.alias : {};
+    return parseFile(file, 'gff',fp,this._viewLayout.chrOrder,aliases)
       .then(response => this._viewData = this._combineObjects(this._viewData,response))
       .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
       .then(()=> {
-        this._dirty = true;
-        this._redraw = true;
+        this.status = 'Data appended.';
+        this.setDirty(true);
       })
-      .catch(e => console.error(e));
+      .catch(e => {
+        this.setStatus("error appending data");
+        console.error(e);
+      });
+
   }
+
+  appendGff(gff,fetchParam = {}){
+    this.status = 'Appending gff data.';
+    let fp = fetchParam.hasOwnProperty(file)
+        ? fetchParam[file]
+        : this._fetchParam.hasOwnProperty(file)
+            ? this._fetchParam[file]
+            : fetchParam;
+    parseFile(gff,'gff',fp)
+        .then(response => this._viewData = this._combineObjects(this._viewData,response))
+        .then(()=> this._viewLayout.chrOrder = this._setChrOrder(this._viewData))
+        .then(()=> {
+          this.status = 'gff appended.';
+          this.setDirty(true);
+        })
+      .catch(e => {
+        this.setStatus("error appending gff data");
+        console.error(e);
+      });
+  }
+
+
 
   /**
    * Private Methods
@@ -245,7 +328,7 @@ export default class Index {
   _inform(){
     if(this._viewConfig.general && this._viewData.hasOwnProperty('chromosome') && this._dirty){
       this._viewLayout = this._setupView(this._viewData,this._viewConfig);
-      this._active = 'canvas';
+      this._active = 'redraw';
       if(!this._trigger) {
         this._trigger = true;
         document.dispatchEvent(this._dataLoaded);
@@ -267,12 +350,16 @@ export default class Index {
 
     if(typeof append !== 'object') return base;
     for(let key in append){
+ 
       /** add glyph/draw_as sub-configuration to given configuration object */
-      if(append[key].hasOwnProperty('glyph')){
-        append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['glyph']])),append[key]);
-      }
-      if(append[key].hasOwnProperty('draw_as')){
-        append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['draw_as']])), append[key]);
+      if(append[key] !== undefined) {
+        if(append[key].hasOwnProperty('glyph') && base[append[key]['glyph']]){
+          append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['glyph']])),append[key]);
+        }
+
+        if(append[key].hasOwnProperty('draw_as') && base[append[key]['draw_as']]){
+            append[key] = this._combineObjects(JSON.parse(JSON.stringify(base[append[key]['draw_as']])), append[key]);
+        }
       }
 
       if(base.hasOwnProperty(key)){
@@ -337,7 +424,6 @@ export default class Index {
       setPopover: (props)=> this.setPopover(props)
     };
 
-    console.log(viewSetup);
 
     chr.features.forEach(data => {
       let name = data.seqName;

@@ -25,7 +25,11 @@ export function parseIni(text){
         if (confItem[1] && confItem[1].trim() !== '') {
           let ci = confItem[1].trim();
           if(!isNaN(ci-0)) ci = ci-0;
-          parsed[currentConfigKey][confItem[0].trim()] = ci;
+          if(ci[0] === '{') { // if value is an object, parse as JSON
+            parsed[currentConfigKey][confItem[0].trim()] = JSON.parse(ci);
+          }else{ // parse as text
+            parsed[currentConfigKey][confItem[0].trim()] = ci;
+          }
         }
       }
     }

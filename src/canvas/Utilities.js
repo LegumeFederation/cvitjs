@@ -38,7 +38,7 @@ export function calculateColor(colorArray,min,max,val,invert = 0){
  return new paper.Color(
     (color2[0]*weight + color1[0]*invWeight) ,
     (color2[1]*weight + color1[1]*invWeight) ,
-    (color2[2]*weight + color1[2]*invWeight)
+    (color2[2]*weight + color1[2]*invWeight) ,
  );
 }
 
@@ -258,6 +258,8 @@ export function transformValue(value,transform,base=Math.E){
       return Math.log(value)/Math.log(base);
     case 'log' :
       return Math.pow(value,base);
+    case 'reference' :
+      return value === 0 ? 0 : value/base;
     default:
       return value;
   }

@@ -16,6 +16,7 @@
 
 #cvit-header {
     background: #666;
+    display: none;
 }
 
 #cvit-header .head-item {
@@ -259,4 +260,31 @@
 
 .container input[type='checkbox'] {
     display: none;
+}
+
+.cvit-loading-spinner {
+    display: inline-block;
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.cvit-loading-spinner:after {
+    content: " ";
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0.5rem;
+    border-radius: 50%;
+    border: 0.25rem solid #666;
+    border-color: #666 transparent #666 transparent;
+    animation: cvit-loading-spinner 1.5s linear infinite;
+}
+
+@keyframes cvit-loading-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
