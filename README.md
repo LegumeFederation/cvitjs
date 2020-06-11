@@ -1,247 +1,345 @@
- # GCViT
-![GCViT](assets/readme_images/logo.png?raw=true)
+# CViTjs - Chromosome Visualization Tool, the JavaScript edition
+![CViTjs](img/cvitjs.png?raw=true)
 
 ## Table of Contents
 + [About](#about) 
-+ [Setup](#setup)
-    + [General](#general-setup)
-    + [Docker](#docker-setup)
-    + [Go + Node](#go-+-node-setup) 
-+ [API](#api)
-+ [Authentication](#authentication)
++ [Setup](#setup) 
++ [Embedding](#embedding)
++ [PHP](#php) 
++ [Roadmap](#roadmap) 
++ [Using CViTjs](#using-cvitjs) 
+  + [Definitions and glyph types](#definitions-and-glyph-types)
+  + [How to...](#how-to) 
++ [Examples](#examples)
 
 ## About
 
-GCViT is a tool for whole genome visualization of resequencing or SNP array data, which reads data in GFF and VCF format and allows a user to compare two or more accessions to visually identify regions of similarity and difference across the reference genome. Access to data sets can be controlled through authentication.
+CViTjs is an interactive JavaScript implementation of the original Chromosome 
+Visualization Tool (<a href="https://sourceforge.net/projects/cvit/">CViT</a>), 
+which was written in Perl. CViTjs displays features on chromosomes, linkage groups, or just 
+about any sort of backbone that has length and a two-dimensional, linear coordinate system.
 
-GCViT is built on top of [CViTjs](https://github.com/LegumeFederation/cvitjs), a Javascript application for viewing genomic features at the whole-genome scale. GCViT is implemented in [Go](https://golang.org/). A Docker image is available. GCViT exposes an API, and can be installed as a server only, with no UI.
+**The tool is currently in beta. Feedback is gratefully accepted.**
 
-![Williams Pedigree As Haplotype Blocks ](assets/readme_images/Williams_Pedigree2.png?raw=true)
-Figure 1. An example of haplotype comparisons of 6 soybean accessions.
+Functionality:
++ Data is formatted in <a href="http://gmod.org/wiki/GFF3">GFF3</a>
++ Place various types of features on "backbones" (e.g., centromeres, markers, gene models, regions)
++ Similar to genome browsers, CViTjs has a concept of tracks, sets of features organized in a group.
++ A track can be interactively turned on and off
++ Zooming and panning
++ Annotate an image with the drawing tool
++ Export image to a png or svg.
 
-[Explore Soybean SNP data in GCViT](https://soybase.org/gcvit/)
+Features:
++ ES6+ class style code 
++ Software stack: Preact and Paper.js.
+
+[See CViTjs in action](https://awilkey.github.io/cvitjs/?data=test1)
 
 ## Setup
-While GCViT is intended to be an online tool, it may also be run locally as a stand alone tool. In either case, there are two main approaches to running GCViT, in a Docker container, or using the built-in Go server. The configuration of the backend service and the UI stays mostly the same in either case.
-A stand-alone [Electron](https://www.electronjs.org/) desktop app is in the process of being developed. 
 
-Instructions for the UI are provided in the application itself.
- 
-### General Setup
-
-The steps for setting up a GCViT instance consists of downloading and installing the application, configuring the server, and data preparation. The GCViT repository includes example data from soybean consisting of these files: SNP data is in `assets/SoySNP50k_TestFile_named.vcf,` the backbone chromosomes are defined in `ui/cvit_assets/data/soySnp/gm_backbone.gff,` and the CViTjs image is configured with `ui/cvit_assets/data/soySnp/soySnp.conf.` 
-
-Before beginning configuration, if you plan on using the ui initialize the [CViTjs](https://github.com/LegumeFederation/cvitjs/tree/preact/buildalt) git submodule using `git submodule update --init`. This will grab the required repository for generating images.
-
-
-#### Configuring the Service
-No matter which method you intend to run GCViT, configuration of the Go backend service is the same. The default configuration file is `config/assetsconfig.yaml` and it has the following format:
-
-```yaml
-server:
-  port: 8080
-  portTLS: 8888
-  certFile: config/testcert.cert
-  keyFile: config/testcert.key
-  apiOnly: False
-  source: gcvit
-  binSize: 500000
-
-users:
-  username : password
-
-snptestLegacy:
-  location: assets/SoySNP50k_TestFile_named.vcf.gz 
-  name: soySNP 50k subset [named]
-  format: vcf
-  restricted:
-    - username
-```
-
-The server stanza is optional, and supports the following options:
-
-| Option | Default | Use |
-| ----- | ----- | ----- |
-| port | 8080 | Changes the port GCViT listens on for HTTPS traffic. Defaults to 8080 only if no portTLS is provided. Otherwise ignores HTTP traffic. |
-| portTLS | - | Changes the port GCViT listens for HTTPS traffic. No default provided as you need to set your own key/cert. |
-| certFile | - | Cert file for HTTPS. config/testcert.cert is only for testing purposes and not a default. |
-| keyFile | - | Key file for HTTPS. config/testcert.key is only for testing purposes and not a default. |
-| apiOnly | False | If True, only serves the api routes, ignoring the GCViT frontend |
-| source | gcvit | Value for Column 2 of generated gff files from /api/generateGFF |
-| binSize | 500000 | Default number of bases used for bins |
-
-The users stanza is also optional. Use this configuration option to set one-or-more users to password protect datasets.
-Without proper credentials, users will never be presented with restricted datasets when using the gcvit ui.
-The format is one-or more `<username> : <password>` pairs. Note this only uses BasicAuth headers, and isn't intended to 
-be very secure. Future updates may include better practices if demand is present.
-
-Finally you may have one or more data tracks, that have the following required fields:
-
-```yaml
-key: #internal key for API requests
-  location: relative to root of server directory
-  name: display name for dropdowns
-  format: vcf (only option for now, automatically checks if gzipped)
-  restricted: [optional] whitelist of users that may access this dataset, if not present, data may be accessed by anyone
-    - username: username that can access this data
-    - username2: another user that can access this datta
-```
-
-While it is recommended, the data file given for 'location' does not have to be in the `assets` folder to be read by GCViT.
-
-### Preparing the data
-
-**Reference Genome Assembly Backbone** You will need a GFF3 file that defines the chromosomes for the genome assembly backbone. This file must be added to the `ui/cvit_assets/data/` folder. An example file is included in the example, `ui/cvit_assets/data/soySnp/gm_backbone.gff`.
-
-To link the GFF file to CViTjs, edit the file ui/cvit_assets/cvit.conf to indicate the file exists and which CViTjs UI configuration file to use (described in [CViTjs documentation](https://github.com/LegumeFederation/cvitjs)).
-
-**Genotype Data Sets** Each genotype data set is represented by a single VCF file (which may be gzipped). By default, the files should go into the assets/ directory, but if you choose a different directory, it will be necessary to tell the application where to find the files. Information about connecting to a different the genotype data directory is described below.
-
-### Configuring the UI
-
-Most aspects of the CViTjs display can be customized, including colors, fonts, and the popover box that appears when mousing over a feature. For more information on configuring the CViTjs component of GCViT, please see the documentation [here](https://github.com/LegumeFederation/cvitjs/wiki) and the example file `ui/cvit_assets/data/soySnp/soySnp.conf`.
-
-Configuration files for the three glyphs used by GCViT *Haplotype Block*, *Heatmap* and *Histogram* are in `ui/src/Components/[HaploConfig.js|HeatConfig.js|HistConfig.js]` respectively.
-
-Other display options (title, bin size, ruler tic interval) can be changed through editing the values in `ui/src/Components/DefaultConfiguration.js`. After changes are made, the docker container will need to be rebuilt, or a manual build will need to be triggered through node, as described in the following sections. 
-
-**Popover customization** The box that pops up when clicking on a glyph in the image can be customized by editing `ui/cvit_assets/src/templates/Popover.js` if building in docker, or by rebuilding the changes in CViTjs if using Go + Node and moving the resulting build to `/ui/public/cvitjs/`.
-
-**Help box customizations** The text in in-app help can be customized. Edit the files `ui/src/Components/HelpTopcs.`
-  
-**Note:** Configuration settings in `ui/src/Components/DefaultConfiguration.js` override CViTjs equivalent configuration settings, for example, ruler tic interval.
-
-### Docker Setup
-For general use, it is easiest to get started with GCViT using [Docker](https://www.docker.com/). Before starting, make sure that docker is properly configured for your system.
-
-The Docker build process will retrieve the most recent version of CViTjs during the build process. 
-
-To add reference genome backbone files, popover customizations, or any other change to CViT place the files in `ui/cvit_assets`. This will overwrite the equivalent CViT file during the build process. 
-
-To build through docker:
-```
-docker build -t gcvit:1.0 . -f Dockerfile
-```
-This command will produce a image with the tag of **gcvit:1.0** that can be used to build a container. If you want to save time with automated builds and only need the server API component, the build-arg:
-```
---build-arg apionly=false
-```
-is provided to skip over the building of the UI components. Similarly, if you wish to build the tool with BasicAuth the build-arg:
-```
---build-arg apiauth=true
-```
-
-When starting the container, there are two mount points exposed to add configuration and data directories: `/app/config` and `/app/assets` respectively.
-
-An example of starting an instance of GCViT inside the gcvit directory, binding the configuration and assets directory at run time: 
-```
-docker run -d \
---name gcvit \
---mount type=bind,source="$(pwd)"/config,target=/app/config \
---mount type=bind,source="$(pwd)"/assets,target=/app/assets \
--p 8080:8080 \
-gcvit:1.0
-```
-
-If using the default server settings in assetconfig.yaml, GCViT will now be available at `http://localhost:8080.`
-
-To update the data, you should be able to just add it directly to the mounted source, as GCViT checks for updated data when appropriate. 
-
-##### Modifying the Docker container
-After building the Docker container, you will see three directories in the `ui/` directory: `build/,` `cvit_assets/,` and `public/.` 
-
-To make changes that will take affect when you build the container, make the changes in `build/.` Mirror cvit's directory/name structure for this and it will replace-before-build.
-
-To make changes without rebuilding the GCViT container but that require rebuilding CViTjs, edit and add files to `public/.`
-
-To make changes without rebuilding GCViT or CViTjs, edit and add files to `build/.` Not recommended unless testing changes.
-
-The best practices are to make CViTjs changes in `cvit_assets/` or `public/.`
-
-##### Adding data set files to Docker container
-If data set files are located in the `/app/assets/` directory, you may want to build them into the container, especially for smaller datasets. To do so, edit `Dockerfile,` look for the line, `#Comment above and uncomment below if you would rather have assets built into container,` and follow the instructions.
-
-### Go + Node Setup
-GCViT may also be built and served directly using [Go](https://golang.org/) and and [Node](https://nodejs.org/en/) together.
-Before beginning, check that Go is set up and Node is configured to at least the most current LTS version (currently 12.14.0).
-
-#### Building the backend component with Go
-The following packages are needed in order to build the service:
-```
-github.com/awilkey/bio-format-tools-go/gff 
-github.com/awilkey/bio-format-tools-go/vcf
-github.com/go-ozzo/ozzo-routing
-github.com/spf13/viper
-github.com/golang/gddo/httputil/header
-```
-It is recommended to use [dep](https://golang.github.io/dep/) to manage dependencies, as running `dep ensure` will make sure the project has all the right requirements on hand.
-
-Once all the dependencies are grabbed, you can run the test server using the command:
-
-`go run server.go`
-from the root directory of the project.
-
-By default this will listen on port 8080, but you can change this in the configuration file.
-
-Once up, you can test that the server is up using wget or curl:
-
-| protocol | request |
-| -------- | ------- |
-| wget     | wget localhost:8080/api/experiment |
-| curl     | curl localhost:8080/api/experiment |
-
-Either protocol should return a JSON object that contains a list of all the configured VCF files.
-
-If you wish to compile the server, Go has a robust set of tools for building and cross-compiling binaries.
-In the most simple form:
-
-`go build -o server .`
-
-Will builds a binary that has statically linked libraries, making it portable.
-
-If running on a server without a Go compiler configured, the language has support built-in for cross compiling built in. See [HERE](https://golangcookbook.com/chapters/running/cross-compiling/)
-for details.
-
-#### Building the frontend components with Node
-
-This repository contains a pre-built version of both the UI component and CViTjs, so this section is mostly optional.
-
-If you wish to add configuration data for CViT without re-building the tool, you may place the files directly in `ui/build/cvitjs`.
-
-If you want to use a custom build of CViTjs, navigate to the `cvitjs/` submodule and write and build your changes. This is most often used when wanting to change CViT's css or the click on feature Popover display. Place the resulting
-files from the build directory directly into `ui/build/cvitjs/build`. These changes will last until you rebuild the GCViT ui component. 
-
-Any changes to CViT that you want to keep when re-building the UI component will need to be placed in `ui/public/cvitjs`
-
-To rebuild the UI component of GCViT:
+CViTjs needs several libraries to work. Before beginning, you should have should have [node](https://nodejs.org/en/)
+configured and working on your system. Grab required packages and build the tool using:
 ```
 npm install
 npm run build
 ```
-or 
+This will grab required libraries and build the tool for inclusion as a webscript. By default, the package javascript
+will be exported to `build/cvit.min.js`. Once the tool has been built, you can test it by navigating to the index.html.
+
+If planning on doing development work, or want to run locally, it is recomended to use `npm run watch` instead of build.
+This will start a local development server that can be accessed at `localhost:8888` by default.
+
+Once one or more `[data.<tag>]` views are defined in `cvit.conf`, you will be able to begin generating visualisations.
+This cvit.conf should be located in the root folder. Sample views are included in the provided file.
 ```
-npm install
-npm run buildauth
+;Sample cvit.conf file
+[general]
+data_default = test1
+
+[data.test1]
+conf = data/test1/cvit.conf
+defaultData = data/test1/data.gff
+
+[data.test2]
+conf = data/test2/test2.conf
+defaultData = [data/backbone.gff,data/test2/test2.gff]
 ```
-if you wish to enable the basic authentication login prompt.
+The [general] section and at least one dataset definition are required.
 
-This will create a webpacked version of the GCViT UI. Most common reasons to rebuild is updating the Help documentation and
-updating the CSS.
+In this example, to display the test1 dataset the URL would be: `your-CViTjs-URL/?data=test1`
+
+For each dataset you will need at least one <a href="http://gmod.org/wiki/GFF3">GFF3</a> file defining the backbones and 
+and while not required, it is reccomended that you create a visualisation configuration file, typically named cvit.ini.
+ 
+Almost every aspect of the presentation of the image can be controlled in the configuration file. 
+See the [sample file](data/test1/test1.conf) in data/test1/ or [the configuration readme](Configuration.md) for more information.
+
+## Embedding
+
+Instead of keeping CViTjs in its own special page, it may be embedded in other contexts. In the page's head include:
+```
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="build/cvit.min.js"></script>
+```
+
+In the body of the page, all that is required is:
+```
+<div class="container" id="cvit-app" />
+```
+at the point you want to display the cvit tool. 
+
+Cvit defaults to displaying the view pointed to by the `data_default` configuration under `[general]` in cvit.conf. 
+You may use the html `data-` attribute to pass configuration target as:
+
+```
+<div class="container" id="cvit-app" data-tag="test2" />
+```
+Which is the same as:
+```
+http://cvitpage/?data=test2
+```
+In terms of priority: `data-tag='tag' > url/?data=tag > cvit.conf `
 
 
-## API:
+Similarly, the default gff files can be overridden in both the URL and the HTML. Like their configuration counterpart, 
+this may be a single file, or an array of files.
+```
+<div class="container" id="cvit-app" data-gff="test1.gff" />
 
-The following API is served by the GCViT service component:
+-or-
 
-| Path | Verb | Returns |
-| ---- | ---- | ---- |
-| /api/experiment| GET | JSON representation of all experiments in assetconfig.yaml |
-| /api/experiment/{experiment} | GET | JSON representation of all PIs in VCF header |
-| /api/generateGFF | POST | returns gff. Expected parameters of Ref={experiment:PI}&Variant={sameexperiment:PI}, with any number of variants |
-| | | |
-| / | GET | tool UI - Only if apiOnly is **False** |
-|/login | GET | Attempts to authenticate a username and password. Returns status 200 if OK, 401 if not. | 
+<div class="container" id="cvit-app" data-gff='["backbone.gff","test2.gff"]' />
+```
 
-## Authentication:
-To control access to data sets, create users and restrict access, see `assestconfig.yaml`. The files `config/testcert.*` are an example of a self-signed SSL certificate. Instruction for generating a new one and be found [here](
-https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04)
+Priority is similar to the tag  option.
+
+Other `data-` tags are:
+
+| Tag | Query Equivalent | Description |
+| ---- | ---- | --- |
+| data-tag | data=<tag> | select a specific tag |
+| data-gff | gff=<file> or gff[]=<file> |(array) one or more gff files to use as base data |
+| data-config | config=<file> | configuration file to use for dataset |
+| data-cvitroot | not used | path prefix if files aren't in the root folder of the page. |
+| data-register | true | register CViT as window.cvit |
+## PHP
+
+PHP can launch CViTjs with a calculated set of inputs. To control CViTjs, you may either pass in the desired view and 
+gff using the `data-` tags, or you can export the desired information as a globally accessible variable and access it 
+directly from `main.js`. See `src/drupalMain.js` for an example of this based on drupal exports.
+
+## Roadmap
+Things to do on the way to the 1.0 release:
++ Upload file manager
+	+ Basic _viewData validation
+	+ Customized glyphs
++ Advanced URI control 
++ Release unit tests
+
+## Using CViTjs
+
+### Definitions and glyph types
+
+| Glyph | Description|
+| ---- | ---- |
+|chromosome | a "backbone". Could be a psuedomolecule, linkage group, contig, et cetera. |  
+|centromere | a glyph type that is drawn on the chromosome, with optional overhang on either side of the chromosome bar.  |
+|position | a glyph representing a point without size which is typically used for features that are too small to display at scaled size, for example, a gene.  |
+|marker | a particular type of position depicted with a horizontal line. |
+|range | a glyph representing a feature with sufficient length to display at scale, for example, centromeres or pericentromeric regions. |  
+|measure | a glyph representing a feature with some value, for example, an e-value or expression value. The actual glyph's drawn type depends on the measure-type chosen.  |
+
+### How to...
+#### 1. Prepare data
+
+
+Input data to CViT is in GFF3 (http://www.sequenceontology.org/gff3.shtml).
+CViT interpretes files as follows:  
+
+    column 1 (seqid)      chromosome name. If column 3 is 'chromosome' the 
+                          record describes the chromosome (name, length, et 
+                          cetera), otherwise the record describes a feature on 
+                          the named chromosome.  
+    column 2 (source)     user defined. Can be used in conjunction with column 3
+                          by the options (.ini) file to indicate a special 
+                          glyph.  
+    column 3 (type)       one of: 'chromosome', 'position', 'range', 'border', 
+                          'measure', 'centromere', 'marker' or user defined. 
+                          Can be used in conjunction with column 3.
+                          by the options (.ini) file to indicate a special 
+                          glyph.  
+    column 4 (start)      start coordinate of chromosome if column 3 = 
+                          'chromosome', start coordinate of feature otherwise.  
+    column 5 (end)        end coordinate of chromosome if column 3 = 
+                         'chromosome', end coordinate of featuer otherwise.  
+    column 6 (score)      if record is of type 'measure' and 'value_type' 
+                          parameter in options (.ini) file is set to 
+                          'score_col', then this value will be used to generate 
+                          a heatmap color or histogram.  
+    column 8 (strand)     Unused unless 'show_strands' parameter in options 
+                          (.ini) file is set to 1.  
+    column 8 (phase)      UNUSED  
+    column 9 (attributes) User-defined attributes allowed and ignored by CViT. 
+     
+These attributes are defined:   
+**ID/Name** = name of chromosome or feature  
+**color**   = color for feature; overrides all other color
+          settings in options (.ini) file  
+**value**   = used for type=measure glyphs if 'value_type'
+          parameter in options is set to 'value_attr'  
+
+**Important:** The GFF _viewData must contain at least one chromosome. Features must contain the 
+name of the chromosome it belongs to in the seqid (1) column of the GFF file
+and that name must match the name in the seqid column for the chromosome. Also,
+its coordinates must lie within the start and end coordinates of the chromosome.
+
+#### 2. customize drawing options
+Almost all aspects of the output images can be controlled via the .conf file. An example
+can be found inside data/test1. Note that the drawing configuration file is different
+from the main configuration file, cvit.conf. 
+**Important note:** as CViTjs is still in beta, some of these options may not yet be
+implemented. If an option you need appears to have not been implemented, let us know and
+we will make it a priority to implement it.
+
+**_General or overall options_**  
+
+**title**                Label for image.  
+**title_height**         Space allowance for title in pixels, ignored if font face   
+                         and size are set.  
+**title_font**           Use a built-in GD font (0=gdLargeFont, 1=gdMediumBoldFont,
+                         2=gdSmallFont, 3=gdTinyFont). If title_font_face is set,
+                         this setting is overridden.  
+**title_font_face**      Font face to use for title.  
+**title_font_size**      Title font size in points.  
+**title_color**          Title font color.  
+**title_location**       Title location as x,y coords, ignored if missing.  
+**image_padding**        Space around chromosome set, in pixels.  
+**scale_factor**         How much to scale units (pixels per unit); used to size 
+                         image.  
+**border_color**         Color of the border around the image.  
+**tiny_font_face**       The prefered tiny font when small labels are needed.  
+**chrom_width**          How wide in pixels to draw a chromosome  
+**fixed_chrom_spacing**  Whether or not to draw chromosomes in fixed locations, or
+                         spaced to accomodate features and labels.  
+**chrom_spacing**        How far apart to space the chromosomes.  
+**chrom_padding_left**   Extra chromosome padding on the left.  
+**hrom_padding_right**  Extra chromosome padding on the right.  
+**chrom_color**          Fill color for the chromosome bar.  
+**chrom_border**         Whether or not to draw a border for the chromosome bar.  
+**chrom_border_color**   Border color for the chromosome bar.  
+**chrom_font**           Use a built-in GD font (0=gdLargeFont, 1=gdMediumBoldFont,
+                         2=gdSmallFont, 3=gdTinyFont). If chrom_font_face is set,
+                         this setting is overridden.  
+**chrom_font_face**      Font face to use to label chromosomes, ignored if empty.  
+**chrom_font_size**      Font size for chromosome labels in points, used only in 
+                         conjuction with font_face.  
+**chrom_label_color**    Color for chromosome label.  
+**show_strands**         1=show both chromosome strands, 0=don't; both strands 
+                         will fit inside chrom_width  
+**display_ruler**        0=none, 1=both, L=left side only, R=right side only.  
+**reverse_ruler**        1=ruler units run greatest to smallest, 0=normal order.  
+**ruler_units**          Ruler units (e.g. "cM, "kb"), used to label the ruler.  
+**ruler_min**            Minimum value on ruler, if > actual minimum value in the
+                         _viewData this will be adjusted accordingly in the code.  
+**ruler_max**            Maximum value on ruler, if < actual maximum value in the 
+                         _viewData, this will be adjusted accordingly in the code.
+**ruler_font**           Which built-in font to use (ruler_font_face overrides this
+                         setting).  
+**ruler_font_face**      Font face to use for ruler, ignored if empty.  
+**ruler_font_size**      Ruler font size in points, used only in conjuction with 
+                         font_face.  
+
+**tick_line_width**      Width of ruler tick marks in pixels.  
+**tick_interval**        Ruler tick mark units in original chromosome units.  
+**minor_tick_divisions** Number of minor divisions per major tick (1 for none).  
+
+
+**_Glyph options (not all apply to all glyphs)_**
+
+**centromere_overhang**  How much centromere bar should extend beyond chromosome bar;
+                         only applies to centromere glyphs.  
+**color**                Glyph color. Can be overridend by class= attribute or 
+                         color= attribute.  
+**border_color**         Color for drawing borders; only applies to borders.  
+**transparent**          Whether or not to draw glyph transparently.  
+**shape**                Glyph shape (circle, rect, or doublecircle).  
+**width**                Width of the shape.  
+**offset**               Offset glyph this many pixels from chromosome bar (negative 
+                         value moves label to the left).  
+**enable_pileup**        If set to 1, CViT will offset features that overlap a
+                         previously-drawn feature by shifting them right (or
+                         left if on the left side of the chromosome).  
+**pileup_gap**           The space between adjacent, piled-up positions.  
+**fill**                 1=fill in area between borders, 0=don't; only applies to
+                         borders and measures.  
+**value_type**           If set to 'score_col', the measure value is taken from the  
+                         score column (6) in the GFF file AND IS ASSUMED TO BE AN 
+                         E-VALUE. If the value in the score column is not an 
+                         e-value, it will be displayed incorrectly. If set to
+                         'value_attr', the measure value is in the value= 
+                         attribute in the attribute (9) column. Only applies to 
+                         measures.  
+**display**              If 'heat' display measure as a heat color. If 'histogram'
+                         display measure as a histogram. If 'distance', the
+                         distance the glyph is draw from the chromosome (right
+                         or left side as indicated by offset) is determined by
+                         the feature's value. Only applies to measures.  
+**draw_as**              Whether to interpret a heat map or distance measure as a
+                         range, position, border, or marker.  
+**heat_colors**          Colors to use for scale (heat map only): redgreen or 
+                         grayscale.  
+**min**                  Minimum value for a set of measure glyphs. If > actual 
+                         minimum value in the _viewData this will be adjusted 
+                         accordingly in the code. Only applies to measures.  
+**max**                  Maximum value for a set of measure glyphs. If < actual 
+                         maximum value in the _viewData this will be adjusted 
+                         accordingly in the code. Only applies to measures.  
+**max_distance**         Maximim distance to draw a distance measure.  
+**hist_perc**            Percentage of distance between chromosomes to fill with
+                         maximum value for a set of histogram measure glyphs.  
+**draw_label**           Whether or not to draw label (ID= or Name= attribute)  
+**font**                 Use a built-in GD font (0=gdLargeFont, 1=gdMediumBoldFont,
+                         2=gdSmallFont, 3=gdTinyFont). If font_face is set,
+                         this setting is overridden.
+**font_face**            Font face to use for label.  
+**font_size**            Font size in points, used only in conjuction with font_face.  
+**label_offset**         Start labels this many pixels right of region bar (negative 
+                       value moves label to the left).  
+**label_color**          Color to use for label.  
+
+
+Characteristics for a custom sequence type can be defined by naming a section
+by the source and type columns of the GFF. For example, the GFF record
+
+     ZmChr1 IBM2_2008_Neighbors locus 882.70 882.70 . . . Name=tb1
+     
+would be identified by IBM2_2008_Neighbors:locus.
+
+Example:
+
+    [genes]
+    feature = IBM2_2008_Neighbors:locus
+    glyph = position
+    color = green
+    offset = -5
+    
+
+    
+
+## Examples
+
+![CViTjs](img/examples/cvit.png?raw=true)
+
+CViTjs exports views as png or svg files.
+
+![CViTjs as an embedded tool](img/examples/embedded.png?raw=true)
+
+Embedded tool to display BLAST results. Image is a blastn result agains Cicer arietinum (kabuli, CDC Frontier) - genome using the following sequence:
+
+```
+>cicar.Ca_13726
+
+ATGTTTTCTCTCATCATTCTCTCACCAAACTATGCTTCCTCAACTTGGTGTTTGGATGAGCTACAAAAGATTGTTGAGTGTGGAAAGTGTTTTGGTGGTCAAGGTGTTTTTCCAATCTTCTATGGTGTAGATCCTTCTCATGTTAGGCATCAAAGTGGAAGCTTTGCTAAAGCATTTAGAAAACATGAAGAAAACTTTAGAGAAGATAGAGAGAAAGTGCAAAGGTGGAAAGATGCATTAAGAGAAGTTGCTGGTTATTCTGGTTGGGACTCCAAGGATTGGCATGAGGCAAAATTGATAGAAACAATTGTTGAAAACATTCAGAAAAAATTGATTCCTAAATTGAATGTTTGCACAGATAACTTTATTGGAATGGATTCAAAGATAAAAGAAGTAACTTCACTCCTAGGAATGAATTTAAACGATGTTCGCTTCGTAGGCATATGGGGCATGGGTGGAATAGGAAAGACAACTATTGCTCGATTAGTCTACGAAGCGATCAAAGATGAATTCAATATAAGTTGCTTTCTTGCAGACATTAGAGAATCAGTTTCCAAGACAAATGGCTTAGTTAATATCCAAATGGAACTTCTTTCTCATCTTAACATAAGAAGCAATGATTTTTACAATGTTCATGATGGAAAAAAGATATTAGCAAACTCCTTAAGCAACAAAAAGATTCTTCTTGTTCTTGATGATGTGAATGAGTTAAGCCAATTGGAGAGTTTAGCTTGGAAGCAAGAATGGTTTGGTAAAGGAAGTAGAGTTATAATCACAACTAGGGATAAGCACTTATTAATGACACATGGAGTGCATGAAACTTATAAGGCAAAAGGGTTAGTAAAAAATGAAGCACTTAAGCTCTTTTGTTTGAAAGCATTTAAACAAGACCAACCTAAAGAAGAGTATTTGAGTTTGTGTCAAGAAGCGGTTGAATACACAAAAGGACTTCCTTTGGCACTTGAGGTATTAGGTTCACATCTTCATGGAAGAAGTGTTGAGGTTTGGCATAGTGCTTTAGAACAAATAACAAGTGTTCCTCACTCCAAAGTTCAAGATACATTGAAAATAAGCTATGACAGTTTACAATCTATGGAGAAAAATTTGTTTCTAGATATTGCATGTTTCTTCAAAGGAATGGACTTAGATGAAGTAATAGATATGTTAGAAAATTGTGGTGATTATCCTAAAATTGGAATTGACATTTTGGCTGAAAGATCTTTGGTAAGTTTTGATAGGGGAGGAAATAAGTTGTGGATGCATGATTTGCTTCAAGAAATGGGAAGGAATATTGTGTTTCAAGAATATCCAAATGATCCTGGAAAACGCAGTCGATTATGGTCTCAAAAAGACATTGATCAAGTATTGACAAAAAATAAGGGAACTGATAAAATTCAAGGCATAGTTCTGAACTTGGATCAACCGTATGAAGCAAAATGGAACATTGAAGCCTTCTCCAAAATAAGTCACCTAAGGTTACTCAAATTATGTGGCATAAAACTCCCCCTTGGCCTCAACTGCTTCCCTAGTTCACTAAAAGTACTTGACTGGAGAGGATTTCCTTTGAAAACCCTTCCATTCACTAATAATTTGGATGAAATTGTTGACCTCAAATTGCCTCACAGTAAAATAGAACAACTTTGGCATGCAACACAGTTTCTTGAAAATCTGAAATCCATCAACTTGAGCTTTTCCAAGTCTCTAAAGCAATTGCCTGATTTCGTTGGTGTTCCGAATCTTGAATCATTGGTTTTTGAAGGCTGTACAAGCTTAACTGAGATTCATCCCTCCCTTTTAAGCCACAAGAAACTTGTTCAATTGAATTTGAAACACTGCAAAAGGCTCAAAACACTTCCATGCAAAATAGAAACAACTTCATTGAAGAATTTAAGTCTTGCTGGTTGCTCTGAATTCAAACATCTTCCTGAGTTTGATAAAAGCATGAAACATCTATCAAATCTTTCTTTATCAGATACTGCTATAACAAAACTACCATCTTCACTTGGATATCTTGTTTTCCTTAGACTTTTGGATTTAGAAAATTGCAAGAATCTTATTAGTCTTCCAGATACAATAAGTGAATTGAAGTCTCTCATAACTCTGAATGTTTCTGGCTGCTCAAAACTCCATAGCATTCCAGAAGGTTTAAAAGAAATCAACTGTTTGGAGGAACTTCTTGCAAGTGAAACTTCTATTGAAGAACTACCTTCATCTGTTTTTTATCTAGAAAACCTCAAAGTAATATCATTTTCTGGATGCAAAGGACCAGTGACTAAGACAGTGAATTCATTTTTGCTACCATTTACACATTTCTTAAGTAGTCCACAAGATCCTACTAGTTTTAGATTGCCGCATAAATTATCTCTACCTTCTTTGAAGTACTTAAATTTAAGTTACTGCAATCTATCTGAAGAATCAATCCCAAATGATTTTTTCAACTTTTCTTCTTTGATGGTTTTAAATCTCACTGGGAACAATTTTGTTAGTCCACCAAGTAGCATTTCAAAGCTACCAAAACTTGAGTATCTTAGCCTAAACTGGTGTGAAATGCTTCAGAATTTGCCAGAACTTCCCTCAAGTATGAGGACATTGGATGCATGTAATTGTGATTCACTGGAAACTTCTGAATTCAATCTTTCTAGATCATGCAATCTCATTGAATCGCCGATGAGGCAAAGACACTCGCATTTACCTGAAGTTCTGAAGAGCTATTTGGAGGCAGTGCAACTTGGTCTACCTAAAGAAAGATTTGACATGCTTATCACAGGGAGTGAAATTCCATTATGGTTTACACCTTCAAAATATGTTTCAGTTGCAAACATACCAGTCCCTCCTAATTGTCCAAATGATCAATGGGTAGGATTTGCTTTGTGTTTCTTGTTAGTAAGTTTTGCTGATCCACCTGAGTTATGTCATCATGAAGTAAGTTGTTACTTGTTTGGACCTAAGGGTAAGATGTTGATCAGCTCAAGGGATTTACCTCCTTTGGAACCATATTGCCGCCACCTTTATATTCTCTATTTGTCCATTGATGAATGCCGCAAAAGATTCGATAAAGGCGGTGACTGCAGTGAAATTGAGTTTGTCTTGAAAACTTATTGTTGTGATTCATTGAAAGTAGTGAGATGTGGTAGTCGTTTGGTATGTAAACAAGATGTTGAAGATATTTACAGAATTTGTAATTAG
+```
+<br><br>
