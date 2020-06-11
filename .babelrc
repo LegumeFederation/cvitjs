@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "array-includes"
+  ],
+  "presets": [
+    "@babel/preset-env",
+    ["@babel/preset-react",{"pragma":"h"}]
+  ],
+  "ignore": ["node_modules"]
+}

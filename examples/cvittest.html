@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Cvit Test </title>
+		<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16" />	
+		<link rel="stylesheet" href="js/lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="js/lib/hopscotch/css/hopscotch.min.css" />
+        <link rel="stylesheet" href="css/cvit.css" />
+		<!-- CViTjs uses requireJS, so all that is needed is this single line   -->
+		<!-- to include the scritps. require-config sets up the environment and -->
+		<!-- then calls js/main.js, providing a single entry point into CViTjs  -->
+
+		<script data-main="js/lib/require/require-config" src="js/lib/require/require.js"></script>
+	</head>
+	<body>
+			<div id="title-div"><h1> CViTjs Test <h1></div>
+            <!-- showing how to use data-* tags to override URL data selection  -->
+            <!-- and how to pass in an additional dataset to add on to the      -->
+            <!-- existing backbone                                              -->
+			<div id="cvit-div" data-dataset="Lotus japonicus v3.0 - genome" data-gff="data/blastTest.gff">
+		</div>
+	</body>
+</html>
