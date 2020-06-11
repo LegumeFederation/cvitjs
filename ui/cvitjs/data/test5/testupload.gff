@@ -1,3 +1,0 @@
-#bp -- generated via seqlen.awk
-#chromosome,	source,	type,	start,	stop,	score,	strand,	phase,	attributes
-chr3	Pchr	centromere	1	150189435	.	.	.	name=testRange1;ID=testRange1
