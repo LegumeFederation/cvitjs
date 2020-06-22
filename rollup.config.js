@@ -2,7 +2,6 @@
 
 // Rollup plugins
 import babel from 'rollup-plugin-babel';
-import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
@@ -45,10 +44,14 @@ const babelOptions = () => {
         babelrc: false,
         presets: [
             ["@babel/preset-env",{ "modules":false}],
-            ["@babel/preset-react",{"pragma":"h"}]
+            //["@babel/preset-react",{"pragma":"h"}]
         ],
         plugins: [
-            'array-includes'
+            'array-includes',
+	    [
+                '@babel/plugin-transform-react-jsx',
+		{"pragma":"h"}
+	    ]
         ]
     };
 };
@@ -58,6 +61,7 @@ const cjsOptions = () => {
 		include: 'node_modules/**',
 		namedExports: {
 			'paper' : ['paper'],
+			'preact' : ['preact'],
 		},
 	};
 };
@@ -69,11 +73,13 @@ export default [
             name,
             file: pkg.module,
             format: 'esm',
+            globals: {
+		    preact : 'preact',
+	    },
             //   sourcemap: true
         },
         plugins: [
             builtins(),
-            globals(),
             // bundle css
             postcss(postcssOptions()),
             resolve(resolveOptions()),
@@ -89,6 +95,9 @@ export default [
             name,
             file: 'build/cvit.js',
             format: 'iife',
+            globals: {
+		    preact : 'preact',
+	    },
  //   sourcemap: true
         },
         plugins: [
@@ -96,7 +105,6 @@ export default [
 	//	    paper: 'paper/dist/paper-core'
 	  //  }),
             builtins(),
-            globals(),
             // bundle css
             postcss(postcssOptions()),
             resolve(resolveOptions()),
@@ -111,11 +119,13 @@ export default [
             name,
             file: 'build/cvit.min.js',
             format: 'iife',
+            globals: {
+		    preact : 'preact',
+	    },
             //   sourcemap: true
         },
         plugins: [
             builtins(),
-            globals(),
             // bundle css
             postcss(postcssOptions()),
             resolve(resolveOptions()),

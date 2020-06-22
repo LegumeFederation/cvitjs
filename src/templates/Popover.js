@@ -11,7 +11,34 @@ export function popoverContents(data) {
                     <td>{feature.attribute[key]}</td>
                 </tr>));
             }
+            // GRIN Search
+            if(key !== 'id' && key !== 'value' && key !== 'unknown'){
+                let searchTerm = key.match(/.*(PI|pi)\s?([0-9]+)\s?([a-zA-Z])?.*/)
+                console.log(searchTerm)
+                if(searchTerm !== null){
+                    let pi = searchTerm[3] ? `PI ${searchTerm[2]} ${searchTerm[3]}` : `PI ${searchTerm[2]}`;
+                    attributes.push((<tr>
+                            <th colSpan={2} style={{textAlign: 'center'}}>
+                                <a href={`https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?accid=${pi}`}>
+                                    {`Search for ${pi} at GRIN` }
+                                </a>
+                                
+                            </th>
+                        </tr>));
+                } else {
+                attributes.push((<tr>
+                        <th colSpan={2} style={{textAlign: 'center'}}> 
+                            <a href={`https://npgsweb.ars-grin.gov/gringlobal/search.aspx?q="Glycine max" "${key}"&lim=50`}>
+                                {`Search for ${key} at GRIN` }
+                            </a>
+                            
+                        </th>
+                    </tr>));
+                }
+            }
         }
+
+
         return (
             <div className={'popover-contents'}>
                 <table style={{margin:'auto'}}>
