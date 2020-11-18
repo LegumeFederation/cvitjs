@@ -1,0 +1,11 @@
+version: '2.3'
+
+services:
+  ui:
+    build:
+      context: .  
+      target: full
+    ports:
+      - "8080:80"
+    # https://github.com/facebook/create-react-app/issues/8688
+    stdin_open: true
