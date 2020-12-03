@@ -24,10 +24,10 @@ const main = () => {
   // add alternative config/gff locations priority order: HTML _viewData attribute > querystring > cvit.conf
   const loadedHandler = () => {
     let dataset = document.getElementById('cvit-app').dataset;
-    console.log('cvitroot',dataset.cvitroot);
-    let dConf = dataset.config ? JSON.parse(dataset.config) : null;
+    let dConf = dataset.config ? dataset.config : null;
     let dTag = dataset.tag ? dataset.tag : null;
-    let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
+    let dGff = dataset.gff ? dataset.gff : null;
+    if(dGff && dGff[0] = "["){ dGff= JSON.parse(dGff);}
     let croot = dataset.cvitroot ? dataset.cvitroot : '';
     let register = dataset.register ? dataset.register : true;
     let configData = {
