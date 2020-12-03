@@ -26,7 +26,8 @@ const main = () => {
     let ds = window.Drupal.settings;
     let dataset = document.getElementById('cvit-app').dataset;
     let dTag = ds.blast_ui.dataset ? ds.blast_ui.dataset : null;
-    let dGff = dataset.gff ? JSON.parse(dataset.gff) : null;
+    let dGff = dataset.gff ? dataset.gff : null;
+    if(dGff && dGff[0] === "["){ dGff = JSON.parse(dGff); }
     let dConf = dataset.config ? dataset.config : null;
     let cRoot = ds.blast_ui.cvitroot ? ds.blast_ui.cvitroot : '';
     let configData = {
