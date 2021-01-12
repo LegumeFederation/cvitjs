@@ -218,7 +218,6 @@ export default class ColorModal extends Component {
   }
 
   setPosition (pointer,pGra,sSlide,sGra,aSlide,aGra,color){
-    console.log("sp", pointer, color);
     pointer.position.x = ((pGra.bounds.width * color.hue)/360) +  pGra.topLeft.x;
     pointer.position.y = pGra.bounds.height*-color.brightness + pGra.bounds.height + pGra.bounds.topLeft.y;
     sSlide.position.y = sGra.bounds.height*-color.saturation + sGra.bounds.height + sGra.bounds.topLeft.y;
@@ -252,7 +251,6 @@ export default class ColorModal extends Component {
     let prev = new paper.Color(aG1);
     prev.alpha = a;
     colPrev.fillColor = prev;
-    paper.view.draw();
     this.setState({
       pointer,
       pGra,
@@ -263,6 +261,7 @@ export default class ColorModal extends Component {
       sRad,
       colPrev
     });
+    paper.view.draw();
   }
 
   onCancel(e){
